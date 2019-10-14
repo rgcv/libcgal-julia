@@ -294,7 +294,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP(Point_2, -,  Vector_2)
     // Creation
     .constructor<Origin>()
-    .constructor<int, int>()
     .constructor<double, double>()
     .constructor<RT, RT, RT>()
     .constructor<FT, FT>() // in a Cartesian kernel, covers (RT, RT) ctor
@@ -408,7 +407,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .constructor<Ray_2>()
     .constructor<Line_2>()
     .constructor<Null_vector>()
-    .constructor<int, int>()
     .constructor<double, double>()
     .constructor<RT, RT, RT>()
     .constructor<FT, FT>()
