@@ -53,7 +53,7 @@ jobs:
         uses: julia-actions/setup-julia@v0.2
         with:
           version: 1.2.0
-      - name: Create GitHub Releases
+      - name: Create Release + Publish Tarballs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
@@ -65,3 +65,9 @@ jobs:
         run: |
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
           julia --color=yes .github/scripts/build_tarballs.jl --verbose --only-buildjl
+      - name: Publish build.jl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/softprops/action-gh-release@v1
+        with:
+          files: products/build*.jl
