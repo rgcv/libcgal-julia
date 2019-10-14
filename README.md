@@ -2,7 +2,7 @@
 incredibly brittle and scarce. Currently, the kernel is being fixed on the C++
 side of things. Currently, the `Exact_predicates_exact_constructions_kernel`
 (a.k.a.  `Epeck`) 2D/3D kernel is being fixed, consequently fixing the
-constructs' kernels. This limits the imense toolset CGAL provides, namely, for
+kernel's constructs. This limits the imense toolset CGAL provides, namely, for
 example, the usage of the Circular kernel, or the dD Kernel.
 
 Ideally, julia types would be parametric, mirroring their respective template
