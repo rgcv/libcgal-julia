@@ -1,0 +1,57 @@
+name: CI
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - i686-w64-mingw32-gcc7-cxx11
+          - i686-w64-mingw32-gcc8-cxx11
+          - x86_64-apple-darwin14
+          - x86_64-linux-gnu-gcc7-cxx11
+          - x86_64-linux-gnu-gcc8-cxx11
+          - x86_64-w64-mingw32-gcc7-cxx11
+          - x86_64-w64-mingw32-gcc8-cxx11
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v0.2
+        with:
+          version: 1.2.0
+      - name: Binary Builder
+        env:
+          BINARYBUILDER_RUNNER: privileged
+          BINARYBUILDER_AUTOMATIC_APPLE: true
+        run: |
+          julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
+          julia --color=yes .github/scripts/build_tarballs.jl --verbose ${{ matrix.target }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: products
+          path: products
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v1
+        with:
+          name: products
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v0.2
+        with:
+          version: 1.2.0
+      - name: Create GitHub Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          files: products/*
+      - name: Generate build.jl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
+          julia --color=yes .github/scripts/build_tarballs.jl --verbose --only-buildjl
