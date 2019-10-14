@@ -91,6 +91,7 @@ CMake, you won't need it.
 
 # Related Projects
 
+- [cgal-swig-bindings][11] - CGAL bindings using SWIG
 - [PYGAL - Python Geometric Algorithms Library][11] - python bindings for CGAL
 
 [1]:  https://github.com/CGAL/cgal
@@ -103,4 +104,5 @@ CMake, you won't need it.
 [8]:  https://www.mpfr.org/mpfr-4.0.2
 [9]:  https://github.com/julialang/julia/releases/tag/v1.0.5
 [10]: https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.5.3
-[11]: https://github.com/wolfv/pygal
+[11]: https://github.com/CGAL/cgal-swig-bindings
+[12]: https://github.com/wolfv/pygal
