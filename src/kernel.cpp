@@ -433,7 +433,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .UNARY_OP(-, Vector_2)
     .BINARY_OP_SELF(*,  Vector_2)
     .BINARY_OP(Vector_2, /,  RT)
-    .BINARY_OP(Vector_2, *,  RT)
+    //.BINARY_OP(Vector_2, *,  RT)
     //.BINARY_OP(Vector_2, *,  RT      )
     // Representation
     .method("repr", &repr<Vector_2>)
