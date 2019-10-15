@@ -92,7 +92,7 @@ CMake, you won't need it.
 # Related Projects
 
 - [cgal-swig-bindings][11] - CGAL bindings using SWIG
-- [PYGAL - Python Geometric Algorithms Library][11] - python bindings for CGAL
+- [PYGAL - Python Geometric Algorithms Library][12] - python bindings for CGAL
 
 [1]:  https://github.com/CGAL/cgal
 [2]:  https://github.com/julialang/julia
