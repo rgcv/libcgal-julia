@@ -8,7 +8,6 @@ on:
       - 'src/**'
       - 'include/**'
       - '.github/scripts/*'
-      - '.github/workflows/*.yml'
     tags:
       - 'v?[0-9]+.[0-9]+.[0-9]+*'
 
@@ -70,6 +69,6 @@ jobs:
       - name: Publish build.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1
         with:
           files: products/build*.jl
