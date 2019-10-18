@@ -1,14 +1,14 @@
 #ifndef CGAL_JLCXX_KERNEL_HPP
 #define CGAL_JLCXX_KERNEL_HPP
 
-#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 #include <CGAL/Origin.h>
 
 #include <CGAL/aff_transformation_tags.h>
 #include <CGAL/enum.h>
 
 /// Kernel
-typedef CGAL::Exact_predicates_exact_constructions_kernel Kernel;
+typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt Kernel;
 
 /// Types
 typedef Kernel::FT          FT;
