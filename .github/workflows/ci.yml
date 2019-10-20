@@ -37,32 +37,23 @@ jobs:
         run: |
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
           julia --color=yes .github/scripts/build_tarballs.jl ${{ matrix.target }}
-      - uses: actions/upload-artifact@v1
+      - name: Publish Tarball
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          name: products
-          path: products
+          files: products/*
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/download-artifact@v1
-        with:
-          name: products
       - name: Setup Julia
         uses: julia-actions/setup-julia@v0.2
         with:
           version: 1.2.0
-      - name: Create Release + Publish Tarballs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v1
-        with:
-          files: products/*
       - name: Generate build.jl
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
           julia --color=yes .github/scripts/build_tarballs.jl --only-buildjl
