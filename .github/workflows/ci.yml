@@ -36,7 +36,7 @@ jobs:
           BINARYBUILDER_AUTOMATIC_APPLE: true
         run: |
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
-          julia --color=yes .github/scripts/build_tarballs.jl --verbose ${{ matrix.target }}
+          julia --color=yes .github/scripts/build_tarballs.jl ${{ matrix.target }}
       - uses: actions/upload-artifact@v1
         with:
           name: products
@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
-          julia --color=yes .github/scripts/build_tarballs.jl --verbose --only-buildjl
+          julia --color=yes .github/scripts/build_tarballs.jl --only-buildjl
       - name: Publish build.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
