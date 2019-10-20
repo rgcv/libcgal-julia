@@ -23,11 +23,11 @@ const sources = [
 # Dependencies that must be installed before this package can be built
 dependencies = [
     # for CGAL
-    "https://github.com/benlorenz/boostBuilder/releases/download/v1.69.0/build_boost.v1.69.0.jl",
+    "https://github.com/benlorenz/boostBuilder/releases/download/v1.71.0-1/build_boost.v1.71.0.jl",
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v6.1.2-1/build_GMP.v6.1.2.jl",
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v4.0.2-1/build_MPFR.v4.0.2.jl",
     # for libcgal-julia
-    "https://github.com/rgcv/CGALBuilder/releases/download/v4.14.1-2/build_CGAL.v4.14.1.jl",
+    "https://github.com/rgcv/CGALBuilder/releases/download/v4.14.1-3/build_CGAL.v4.14.1.jl",
     "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/build_Julia.v1.0.0.jl",
     "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v0.5.3/build_libcxxwrap-julia-1.0.v0.5.3.jl"
 ]

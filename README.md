@@ -64,13 +64,13 @@ $ julia .github/scripts/build_tarballs.jl x86_64-w64-mingw32-gcc7-cxx11
 
 Requirements:
 
-- [`CMake>=3.12`][4]
-- [`CGAL>=4.13`][5]
-  * [`Boost>=1.69`][6]
+- [`CMake`][4]
+- [`CGAL==4.14.1`][5]
+  * [`Boost==1.71`][6]
   * [`GMP`][7]
   * [`MPFR`][8]
 - [`Julia>=1.0`][9]
-- [`JlCxx>=0.5.3`][10]
+- [`JlCxx==0.5.3`][10]
 
 Depending on your system, it may be easier to aggregate and install the listed
 requirements, with the exception of `JlCxx`, which, to my knowledge, isn't in
@@ -92,7 +92,8 @@ CMake, you won't need it.
 # Related Projects
 
 - [cgal-swig-bindings][11] - CGAL bindings using SWIG
-- [PYGAL - Python Geometric Algorithms Library][12] - python bindings for CGAL
+- [PYGAL - Python Geometric Algorithms Library][12] - CGAL python bindings using
+  pybind11
 
 [1]:  https://github.com/CGAL/cgal
 [2]:  https://github.com/julialang/julia
