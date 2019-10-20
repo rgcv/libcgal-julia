@@ -27,7 +27,7 @@ dependencies = [
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v6.1.2-1/build_GMP.v6.1.2.jl",
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v4.0.2-1/build_MPFR.v4.0.2.jl",
     # for libcgal-julia
-    "https://github.com/rgcv/CGALBuilder/releases/download/v4.14.1-1/build_CGAL.v4.14.1.jl",
+    "https://github.com/rgcv/CGALBuilder/releases/download/v4.14.1-2/build_CGAL.v4.14.1.jl",
     "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/build_Julia.v1.0.0.jl",
     "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v0.5.3/build_libcxxwrap-julia-1.0.v0.5.3.jl"
 ]
@@ -37,10 +37,6 @@ const script = raw"""
 ## pre-build setup
 # exit on error
 set -eu
-# HACK: cmake v3.11 can't properly find Boost beyond 1.67.. here, we install a
-# version of cmake (3.13.0) that recognizes Boost at least up to v1.69
-apk del cmake
-apk add cmake --repository http://dl-cdn.alpinelinux.org/alpine/v3.9/main
 
 # check c++ standard reported by the compiler
 # CGAL uses CMake's try_run to check if it needs to link with Boost.Thread
