@@ -38,6 +38,7 @@ jobs:
           julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
           julia --color=yes .github/scripts/build_tarballs.jl ${{ matrix.target }}
       - name: Publish Tarball
+        if: startsWith(github.ref, 'refs/tags')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
