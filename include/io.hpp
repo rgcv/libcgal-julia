@@ -6,6 +6,7 @@
 #include <sstream>
 
 template<typename T>
+inline
 const std::string repr(const T &t) {
   std::ostringstream oss;
   CGAL::set_pretty_mode(oss);

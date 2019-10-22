@@ -4,13 +4,9 @@
 
 #include <type_traits>
 
+#include "enum.hpp"
 #include "io.hpp"
 #include "kernel.hpp"
-
-template<typename T>
-double to_double(const T& t) { return CGAL::to_double(t); }
-
-#define CGAL_CONST(name) cgal.set_const(#name, CGAL::name)
 
 #define CAST_MEMBER_FUNC(R, T, F, M, ArgsT...) \
   static_cast<R (T::*)(ArgsT) M>(&T::F)
@@ -35,12 +31,8 @@ double to_double(const T& t) { return CGAL::to_double(t); }
 
 #define REPR(T) SIMPLE_PFUNC(repr, T)
 
-namespace jlcxx {
-  template<> struct IsBits<Angle>             : std::true_type {};
-  template<> struct IsBits<Bounded_side>      : std::true_type {};
-  // Covers Comparison_result, Orientation, and Oriented_side
-  template<> struct IsBits<Sign>              : std::true_type {};
-}
+template<typename T>
+double to_double(const T& t) { return CGAL::to_double(t); }
 
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
@@ -63,38 +55,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   /// CONSTANTS ================================================================
 
-  jl_value_t *jl_cpp_enum = jlcxx::julia_type("CppEnum");
   // Can't set consts, they get erased post pre-compilation.
   // Therefore, their constant counterparts are defined on the julia side.
-  cgal.add_type<Identity_transformation>("IdentityTransformation");
-  cgal.add_type<Null_vector>("NullVector");
-  cgal.add_type<Origin>("Origin");
-  cgal.add_type<Rotation>("Rotation");
-  cgal.add_type<Scaling>("Scaling");
-  cgal.add_type<Translation>("Translation");
-
-  // Angle: Angle classification/type
-  cgal.add_bits<Angle>("Angle", jl_cpp_enum);
-  CGAL_CONST(OBTUSE); CGAL_CONST(RIGHT); CGAL_CONST(ACUTE);
-
-  // Bounded_side: Placement relative to boundary
-  cgal.add_bits<Bounded_side>("BoundedSide");
-  CGAL_CONST(ON_UNBOUNDED_SIDE); CGAL_CONST(ON_BOUNDARY); CGAL_CONST(ON_BOUNDED_SIDE);
-
-  // Sign: Object sign
-  cgal.add_bits<Sign>("Sign", jl_cpp_enum);
-  CGAL_CONST(NEGATIVE); CGAL_CONST(ZERO); CGAL_CONST(POSITIVE);
-
-  // Orientation: Object orientation (Aliased to Sign in Julia)
-  CGAL_CONST(LEFT_TURN); CGAL_CONST(RIGHT_TURN);
-  CGAL_CONST(CLOCKWISE); CGAL_CONST(COUNTERCLOCKWISE);
-  CGAL_CONST(COLLINEAR); CGAL_CONST(COPLANAR); CGAL_CONST(DEGENERATE);
-
-  // Oriented_side: Side orientation (Aliased to Sign in Julia)
-  CGAL_CONST(ON_NEGATIVE_SIDE); CGAL_CONST(ON_ORIENTED_BOUNDARY); CGAL_CONST(ON_POSITIVE_SIDE);
-
-  // Comparison_result: Result relative size (Aliased to Sign in Julia)
-  CGAL_CONST(SMALLER); CGAL_CONST(EQUAL); CGAL_CONST(LARGER);
+  cgal.add_type<CGAL::Identity_transformation>("IdentityTransformation");
+  cgal.add_type<CGAL::Rotation>("Rotation");
+  cgal.add_type<CGAL::Scaling>("Scaling");
+  cgal.add_type<CGAL::Translation>("Translation");
 
   /// TYPES (cont.) ============================================================
 
@@ -123,14 +89,14 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   aff_transformation_2
       // Creation
-      .CTOR(Identity_transformation)
-      .CTOR(Translation, Vector_2)
-      .CTOR(Rotation, Direction_2, RT)
-      .CTOR(Rotation, Direction_2, RT, RT)
-      .CTOR(Rotation, RT, RT)
-      .CTOR(Rotation, RT, RT, RT)
-      .CTOR(Scaling, RT)
-      .CTOR(Scaling, RT, RT)
+      .CTOR(CGAL::Identity_transformation)
+      .CTOR(CGAL::Translation, Vector_2)
+      .CTOR(CGAL::Rotation, Direction_2, RT)
+      .CTOR(CGAL::Rotation, Direction_2, RT, RT)
+      .CTOR(CGAL::Rotation, RT, RT)
+      .CTOR(CGAL::Rotation, RT, RT, RT)
+      .CTOR(CGAL::Scaling, RT)
+      .CTOR(CGAL::Scaling, RT, RT)
       .CTOR(RT, RT, RT, RT, RT, RT)
       .CTOR(RT, RT, RT, RT, RT, RT, RT)
       .CTOR(RT, RT, RT, RT)
@@ -181,12 +147,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
   circle_2
     // Creation
     .CTOR(Point_2, FT)
-    .CTOR(Point_2, FT, Orientation)
+    .CTOR(Point_2, FT, CGAL::Orientation)
     .CTOR(Point_2, Point_2, Point_2)
     .CTOR(Point_2, Point_2)
-    .CTOR(Point_2, Point_2, Orientation)
+    .CTOR(Point_2, Point_2, CGAL::Orientation)
     .CTOR(Point_2)
-    .CTOR(Point_2, Orientation)
+    .CTOR(Point_2, CGAL::Orientation)
     // Access Functions
     .METHOD(Circle_2, center        )
     .METHOD(Circle_2, squared_radius)
@@ -307,11 +273,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(Point_2, <=)
     .BINARY_OP_SELF(Point_2, >=)
     .BINARY_OP_SELF(Point_2,  -)
-    .BINARY_OP(Point_2, ==, Origin )
-    .BINARY_OP(Point_2, +,  Vector_2)
-    .BINARY_OP(Point_2, -,  Vector_2)
+    .BINARY_OP(Point_2, ==, CGAL::Origin)
+    .BINARY_OP(Point_2, +,  Vector_2    )
+    .BINARY_OP(Point_2, -,  Vector_2    )
     // Creation
-    .CTOR(Origin)
+    .CTOR(CGAL::Origin)
     .CTOR(double, double)
     .CTOR(RT, RT, RT)
     .CTOR(FT, FT) // in a Cartesian kernel, covers (RT, RT) ctor
@@ -416,15 +382,15 @@ void wrap_kernel(jlcxx::Module& cgal) {
   vector_2
     // Public Member Functions
     .METHOD(Vector_2, squared_length)
-    .BINARY_OP(Vector_2, *, FT) // in Cartesian kernel, FT = RT
-    .BINARY_OP(FT, *, Vector_2) // ^ idem
-    .BINARY_OP(Origin, +, Vector_2)
+    .BINARY_OP(Vector_2,     *, RT) // in Cartesian kernel, FT = RT
+    .BINARY_OP(RT,           *, Vector_2) // ^ idem
+    .BINARY_OP(CGAL::Origin, +, Vector_2)
     // Creation
     .CTOR(Point_2, Point_2)
     .CTOR(Segment_2)
     .CTOR(Ray_2)
     .CTOR(Line_2)
-    .CTOR(Null_vector)
+    .CTOR(CGAL::Null_vector)
     .CTOR(double, double)
     .CTOR(RT, RT, RT)
     .CTOR(FT, FT)
@@ -457,7 +423,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   weighted_point_2
     // Creation
-    .CTOR(Origin)
+    .CTOR(CGAL::Origin)
     .CTOR(Point_2)
     .CTOR(Point_2, FT)
     .CTOR(FT, FT)

@@ -20,14 +20,16 @@ get_target_property(JlCxx_location JlCxx::cxxwrap_julia LOCATION)
 get_filename_component(JlCxx_location ${JlCxx_location} DIRECTORY)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${JlCxx_location}")
 
-include_directories(${CGAL_INCLUDE_DIRS} ${JULIA_INCLUDE_DIRS})
-include_directories(include)
-set(CGALJL_SOURCES
-  src/cgal_julia.cpp
+include_directories(include ${CGAL_INCLUDE_DIRS} ${JULIA_INCLUDE_DIRS})
+set(CGAL_JLCXX_SOURCES
+  src/origin.cpp
+  src/enum.cpp
   src/kernel.cpp
+  src/global_functions.cpp
+  src/cgal_julia.cpp
 )
 
-add_library(cgal_julia SHARED ${CGALJL_SOURCES})
+add_library(cgal_julia SHARED ${CGAL_JLCXX_SOURCES})
 target_link_libraries(cgal_julia JlCxx::cxxwrap_julia ${CGAL_LIBRARIES})
 install(TARGETS
   cgal_julia
