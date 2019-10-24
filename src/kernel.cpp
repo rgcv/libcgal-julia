@@ -88,43 +88,43 @@ void wrap_kernel(jlcxx::Module& cgal) {
     ;
 
   aff_transformation_2
-      // Creation
-      .CTOR(CGAL::Identity_transformation)
-      .CTOR(CGAL::Translation, Vector_2)
-      .CTOR(CGAL::Rotation, Direction_2, RT)
-      .CTOR(CGAL::Rotation, Direction_2, RT, RT)
-      .CTOR(CGAL::Rotation, RT, RT)
-      .CTOR(CGAL::Rotation, RT, RT, RT)
-      .CTOR(CGAL::Scaling, RT)
-      .CTOR(CGAL::Scaling, RT, RT)
-      .CTOR(RT, RT, RT, RT, RT, RT)
-      .CTOR(RT, RT, RT, RT, RT, RT, RT)
-      .CTOR(RT, RT, RT, RT)
-      .CTOR(RT, RT, RT, RT, RT)
-      // Operations
-      // NOTE: Invocation operator should be defined on julia's side
-      .UNAMBIG_METHOD(Point_2,     Aff_transformation_2, transform,  const Point_2&    )
-      .UNAMBIG_METHOD(Vector_2,    Aff_transformation_2, transform,  const Vector_2&   )
-      .UNAMBIG_METHOD(Direction_2, Aff_transformation_2, transform,  const Direction_2&)
-      .UNAMBIG_METHOD(Line_2,      Aff_transformation_2, transform,  const Line_2&     )
-      .INVOKE_METHOD(Point_2,      Aff_transformation_2, const Point_2&    )
-      .INVOKE_METHOD(Vector_2,     Aff_transformation_2, const Vector_2&   )
-      .INVOKE_METHOD(Direction_2,  Aff_transformation_2, const Direction_2&)
-      .INVOKE_METHOD(Line_2,       Aff_transformation_2, const Line_2&     )
-      // Miscellaneous
-      .BINARY_OP_SELF(Aff_transformation_2, ==)
-      .BINARY_OP_SELF(Aff_transformation_2,  *)
-      .METHOD(Aff_transformation_2, inverse)
-      .METHOD(Aff_transformation_2, is_even)
-      .METHOD(Aff_transformation_2, is_odd )
-      // Matrix Entry Access
-      .METHOD(Aff_transformation_2, cartesian  )
-      .METHOD(Aff_transformation_2, m          )
-      .METHOD(Aff_transformation_2, homogeneous)
-      .METHOD(Aff_transformation_2, hm         )
-      // Representation
-      .REPR(Aff_transformation_2)
-      ;
+    // Creation
+    .CTOR(CGAL::Identity_transformation)
+    .CTOR(CGAL::Translation, Vector_2)
+    .CTOR(CGAL::Rotation, Direction_2, RT)
+    .CTOR(CGAL::Rotation, Direction_2, RT, RT)
+    .CTOR(CGAL::Rotation, RT, RT)
+    .CTOR(CGAL::Rotation, RT, RT, RT)
+    .CTOR(CGAL::Scaling, RT)
+    .CTOR(CGAL::Scaling, RT, RT)
+    .CTOR(RT, RT, RT, RT, RT, RT)
+    .CTOR(RT, RT, RT, RT, RT, RT, RT)
+    .CTOR(RT, RT, RT, RT)
+    .CTOR(RT, RT, RT, RT, RT)
+    // Operations
+    // NOTE: Invocation operator should be defined on julia's side
+    .UNAMBIG_METHOD(Point_2,     Aff_transformation_2, transform,  const Point_2&    )
+    .UNAMBIG_METHOD(Vector_2,    Aff_transformation_2, transform,  const Vector_2&   )
+    .UNAMBIG_METHOD(Direction_2, Aff_transformation_2, transform,  const Direction_2&)
+    .UNAMBIG_METHOD(Line_2,      Aff_transformation_2, transform,  const Line_2&     )
+    .INVOKE_METHOD(Point_2,      Aff_transformation_2, const Point_2&    )
+    .INVOKE_METHOD(Vector_2,     Aff_transformation_2, const Vector_2&   )
+    .INVOKE_METHOD(Direction_2,  Aff_transformation_2, const Direction_2&)
+    .INVOKE_METHOD(Line_2,       Aff_transformation_2, const Line_2&     )
+    // Miscellaneous
+    .BINARY_OP_SELF(Aff_transformation_2, ==)
+    .BINARY_OP_SELF(Aff_transformation_2,  *)
+    .METHOD(Aff_transformation_2, inverse)
+    .METHOD(Aff_transformation_2, is_even)
+    .METHOD(Aff_transformation_2, is_odd )
+    // Matrix Entry Access
+    .METHOD(Aff_transformation_2, cartesian  )
+    .METHOD(Aff_transformation_2, m          )
+    .METHOD(Aff_transformation_2, homogeneous)
+    .METHOD(Aff_transformation_2, hm         )
+    // Representation
+    .REPR(Aff_transformation_2)
+    ;
 
   bbox_2
     // Creation
@@ -228,6 +228,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Iso_rectangle_2, area     )
     .METHOD(Iso_rectangle_2, bbox     )
     .METHOD(Iso_rectangle_2, transform)
+    // Representation
+    .REPR(Iso_rectangle_2)
     ;
 
   line_2
@@ -353,7 +355,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Segment_2, bbox     )
     .METHOD(Segment_2, transform)
     // Representation
-    .SIMPLE_PFUNC(repr, Segment_2)
+    .REPR(Segment_2)
     ;
 
   triangle_2
@@ -377,6 +379,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Triangle_2, area     )
     .METHOD(Triangle_2, bbox     )
     .METHOD(Triangle_2, transform)
+    // Representation
+    .REPR(Triangle_2)
     ;
 
   vector_2
@@ -454,5 +458,4 @@ void wrap_kernel(jlcxx::Module& cgal) {
     // Representation
     .REPR(Weighted_point_2)
     ;
-
 }
