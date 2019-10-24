@@ -25,12 +25,15 @@ reliability and efficiency while still providing robust results.
 
 - [ ] Type Parametrization
 - [ ] Global Functions
+  - [x] Global Kernel Functions (2D)
+  - [ ] Global Kernel Functions (3D)
+  - ...
 - [ ] Iterators
 - [ ] Circulators
 - [ ] Other packages, such as
   - [ ] Convex Hulls
   - [ ] Voronoi Delaunay
-  - [ ] ...
+  - ...
 
 # Building
 
