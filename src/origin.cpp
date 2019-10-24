@@ -1,5 +1,6 @@
 #include <CGAL/Origin.h>
-#include <jlcxx/jlcxx.hpp>
+
+#include "origin.hpp"
 
 void wrap_origin(jlcxx::Module& cgal) {
   cgal.add_type<CGAL::Origin>("Origin");

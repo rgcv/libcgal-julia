@@ -1,15 +1,19 @@
-#include <julia/julia.h>
+#include <type_traits>
+
+#include <CGAL/Origin.h>
+#include <CGAL/aff_transformation_tags.h>
+#include <CGAL/enum.h>
+
 #include <jlcxx/jlcxx.hpp>
 #include <jlcxx/type_conversion.hpp>
 
-#include <type_traits>
+#include <julia/julia.h>
 
-#include "enum.hpp"
+#include "jlcxx.hpp"
+
 #include "io.hpp"
+#include "enum.hpp"
 #include "kernel.hpp"
-
-#define CAST_MEMBER_FUNC(R, T, F, M, ArgsT...) \
-  static_cast<R (T::*)(ArgsT) M>(&T::F)
 
 #define CTOR(ArgsT...) constructor<ArgsT>()
 
@@ -18,6 +22,8 @@
 #define PFUNC(name, func, ArgsT...) method(#name, &func<ArgsT>)
 #define SIMPLE_PFUNC(name, ArgsT...) PFUNC(name, name, ArgsT)
 
+#define CAST_MEMBER_FUNC(R, T, F, M, ArgsT...) \
+  static_cast<R (T::*)(ArgsT) M>(&T::F)
 #define METHOD(T, name) method(#name, &T::name)
 #define UNAMBIG_METHOD(R, T, F, ArgsT...) \
   method(#F, CAST_MEMBER_FUNC(R, T, F, const, ArgsT))
@@ -146,6 +152,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   circle_2
     // Creation
+    .CTOR(Point_2, double)
     .CTOR(Point_2, FT)
     .CTOR(Point_2, FT, CGAL::Orientation)
     .CTOR(Point_2, Point_2, Point_2)

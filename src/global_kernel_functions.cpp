@@ -1,10 +1,13 @@
-#include <CGAL/Kernel/global_functions.h>
+#include <jlcxx/module.hpp>
 
-#include <jlcxx/jlcxx.hpp>
+#include "jlcxx.hpp"
 
 #include "enum.hpp"
 #include "kernel.hpp"
-#include "macros.hpp"
+#include "global_kernel_functions.hpp"
+
+#define GLOBAL_FUNCTION(R, F, ArgsT...) \
+  cgal.method(#F, static_cast<R(*)(ArgsT)>(&CGAL::F))
 
 #define DO_INTERSECT(T1, T2) \
   GLOBAL_FUNCTION(bool, do_intersect, const T1&, const T2&); \
@@ -19,7 +22,7 @@
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_2&); \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Triangle_2&)
 
-void wrap_global_functions(jlcxx::Module& cgal) {
+void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_2&, const Vector_2&);
   GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&);
   GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&, const Point_2&);

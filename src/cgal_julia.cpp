@@ -1,13 +1,13 @@
 #include <jlcxx/jlcxx.hpp>
 
-void wrap_origin(jlcxx::Module&);
-void wrap_enum(jlcxx::Module&);
-void wrap_kernel(jlcxx::Module&);
-void wrap_global_functions(jlcxx::Module&);
+#include "origin.hpp"
+#include "enum.hpp"
+#include "kernel.hpp"
+#include "global_kernel_functions.hpp"
 
 JLCXX_MODULE define_julia_module(jlcxx::Module& cgal) {
   wrap_origin(cgal);
   wrap_enum(cgal);
   wrap_kernel(cgal);
-  wrap_global_functions(cgal);
+  wrap_global_kernel_functions(cgal);
 }

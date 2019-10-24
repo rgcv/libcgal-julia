@@ -1,9 +1,9 @@
 #ifndef CGAL_JLCXX_IO_HPP
 #define CGAL_JLCXX_IO_HPP
 
-#include <CGAL/IO/io.h>
-
 #include <sstream>
+
+#include <CGAL/IO/io.h>
 
 template<typename T>
 inline

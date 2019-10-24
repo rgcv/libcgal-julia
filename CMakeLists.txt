@@ -26,7 +26,7 @@ set(CGAL_JLCXX_SOURCES
   src/origin.cpp
   src/enum.cpp
   src/kernel.cpp
-  src/global_functions.cpp
+  src/global_kernel_functions.cpp
   src/cgal_julia.cpp
 )
 

@@ -2,20 +2,15 @@
 #define CGAL_JLCXX_KERNEL_HPP
 
 #include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
-#include <CGAL/Origin.h>
 
-#include <CGAL/aff_transformation_tags.h>
-#include <CGAL/enum.h>
-
-#include <jlcxx/jlcxx.hpp>
+#include <jlcxx/module.hpp>
 
 /// Kernel
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt Kernel;
 
 /// Types
 typedef Kernel::FT          FT;
-// Redundant, since we're using a cartesian kernel (i.e. FT == RT)
-typedef Kernel::RT          RT;
+typedef Kernel::RT          RT; // same as FT for Cartesian kernels
 
 /// 2D Kernel Objects
 typedef Kernel::Aff_transformation_2 Aff_transformation_2;
@@ -31,7 +26,10 @@ typedef Kernel::Triangle_2           Triangle_2;
 typedef Kernel::Vector_2             Vector_2;
 typedef Kernel::Weighted_point_2     Weighted_point_2;
 
+/// Functions
 template<typename T>
 double to_double(const T&);
+
+void wrap_kernel(jlcxx::Module&);
 
 #endif // CGAL_JLCXX_KERNEL_HPP
