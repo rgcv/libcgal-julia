@@ -188,3 +188,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
 
   GLOBAL_FUNCTION(bool, do_overlap, const Bbox_2&, const Bbox_2&);
 }
+
+#undef GLOBAL_FUNCTION
+#undef DO_INTERSECT
+#undef DO_INTERSECT_SELF
+#undef SQUARED_DISTANCE

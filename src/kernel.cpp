@@ -466,3 +466,21 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .REPR(Weighted_point_2)
     ;
 }
+
+#undef CTOR
+
+#undef FUNC
+#undef SIMPLE_FUNC
+#undef PFUNC
+#undef SIMPLE_PFUNC
+
+#undef CAST_MEMBER_FUNC
+#undef METHOD
+#undef UNAMBIG_METHOD
+#undef INVOKE_METHOD
+
+#undef UNARY_OP
+#undef BINARY_OP
+#undef BINARY_OP_SELF
+
+#undef REPR

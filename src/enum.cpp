@@ -33,3 +33,5 @@ void wrap_enum(jlcxx::Module& cgal) {
   // Comparison_result
   CGAL_CONST(SMALLER); CGAL_CONST(EQUAL); CGAL_CONST(LARGER);
 }
+
+#undef CGAL_CONST
