@@ -8,6 +8,7 @@ on:
       - 'src/**'
       - 'include/**'
       - '.github/scripts/*'
+      - '.github/workflows/ci.yml'
     tags:
       - 'v?[0-9]+.[0-9]+.[0-9]+*'
 
