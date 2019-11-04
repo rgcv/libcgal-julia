@@ -87,8 +87,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(FT, *)
     .UNARY_OP(+, FT)
     .UNARY_OP(-, FT)
-    // Converter
-    .SIMPLE_PFUNC(to_double, FT)
     // Representation
     .REPR(FT)
     ;

@@ -1,13 +1,11 @@
 #include <jlcxx/module.hpp>
 
+#include "macros.hpp"
 #include "jlcxx.hpp"
 
 #include "enum.hpp"
 #include "kernel.hpp"
 #include "global_kernel_functions.hpp"
-
-#define GLOBAL_FUNCTION(R, F, ArgsT...) \
-  cgal.method(#F, static_cast<R(*)(ArgsT)>(&CGAL::F))
 
 #define DO_INTERSECT(T1, T2) \
   GLOBAL_FUNCTION(bool, do_intersect, const T1&, const T2&); \
@@ -189,7 +187,6 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   GLOBAL_FUNCTION(bool, do_overlap, const Bbox_2&, const Bbox_2&);
 }
 
-#undef GLOBAL_FUNCTION
 #undef DO_INTERSECT
 #undef DO_INTERSECT_SELF
 #undef SQUARED_DISTANCE
