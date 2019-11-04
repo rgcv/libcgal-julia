@@ -5,7 +5,7 @@
 
 #include "kernel.hpp"
 
-typedef Kernel::FT NT;
+typedef typename Kernel::FT NT;
 
 void wrap_algebra(jlcxx::Module&);
 
