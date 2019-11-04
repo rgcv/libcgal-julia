@@ -57,7 +57,7 @@ jobs:
           version: 1.2.0
       - name: Generate build.jl
         run: |
-          julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#master; build"'
+          julia -e 'using Pkg; pkg"add BinaryProvider; add BinaryBuilder#v0.1.4; build"'
           julia --color=yes .github/scripts/build_tarballs.jl --only-buildjl
       - name: Publish build.jl
         env:
