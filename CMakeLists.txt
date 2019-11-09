@@ -1,11 +1,12 @@
 project(CGAL-julia)
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.0.0)
 
 set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 ## requirements
 find_package(CGAL REQUIRED COMPONENTS Core)
+add_definitions(-DCGAL_HEADER_ONLY=ON)
 include(${CGAL_USE_FILE})
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
