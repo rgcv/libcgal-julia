@@ -52,7 +52,6 @@ set -eu
 __need_boost_thread=1
 __cplusplus=$($CXX -x c++ -dM -E - </dev/null | grep __cplusplus | grep -o '[0-9]*')
 
-
 ## configure build
 mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
 
