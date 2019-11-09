@@ -23,7 +23,7 @@ const sources = [
 const vBoost = v"1.71"
 const vGMP = v"6.1.2"
 const vMPFR = v"4.0.2"
-const vCGAL = v"4.14.2"
+const vCGAL = v"5"
 const vJulia = v"1"
 const vJlCxx = v"0.5.3"
 
@@ -48,10 +48,9 @@ set -eu
 # check c++ standard reported by the compiler
 # CGAL uses CMake's try_run to check if it needs to link with Boost.Thread
 # depending on the c++ standard supported by the compiler. From c++11 onwards,
-# CGAL doesn't require Boost.Thread
+# CGAL doesn't require Boost.Thread (by default since CGAL 5.0)
 __need_boost_thread=1
 __cplusplus=$($CXX -x c++ -dM -E - </dev/null | grep __cplusplus | grep -o '[0-9]*')
-[ $__cplusplus -ge 201103 ] && __need_boost_thread=0
 
 
 ## configure build
