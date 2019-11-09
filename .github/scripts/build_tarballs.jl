@@ -20,16 +20,23 @@ const sources = [
     "."
 ]
 
+const vBoost = v"1.71"
+const vGMP = v"6.1.2"
+const vMPFR = v"4.0.2"
+const vCGAL = v"4.14.2"
+const vJulia = v"1"
+const vJlCxx = v"0.5.3"
+
 # Dependencies that must be installed before this package can be built
 dependencies = [
     # for CGAL
-    "https://github.com/benlorenz/boostBuilder/releases/download/v1.71.0-1/build_boost.v1.71.0.jl",
-    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v6.1.2-1/build_GMP.v6.1.2.jl",
-    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v4.0.2-1/build_MPFR.v4.0.2.jl",
+    "https://github.com/benlorenz/boostBuilder/releases/download/v$vBoost-1/build_boost.v$vBoost.jl",
+    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v$vGMP-1/build_GMP.v$vGMP.jl",
+    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v$vMPFR-1/build_MPFR.v$vMPFR.jl",
     # for libcgal-julia
-    "https://github.com/rgcv/CGALBuilder/releases/download/v4.14.1-3/build_CGAL.v4.14.1.jl",
-    "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/build_Julia.v1.0.0.jl",
-    "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v0.5.3/build_libcxxwrap-julia-1.0.v0.5.3.jl"
+    "https://github.com/rgcv/CGALBuilder/releases/download/v$vCGAL-1/build_CGAL.v$vCGAL.jl",
+    "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v$vJulia-2/build_Julia.v$vJulia.jl",
+    "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v$vJlCxx/build_libcxxwrap-julia-1.0.v$vJlCxx.jl"
 ]
 
 # Bash recipe for building across all platforms
