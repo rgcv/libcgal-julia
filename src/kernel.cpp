@@ -37,9 +37,6 @@
 
 #define REPR(T) SIMPLE_PFUNC(repr, T)
 
-template<typename T>
-double to_double(const T& t) { return CGAL::to_double(t); }
-
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 

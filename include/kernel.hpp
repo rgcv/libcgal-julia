@@ -9,8 +9,8 @@
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt Kernel;
 
 /// Types
-typedef Kernel::FT          FT;
-typedef Kernel::RT          RT; // same as FT for Cartesian kernels
+typedef Kernel::FT FT;
+typedef Kernel::RT RT; // same as FT for Cartesian kernels
 
 /// 2D Kernel Objects
 typedef Kernel::Aff_transformation_2 Aff_transformation_2;
@@ -27,9 +27,6 @@ typedef Kernel::Vector_2             Vector_2;
 typedef Kernel::Weighted_point_2     Weighted_point_2;
 
 /// Functions
-template<typename T>
-double to_double(const T&);
-
 void wrap_kernel(jlcxx::Module&);
 
 #endif // CGAL_JLCXX_KERNEL_HPP
