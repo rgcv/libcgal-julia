@@ -1,7 +1,6 @@
 #include <jlcxx/module.hpp>
 
 #include "macros.hpp"
-#include "jlcxx.hpp"
 
 #include "enum.hpp"
 #include "kernel.hpp"

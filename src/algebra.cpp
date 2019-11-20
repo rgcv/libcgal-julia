@@ -2,8 +2,6 @@
 
 #include <jlcxx/jlcxx.hpp>
 
-#include "jlcxx.hpp"
-
 #include "macros.hpp"
 #include "enum.hpp"
 

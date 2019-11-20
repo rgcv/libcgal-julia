@@ -5,43 +5,22 @@
 #include <CGAL/enum.h>
 
 #include <jlcxx/jlcxx.hpp>
-#include <jlcxx/type_conversion.hpp>
-
 #include <julia/julia.h>
 
-#include "jlcxx.hpp"
-
 #include "io.hpp"
-#include "enum.hpp"
+#include "macros.hpp"
+
 #include "kernel.hpp"
 
-#define CTOR(ArgsT...) constructor<ArgsT>()
-
-#define FUNC(name, func) method(#name, &func)
-#define SIMPLE_FUNC(name) FUNC(name, name)
-#define PFUNC(name, func, ArgsT...) method(#name, &func<ArgsT>)
-#define SIMPLE_PFUNC(name, ArgsT...) PFUNC(name, name, ArgsT)
-
-#define CAST_MEMBER_FUNC(R, T, F, M, ArgsT...) \
-  static_cast<R (T::*)(ArgsT) M>(&T::F)
-#define METHOD(T, name) method(#name, &T::name)
-#define UNAMBIG_METHOD(R, T, F, ArgsT...) \
-  method(#F, CAST_MEMBER_FUNC(R, T, F, const, ArgsT))
-#define INVOKE_METHOD(R, T, ArgsT...) \
-  method(CAST_MEMBER_FUNC(R, T, operator(), const, ArgsT))
-
-#define UNARY_OP(op, T) method(#op, [](const T& t) { return op t; })
-#define BINARY_OP(T1, op, T2) \
-  method(#op, [](const T1& t1, const T2& t2) { return t1 op t2; })
-#define BINARY_OP_SELF(T, op) BINARY_OP(T, op, T)
-
-#define REPR(T) SIMPLE_PFUNC(repr, T)
+template<> struct jlcxx::IsMirroredType<CGAL::Identity_transformation> : std::false_type {};
+template<> struct jlcxx::IsMirroredType<CGAL::Rotation>                : std::false_type {};
+template<> struct jlcxx::IsMirroredType<CGAL::Scaling>                 : std::false_type {};
+template<> struct jlcxx::IsMirroredType<CGAL::Translation>             : std::false_type {};
 
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 
-  jl_value_t* jl_real = jlcxx::julia_type("Real", "Base");
-  auto field_type = cgal.add_type<FT>("FieldType", jl_real);
+  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
 
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
   auto bbox_2 = cgal.add_type<Bbox_2>("BBox2");
@@ -69,39 +48,39 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   field_type
     // Creation
-    .CTOR(double)
+    .constructor<double>()
     // RealEmbeddable Operations
-    .BINARY_OP_SELF(FT, ==)
-    .BINARY_OP_SELF(FT,  <)
-    .BINARY_OP_SELF(FT, <=)
-    .BINARY_OP_SELF(FT,  >)
-    .BINARY_OP_SELF(FT, >=)
+    .BINARY_OP_SELF(const FT&, ==)
+    .BINARY_OP_SELF(const FT&,  <)
+    .BINARY_OP_SELF(const FT&, <=)
+    .BINARY_OP_SELF(const FT&,  >)
+    .BINARY_OP_SELF(const FT&, >=)
     // Field Operations
-    .BINARY_OP_SELF(FT, /)
+    .BINARY_OP_SELF(const FT&, /)
     // IntegralDomainWithoutDivision Operations
-    .BINARY_OP_SELF(FT, +)
-    .BINARY_OP_SELF(FT, -)
-    .BINARY_OP_SELF(FT, *)
-    .UNARY_OP(+, FT)
-    .UNARY_OP(-, FT)
+    .BINARY_OP_SELF(const FT&, +)
+    .BINARY_OP_SELF(const FT&, -)
+    .BINARY_OP_SELF(const FT&, *)
+    .UNARY_OP(+, const FT&)
+    .UNARY_OP(-, const FT&)
     // Representation
     .REPR(FT)
     ;
 
   aff_transformation_2
     // Creation
-    .CTOR(CGAL::Identity_transformation)
-    .CTOR(CGAL::Translation, Vector_2)
-    .CTOR(CGAL::Rotation, Direction_2, RT)
-    .CTOR(CGAL::Rotation, Direction_2, RT, RT)
-    .CTOR(CGAL::Rotation, RT, RT)
-    .CTOR(CGAL::Rotation, RT, RT, RT)
-    .CTOR(CGAL::Scaling, RT)
-    .CTOR(CGAL::Scaling, RT, RT)
-    .CTOR(RT, RT, RT, RT, RT, RT)
-    .CTOR(RT, RT, RT, RT, RT, RT, RT)
-    .CTOR(RT, RT, RT, RT)
-    .CTOR(RT, RT, RT, RT, RT)
+    .constructor<const CGAL::Identity_transformation&>()
+    .constructor<const CGAL::Translation&, const Vector_2&>()
+    .constructor<const CGAL::Rotation&, const Direction_2&, const RT&>()
+    .constructor<const CGAL::Rotation&, const Direction_2&, const RT&, const RT&>()
+    .constructor<const CGAL::Rotation&, const RT&, const RT&>()
+    .constructor<const CGAL::Rotation&, const RT&, const RT&, const RT&>()
+    .constructor<const CGAL::Scaling&, const RT&>()
+    .constructor<const CGAL::Scaling&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&>()
     // Operations
     // NOTE: Invocation operator should be defined on julia's side
     .UNAMBIG_METHOD(Point_2,     Aff_transformation_2, transform,  const Point_2&    )
@@ -113,8 +92,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .INVOKE_METHOD(Direction_2,  Aff_transformation_2, const Direction_2&)
     .INVOKE_METHOD(Line_2,       Aff_transformation_2, const Line_2&     )
     // Miscellaneous
-    .BINARY_OP_SELF(Aff_transformation_2, ==)
-    .BINARY_OP_SELF(Aff_transformation_2,  *)
+    .BINARY_OP_SELF(const Aff_transformation_2&, ==)
+    .BINARY_OP_SELF(const Aff_transformation_2&,  *)
     .METHOD(Aff_transformation_2, inverse)
     .METHOD(Aff_transformation_2, is_even)
     .METHOD(Aff_transformation_2, is_odd )
@@ -129,10 +108,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   bbox_2
     // Creation
-    .CTOR(double, double, double, double)
+    .constructor<double, double, double, double>()
     // Operations
-    .BINARY_OP_SELF(Bbox_2, ==)
-    .BINARY_OP_SELF(Bbox_2,  +)
+    .BINARY_OP_SELF(const Bbox_2&, ==)
+    .BINARY_OP_SELF(const Bbox_2&,  +)
     .METHOD(Bbox_2, dimension)
     .METHOD(Bbox_2, xmin     )
     .METHOD(Bbox_2, ymin     )
@@ -147,19 +126,19 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   circle_2
     // Creation
-    .CTOR(Point_2, double)
-    .CTOR(Point_2, FT)
-    .CTOR(Point_2, FT, CGAL::Orientation)
-    .CTOR(Point_2, Point_2, Point_2)
-    .CTOR(Point_2, Point_2)
-    .CTOR(Point_2, Point_2, CGAL::Orientation)
-    .CTOR(Point_2)
-    .CTOR(Point_2, CGAL::Orientation)
+    .constructor<const Point_2&, double>()
+    .constructor<const Point_2&, const FT&>()
+    .constructor<const Point_2&, const FT&, const CGAL::Orientation&>()
+    .constructor<const Point_2&, const Point_2&, Point_2>()
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Point_2&, const Point_2&, const CGAL::Orientation&>()
+    .constructor<const Point_2&>()
+    .constructor<const Point_2&, const CGAL::Orientation&>()
     // Access Functions
     .METHOD(Circle_2, center        )
     .METHOD(Circle_2, squared_radius)
     .METHOD(Circle_2, orientation   )
-    .BINARY_OP_SELF(Circle_2, ==)
+    .BINARY_OP_SELF(const Circle_2&, ==)
     // Predicates
     .METHOD(Circle_2, is_degenerate        )
     .METHOD(Circle_2, oriented_side        )
@@ -179,22 +158,22 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   direction_2
     // Creation
-    .CTOR(Vector_2)
-    .CTOR(Line_2)
-    .CTOR(Ray_2)
-    .CTOR(Segment_2)
-    .CTOR(RT, RT)
+    .constructor<const Vector_2&>()
+    .constructor<const Line_2&>()
+    .constructor<const Ray_2&>()
+    .constructor<const Segment_2&>()
+    .constructor<const RT&, const RT&>()
     // Operations
     .METHOD(Direction_2, delta)
     .METHOD(Direction_2, dx   )
     .METHOD(Direction_2, dy   )
-    .BINARY_OP_SELF(Direction_2, ==)
-    .BINARY_OP_SELF(Direction_2,  <)
-    .BINARY_OP_SELF(Direction_2,  >)
-    .BINARY_OP_SELF(Direction_2, <=)
-    .BINARY_OP_SELF(Direction_2, >=)
+    .BINARY_OP_SELF(const Direction_2&, ==)
+    .BINARY_OP_SELF(const Direction_2&,  <)
+    .BINARY_OP_SELF(const Direction_2&,  >)
+    .BINARY_OP_SELF(const Direction_2&, <=)
+    .BINARY_OP_SELF(const Direction_2&, >=)
     .METHOD(Direction_2, counterclockwise_in_between)
-    .UNARY_OP(-, Direction_2)
+    .UNARY_OP(-, const Direction_2&)
     // Miscellaneous
     .METHOD(Direction_2, vector   )
     .METHOD(Direction_2, transform)
@@ -204,13 +183,13 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   iso_rectangle_2
     // Creation
-    .CTOR(Point_2, Point_2)
-    .CTOR(Point_2, Point_2, int)
-    .CTOR(Point_2, Point_2, Point_2, Point_2)
-    .CTOR(RT, RT, RT, RT)
-    .CTOR(Bbox_2)
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Point_2&, const Point_2&, int>()
+    .constructor<const Point_2&, const Point_2&, const Point_2&, const Point_2&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const Bbox_2&>()
     // Operations
-    .BINARY_OP_SELF(Iso_rectangle_2, ==)
+    .BINARY_OP_SELF(const Iso_rectangle_2&, ==)
     .METHOD(Iso_rectangle_2, vertex   )
     .METHOD(Iso_rectangle_2, min      )
     .METHOD(Iso_rectangle_2, max      )
@@ -236,14 +215,14 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   line_2
     // Creation
-    .CTOR(RT, RT, RT)
-    .CTOR(Point_2, Point_2)
-    .CTOR(Point_2, Direction_2)
-    .CTOR(Point_2, Vector_2)
-    .CTOR(Segment_2)
-    .CTOR(Ray_2)
+    .constructor<const RT&, const RT&, const RT&>()
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Point_2&, const Direction_2&>()
+    .constructor<const Point_2&, const Vector_2&>()
+    .constructor<const Segment_2&>()
+    .constructor<const Ray_2&>()
     // Operators
-    .BINARY_OP_SELF(Line_2, ==)
+    .BINARY_OP_SELF(const Line_2&, ==)
     .METHOD(Line_2, a         )
     .METHOD(Line_2, b         )
     .METHOD(Line_2, c         )
@@ -272,22 +251,22 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   point_2
     // Related Functions
-    .BINARY_OP_SELF(Point_2,  <)
-    .BINARY_OP_SELF(Point_2,  >)
-    .BINARY_OP_SELF(Point_2, <=)
-    .BINARY_OP_SELF(Point_2, >=)
-    .BINARY_OP_SELF(Point_2,  -)
-    .BINARY_OP(Point_2, ==, CGAL::Origin)
-    .BINARY_OP(Point_2, +,  Vector_2    )
-    .BINARY_OP(Point_2, -,  Vector_2    )
+    .BINARY_OP_SELF(const Point_2&,  <)
+    .BINARY_OP_SELF(const Point_2&,  >)
+    .BINARY_OP_SELF(const Point_2&, <=)
+    .BINARY_OP_SELF(const Point_2&, >=)
+    .BINARY_OP_SELF(const Point_2&,  -)
+    .BINARY_OP(const Point_2&, ==, CGAL::Origin)
+    .BINARY_OP(const Point_2&, +,  Vector_2    )
+    .BINARY_OP(const Point_2&, -,  Vector_2    )
     // Creation
-    .CTOR(CGAL::Origin)
-    .CTOR(double, double)
-    .CTOR(RT, RT, RT)
-    .CTOR(FT, FT) // in a Cartesian kernel, covers (RT, RT) ctor
-    .CTOR(Weighted_point_2)
+    .constructor<const CGAL::Origin&>()
+    .constructor<double, double>()
+    .constructor<const RT&, const RT&, const RT&>()
+    .constructor<const FT&, const FT&>() // in a Cartesian kernel, covers (RT, RT) ctor
+    .constructor<const Weighted_point_2&>()
     // Operations
-    .BINARY_OP_SELF(Point_2, ==)
+    .BINARY_OP_SELF(const Point_2&, ==)
     // Coordinate Access
     .METHOD(Point_2, hx)
     .METHOD(Point_2, hy)
@@ -307,12 +286,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   ray_2
     // Creation
-    .CTOR(Point_2, Point_2)
-    .CTOR(Point_2, Direction_2)
-    .CTOR(Point_2, Vector_2)
-    .CTOR(Point_2, Line_2)
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Point_2&, const Direction_2&>()
+    .constructor<const Point_2&, const Vector_2&>()
+    .constructor<const Point_2&, const Line_2&>()
     // Operations
-    .BINARY_OP_SELF(Ray_2, ==)
+    .BINARY_OP_SELF(const Ray_2&, ==)
     .METHOD(Ray_2, source         )
     .METHOD(Ray_2, point          )
     .METHOD(Ray_2, direction      )
@@ -333,9 +312,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   segment_2
     // Creation
-    .CTOR(Point_2, Point_2)
+    .constructor<const Point_2&, const Point_2&>()
     // Operations
-    .BINARY_OP_SELF(Segment_2, ==)
+    .BINARY_OP_SELF(const Segment_2&, ==)
     .METHOD(Segment_2, source         )
     .METHOD(Segment_2, target         )
     .METHOD(Segment_2, min            )
@@ -362,9 +341,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   triangle_2
     // Creation
-    .CTOR(Point_2, Point_2, Point_2)
+    .constructor<const Point_2&, const Point_2&, const Point_2&>()
     // Operations
-    .BINARY_OP_SELF(Triangle_2, ==)
+    .BINARY_OP_SELF(const Triangle_2&, ==)
     .METHOD(Triangle_2, vertex)
     // Predicates
     .METHOD(Triangle_2, is_degenerate)
@@ -388,18 +367,18 @@ void wrap_kernel(jlcxx::Module& cgal) {
   vector_2
     // Public Member Functions
     .METHOD(Vector_2, squared_length)
-    .BINARY_OP(Vector_2,     *, RT) // in Cartesian kernel, FT = RT
-    .BINARY_OP(RT,           *, Vector_2) // ^ idem
-    .BINARY_OP(CGAL::Origin, +, Vector_2)
+    .BINARY_OP(const Vector_2&,     *, const RT&) // in Cartesian kernel, FT = RT
+    .BINARY_OP(const RT&,           *, const Vector_2&) // ^ idem
+    .BINARY_OP(const CGAL::Origin&, +, const Vector_2&)
     // Creation
-    .CTOR(Point_2, Point_2)
-    .CTOR(Segment_2)
-    .CTOR(Ray_2)
-    .CTOR(Line_2)
-    .CTOR(CGAL::Null_vector)
-    .CTOR(double, double)
-    .CTOR(RT, RT, RT)
-    .CTOR(FT, FT)
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Segment_2&>()
+    .constructor<const Ray_2&>()
+    .constructor<const Line_2&>()
+    .constructor<const CGAL::Null_vector&>()
+    .constructor<double, double>()
+    .constructor<const RT&, const RT&, const RT&>()
+    .constructor<const FT&, const FT&>()
     // Coordinate Access
     .METHOD(Vector_2, hx)
     .METHOD(Vector_2, hy)
@@ -415,12 +394,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Vector_2, transform     )
     .METHOD(Vector_2, perpendicular )
     // Operators
-    .BINARY_OP_SELF(Vector_2, ==)
-    .BINARY_OP_SELF(Vector_2,  +)
-    .BINARY_OP_SELF(Vector_2,  -)
-    .UNARY_OP(-, Vector_2)
-    .BINARY_OP_SELF(Vector_2,  *)
-    .BINARY_OP(Vector_2, /,  RT)
+    .BINARY_OP_SELF(const Vector_2&, ==)
+    .BINARY_OP_SELF(const Vector_2&,  +)
+    .BINARY_OP_SELF(const Vector_2&,  -)
+    .UNARY_OP(-, const Vector_2&)
+    .BINARY_OP_SELF(const Vector_2&,  *)
+    .BINARY_OP(const Vector_2&, /,  const RT&)
     //.BINARY_OP(Vector_2, *,  RT)
     //.BINARY_OP(Vector_2, *,  RT     )
     // Representation
@@ -429,16 +408,16 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   weighted_point_2
     // Creation
-    .CTOR(CGAL::Origin)
-    .CTOR(Point_2)
-    .CTOR(Point_2, FT)
-    .CTOR(FT, FT)
+    .constructor<const CGAL::Origin&>()
+    .constructor<const Point_2&>()
+    .constructor<const Point_2&, const FT&>()
+    .constructor<const FT&, const FT&>()
     // Bare point and weight accessor
     .METHOD(Weighted_point_2, point )
     .METHOD(Weighted_point_2, weight)
     // Operations (delegated to underlying Point_2)
-    .BINARY_OP_SELF(Weighted_point_2, ==)
-    .BINARY_OP_SELF(Weighted_point_2,  <)
+    .BINARY_OP_SELF(const Weighted_point_2&, ==)
+    .BINARY_OP_SELF(const Weighted_point_2&,  <)
     // Coordinate Access
     .METHOD(Weighted_point_2, hx)
     .METHOD(Weighted_point_2, hy)
@@ -461,21 +440,3 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .REPR(Weighted_point_2)
     ;
 }
-
-#undef CTOR
-
-#undef FUNC
-#undef SIMPLE_FUNC
-#undef PFUNC
-#undef SIMPLE_PFUNC
-
-#undef CAST_MEMBER_FUNC
-#undef METHOD
-#undef UNAMBIG_METHOD
-#undef INVOKE_METHOD
-
-#undef UNARY_OP
-#undef BINARY_OP
-#undef BINARY_OP_SELF
-
-#undef REPR

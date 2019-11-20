@@ -5,6 +5,8 @@
 
 #include <CGAL/IO/io.h>
 
+#define REPR(T) method("repr", &repr<T>)
+
 template<typename T>
 inline
 const std::string repr(const T &t) {
