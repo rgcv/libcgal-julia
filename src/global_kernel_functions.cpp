@@ -12,12 +12,42 @@
 #define DO_INTERSECT_SELF(T) \
   GLOBAL_FUNCTION(bool, do_intersect, const T&, const T&)
 
+#define INTERSECTION(T1, T2) \
+  cgal.method("intersection", &intersection<T1, T2>); \
+  cgal.method("intersection", &intersection<T2, T1>)
+#define INTERSECTION_SELF(T) \
+  cgal.method("intersection", &intersection<T, T>)
+
 #define SQUARED_DISTANCE(T) \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_2&); \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Line_2&); \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Ray_2&); \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_2&); \
   GLOBAL_FUNCTION(FT, squared_distance, const T&, const Triangle_2&)
+
+struct Intersection_visitor {
+  typedef jl_value_t* result_type;
+
+  template<typename T>
+  jl_value_t* operator()(const T& t) const {
+    return jlcxx::box<T>(t);
+  }
+
+  jl_value_t* operator()(const std::vector<Point_2>& ts) const {
+    jlcxx::Array<Point_2> jlarr;
+    for (auto t : ts) jlarr.push_back(t);
+    return (jl_value_t*)jlarr.wrapped();
+  }
+};
+
+template <typename T1, typename T2>
+jl_value_t* intersection(const T1& t1, const T2& t2) {
+  auto result = CGAL::intersection(t1, t2);
+  if (result) {
+    return boost::apply_visitor(Intersection_visitor(), *result);
+  }
+  return jl_nothing;
+}
 
 void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_2&, const Vector_2&);
@@ -130,7 +160,22 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
   GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
 
-  // TODO: Intersections
+  INTERSECTION_SELF(Iso_rectangle_2);
+  INTERSECTION(Iso_rectangle_2, Line_2);
+  INTERSECTION(Iso_rectangle_2, Ray_2);
+  INTERSECTION(Iso_rectangle_2, Segment_2);
+  INTERSECTION(Iso_rectangle_2, Triangle_2);
+  INTERSECTION_SELF(Line_2);
+  INTERSECTION(Line_2, Ray_2);
+  INTERSECTION(Line_2, Segment_2);
+  INTERSECTION(Line_2, Triangle_2);
+  INTERSECTION_SELF(Ray_2);
+  INTERSECTION(Ray_2, Segment_2);
+  INTERSECTION(Ray_2, Triangle_2);
+  INTERSECTION_SELF(Segment_2);
+  INTERSECTION(Segment_2, Triangle_2);
+  INTERSECTION_SELF(Triangle_2);
+  // TODO: Circular Intersections
 
   GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
 
@@ -188,4 +233,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
 
 #undef DO_INTERSECT
 #undef DO_INTERSECT_SELF
+
+#undef INTERSECTION
+#undef INTERSECTION_SELF
+
 #undef SQUARED_DISTANCE
