@@ -2,7 +2,7 @@
 
 #include <jlcxx/module.hpp>
 
-#include "jlcxx.hpp"
+#include "macros.hpp"
 
 #include "enum.hpp"
 
