@@ -1,10 +1,10 @@
-#include <jlcxx/jlcxx.hpp>
+#include <jlcxx/module.hpp>
 
-#include "origin.hpp"
-#include "enum.hpp"
-#include "kernel.hpp"
-#include "algebra.hpp"
-#include "global_kernel_functions.hpp"
+void wrap_origin(jlcxx::Module&);
+void wrap_enum(jlcxx::Module&);
+void wrap_kernel(jlcxx::Module&);
+void wrap_algebra(jlcxx::Module&);
+void wrap_global_kernel_functions(jlcxx::Module&);
 
 JLCXX_MODULE define_julia_module(jlcxx::Module& cgal) {
   wrap_origin(cgal);
