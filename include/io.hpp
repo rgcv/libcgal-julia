@@ -5,7 +5,9 @@
 
 #include <CGAL/IO/io.h>
 
-#define REPR(T) method("repr", &repr<T>)
+#include "macros.hpp"
+
+#define REPR(T) SPFUNC(repr,, T)
 
 template<typename T>
 inline

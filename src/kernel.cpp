@@ -4,7 +4,8 @@
 #include <CGAL/aff_transformation_tags.h>
 #include <CGAL/enum.h>
 
-#include <jlcxx/jlcxx.hpp>
+#include <jlcxx/module.hpp>
+#include <jlcxx/type_conversion.hpp>
 #include <julia/julia.h>
 
 #include "io.hpp"
@@ -22,33 +23,33 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
 
-  auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
-  auto bbox_2 = cgal.add_type<Bbox_2>("BBox2");
-  auto circle_2 = cgal.add_type<Circle_2>("Circle2");
-  auto direction_2 = cgal.add_type<Direction_2>("Direction2");
-  auto iso_rectangle_2 = cgal.add_type<Iso_rectangle_2>("IsoRectangle2");
-  auto line_2 = cgal.add_type<Line_2>("Line2");
-  auto point_2 = cgal.add_type<Point_2>("Point2");
-  auto ray_2 = cgal.add_type<Ray_2>("Ray2");
-  auto segment_2 = cgal.add_type<Segment_2>("Segment2");
-  auto triangle_2 = cgal.add_type<Triangle_2>("Triangle2");
-  auto vector_2 = cgal.add_type<Vector_2>("Vector2");
-  auto weighted_point_2 = cgal.add_type<Weighted_point_2>("WeightedPoint2");
+  auto aff_transformation_2 = cgal.TYPE(Aff_transformation_2, AffTransformation2);
+  auto bbox_2 = cgal.TYPE(Bbox_2, BBox2);
+  auto circle_2 = cgal.TYPE(Circle_2, Circle2);
+  auto direction_2 = cgal.TYPE(Direction_2, Direction2);
+  auto iso_rectangle_2 = cgal.TYPE(Iso_rectangle_2, IsoRectangle2);
+  auto line_2 = cgal.TYPE(Line_2, Line2);
+  auto point_2 = cgal.TYPE(Point_2, Point2);
+  auto ray_2 = cgal.TYPE(Ray_2, Ray2);
+  auto segment_2 = cgal.TYPE(Segment_2, Segment2);
+  auto triangle_2 = cgal.TYPE(Triangle_2, Triangle2);
+  auto vector_2 = cgal.TYPE(Vector_2, Vector2);
+  auto weighted_point_2 = cgal.TYPE(Weighted_point_2, WeightedPoint2);
 
   /// CONSTANTS ================================================================
 
   // Can't set consts, they get erased post pre-compilation.
   // Therefore, their constant counterparts are defined on the julia side.
-  cgal.add_type<CGAL::Identity_transformation>("IdentityTransformation");
-  cgal.add_type<CGAL::Rotation>("Rotation");
-  cgal.add_type<CGAL::Scaling>("Scaling");
-  cgal.add_type<CGAL::Translation>("Translation");
+  CGAL_TYPE(Identity_transformation, IdentityTransformation);
+  CGAL_STYPE(Rotation);
+  CGAL_STYPE(Scaling);
+  CGAL_STYPE(Translation);
 
   /// TYPES (cont.) ============================================================
 
   field_type
     // Creation
-    .constructor<double>()
+    .CTOR(double)
     // RealEmbeddable Operations
     .BINARY_OP_SELF(const FT&, ==)
     .BINARY_OP_SELF(const FT&,  <)
@@ -69,18 +70,18 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   aff_transformation_2
     // Creation
-    .constructor<const CGAL::Identity_transformation&>()
-    .constructor<const CGAL::Translation&, const Vector_2&>()
-    .constructor<const CGAL::Rotation&, const Direction_2&, const RT&>()
-    .constructor<const CGAL::Rotation&, const Direction_2&, const RT&, const RT&>()
-    .constructor<const CGAL::Rotation&, const RT&, const RT&>()
-    .constructor<const CGAL::Rotation&, const RT&, const RT&, const RT&>()
-    .constructor<const CGAL::Scaling&, const RT&>()
-    .constructor<const CGAL::Scaling&, const RT&, const RT&>()
-    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
-    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
-    .constructor<const RT&, const RT&, const RT&, const RT&>()
-    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .CTOR(const CGAL::Identity_transformation&)
+    .CTOR(const CGAL::Translation&, const Vector_2&)
+    .CTOR(const CGAL::Rotation&, const Direction_2&, const RT&)
+    .CTOR(const CGAL::Rotation&, const Direction_2&, const RT&, const RT&)
+    .CTOR(const CGAL::Rotation&, const RT&, const RT&)
+    .CTOR(const CGAL::Rotation&, const RT&, const RT&, const RT&)
+    .CTOR(const CGAL::Scaling&, const RT&)
+    .CTOR(const CGAL::Scaling&, const RT&, const RT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&)
     // Operations
     // NOTE: Invocation operator should be defined on julia's side
     .UNAMBIG_METHOD(Point_2,     Aff_transformation_2, transform,  const Point_2&    )
@@ -108,7 +109,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   bbox_2
     // Creation
-    .constructor<double, double, double, double>()
+    .CTOR(double, double, double, double)
     // Operations
     .BINARY_OP_SELF(const Bbox_2&, ==)
     .BINARY_OP_SELF(const Bbox_2&,  +)
@@ -126,14 +127,14 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   circle_2
     // Creation
-    .constructor<const Point_2&, double>()
-    .constructor<const Point_2&, const FT&>()
-    .constructor<const Point_2&, const FT&, const CGAL::Orientation&>()
-    .constructor<const Point_2&, const Point_2&, Point_2>()
-    .constructor<const Point_2&, const Point_2&>()
-    .constructor<const Point_2&, const Point_2&, const CGAL::Orientation&>()
-    .constructor<const Point_2&>()
-    .constructor<const Point_2&, const CGAL::Orientation&>()
+    .CTOR(const Point_2&, double)
+    .CTOR(const Point_2&, const FT&)
+    .CTOR(const Point_2&, const FT&, const CGAL::Orientation&)
+    .CTOR(const Point_2&, const Point_2&, Point_2)
+    .CTOR(const Point_2&, const Point_2&)
+    .CTOR(const Point_2&, const Point_2&, const CGAL::Orientation&)
+    .CTOR(const Point_2&)
+    .CTOR(const Point_2&, const CGAL::Orientation&)
     // Access Functions
     .METHOD(Circle_2, center        )
     .METHOD(Circle_2, squared_radius)
@@ -158,11 +159,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   direction_2
     // Creation
-    .constructor<const Vector_2&>()
-    .constructor<const Line_2&>()
-    .constructor<const Ray_2&>()
-    .constructor<const Segment_2&>()
-    .constructor<const RT&, const RT&>()
+    .CTOR(const Vector_2&)
+    .CTOR(const Line_2&)
+    .CTOR(const Ray_2&)
+    .CTOR(const Segment_2&)
+    .CTOR(const RT&, const RT&)
     // Operations
     .METHOD(Direction_2, delta)
     .METHOD(Direction_2, dx   )
@@ -183,11 +184,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   iso_rectangle_2
     // Creation
-    .constructor<const Point_2&, const Point_2&>()
-    .constructor<const Point_2&, const Point_2&, int>()
-    .constructor<const Point_2&, const Point_2&, const Point_2&, const Point_2&>()
-    .constructor<const RT&, const RT&, const RT&, const RT&>()
-    .constructor<const Bbox_2&>()
+    .CTOR(const Point_2&, const Point_2&)
+    .CTOR(const Point_2&, const Point_2&, int)
+    .CTOR(const Point_2&, const Point_2&, const Point_2&, const Point_2&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const Bbox_2&)
     // Operations
     .BINARY_OP_SELF(const Iso_rectangle_2&, ==)
     .METHOD(Iso_rectangle_2, vertex   )
@@ -215,12 +216,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   line_2
     // Creation
-    .constructor<const RT&, const RT&, const RT&>()
-    .constructor<const Point_2&, const Point_2&>()
-    .constructor<const Point_2&, const Direction_2&>()
-    .constructor<const Point_2&, const Vector_2&>()
-    .constructor<const Segment_2&>()
-    .constructor<const Ray_2&>()
+    .CTOR(const RT&, const RT&, const RT&)
+    .CTOR(const Point_2&, const Point_2&)
+    .CTOR(const Point_2&, const Direction_2&)
+    .CTOR(const Point_2&, const Vector_2&)
+    .CTOR(const Segment_2&)
+    .CTOR(const Ray_2&)
     // Operators
     .BINARY_OP_SELF(const Line_2&, ==)
     .METHOD(Line_2, a         )
@@ -260,11 +261,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP(const Point_2&, +,  Vector_2    )
     .BINARY_OP(const Point_2&, -,  Vector_2    )
     // Creation
-    .constructor<const CGAL::Origin&>()
-    .constructor<double, double>()
-    .constructor<const RT&, const RT&, const RT&>()
-    .constructor<const FT&, const FT&>() // in a Cartesian kernel, covers (RT, RT) ctor
-    .constructor<const Weighted_point_2&>()
+    .CTOR(const CGAL::Origin&)
+    .CTOR(double, double)
+    .CTOR(const RT&, const RT&, const RT&)
+    .CTOR(const FT&, const FT&) // in a Cartesian kernel, covers (RT, RT) ctor
+    .CTOR(const Weighted_point_2&)
     // Operations
     .BINARY_OP_SELF(const Point_2&, ==)
     // Coordinate Access
@@ -286,10 +287,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   ray_2
     // Creation
-    .constructor<const Point_2&, const Point_2&>()
-    .constructor<const Point_2&, const Direction_2&>()
-    .constructor<const Point_2&, const Vector_2&>()
-    .constructor<const Point_2&, const Line_2&>()
+    .CTOR(const Point_2&, const Point_2&)
+    .CTOR(const Point_2&, const Direction_2&)
+    .CTOR(const Point_2&, const Vector_2&)
+    .CTOR(const Point_2&, const Line_2&)
     // Operations
     .BINARY_OP_SELF(const Ray_2&, ==)
     .METHOD(Ray_2, source         )
@@ -312,7 +313,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   segment_2
     // Creation
-    .constructor<const Point_2&, const Point_2&>()
+    .CTOR(const Point_2&, const Point_2&)
     // Operations
     .BINARY_OP_SELF(const Segment_2&, ==)
     .METHOD(Segment_2, source         )
@@ -341,7 +342,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   triangle_2
     // Creation
-    .constructor<const Point_2&, const Point_2&, const Point_2&>()
+    .CTOR(const Point_2&, const Point_2&, const Point_2&)
     // Operations
     .BINARY_OP_SELF(const Triangle_2&, ==)
     .METHOD(Triangle_2, vertex)
@@ -371,14 +372,14 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP(const RT&,           *, const Vector_2&) // ^ idem
     .BINARY_OP(const CGAL::Origin&, +, const Vector_2&)
     // Creation
-    .constructor<const Point_2&, const Point_2&>()
-    .constructor<const Segment_2&>()
-    .constructor<const Ray_2&>()
-    .constructor<const Line_2&>()
-    .constructor<const CGAL::Null_vector&>()
-    .constructor<double, double>()
-    .constructor<const RT&, const RT&, const RT&>()
-    .constructor<const FT&, const FT&>()
+    .CTOR(const Point_2&, const Point_2&)
+    .CTOR(const Segment_2&)
+    .CTOR(const Ray_2&)
+    .CTOR(const Line_2&)
+    .CTOR(const CGAL::Null_vector&)
+    .CTOR(double, double)
+    .CTOR(const RT&, const RT&, const RT&)
+    .CTOR(const FT&, const FT&)
     // Coordinate Access
     .METHOD(Vector_2, hx)
     .METHOD(Vector_2, hy)
@@ -408,10 +409,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   weighted_point_2
     // Creation
-    .constructor<const CGAL::Origin&>()
-    .constructor<const Point_2&>()
-    .constructor<const Point_2&, const FT&>()
-    .constructor<const FT&, const FT&>()
+    .CTOR(const CGAL::Origin&)
+    .CTOR(const Point_2&)
+    .CTOR(const Point_2&, const FT&)
+    .CTOR(const FT&, const FT&)
     // Bare point and weight accessor
     .METHOD(Weighted_point_2, point )
     .METHOD(Weighted_point_2, weight)
