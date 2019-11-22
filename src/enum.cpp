@@ -4,9 +4,7 @@
 
 #include "macros.hpp"
 
-#include "enum.hpp"
-
-#define CGAL_CONST(name) cgal.set_const(#name, CGAL::name)
+#define CGAL_CONST(N)   cgal.CONST(N, CGAL::N)
 
 void wrap_enum(jlcxx::Module& cgal) {
   jl_value_t *jl_cpp_enum = jlcxx::julia_type("CppEnum");
