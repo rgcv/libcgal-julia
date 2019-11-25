@@ -30,9 +30,10 @@ struct Intersection_visitor {
     return jlcxx::box<T>(t);
   }
 
-  jl_value_t* operator()(const std::vector<Point_2>& ts) const {
-    jlcxx::Array<Point_2> jlarr;
-    for (auto t : ts) jlarr.push_back(t);
+  template<typename T>
+  jl_value_t* operator()(const std::vector<T>& ts) const {
+    jlcxx::Array<T> jlarr;
+    for (T t : ts) jlarr.push_back(jlcxx::unbox<T>(operator()(t)));
     return (jl_value_t*)jlarr.wrapped();
   }
 };
