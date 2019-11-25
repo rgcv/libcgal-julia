@@ -7,7 +7,7 @@
 
 #include "macros.hpp"
 
-#define REPR(T) SPFUNC(repr,, T)
+#define REPR(T) SPFUNC(, repr, T)
 
 template<typename T>
 inline

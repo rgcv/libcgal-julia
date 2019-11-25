@@ -15,7 +15,7 @@
 #define FUNC(NS, N, F) method(#N, &NS::F)
 #define SFUNC(NS, F) FUNC(NS, F, F)
 #define PFUNC(NS, N, F, ArgsT...) method(#N, &NS::F<ArgsT>)
-#define SPFUNC(F, NS, ArgsT...) PFUNC(NS, F, F, ArgsT)
+#define SPFUNC(NS, F, ArgsT...) PFUNC(NS, F, F, ArgsT)
 
 #define METHOD(T, N) SFUNC(T, N)
 #define UNAMBIG_METHOD(R, T, F, ArgsT...) \
@@ -37,7 +37,7 @@
 #define CGAL_TYPE(T, N) cgal.TYPE(CGAL::T, N)
 #define CGAL_STYPE(N)   CGAL_TYPE(N, N)
 
-#define CGAL_SIMPLE_PFUNC(F, ArgsT...) cgal.SPFUNC(F, CGAL, ArgsT)
+#define CGAL_SIMPLE_PFUNC(F, ArgsT...) cgal.SPFUNC(CGAL, F, ArgsT)
 #define CGAL_UNAMBIG_FUNC(R, F, ArgsT...) cgal.UNAMBIG_FUNC(R, CGAL, F, ArgsT)
 #define CGAL_GLOBAL_FUNCTION(R, F, ArgsT...) \
   cgal.UNAMBIG_FUNC(R, CGAL, F, ArgsT)

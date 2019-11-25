@@ -11,9 +11,9 @@
   CGAL_GLOBAL_FUNCTION(bool, do_intersect, const T&, const T&)
 
 #define INTERSECTION(T1, T2) \
-  cgal.SPFUNC(intersection,, T1, T2); \
-  cgal.SPFUNC(intersection,, T2, T1)
-#define INTERSECTION_SELF(T) cgal.SPFUNC(intersection,, T, T)
+  cgal.SPFUNC(, intersection, T1, T2); \
+  cgal.SPFUNC(, intersection, T2, T1)
+#define INTERSECTION_SELF(T) cgal.SPFUNC(, intersection, T, T)
 
 #define SQUARED_DISTANCE(T) \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_2&); \
