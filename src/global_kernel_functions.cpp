@@ -1,4 +1,13 @@
+#include <boost/optional.hpp>
+#include <boost/variant.hpp>
+#include <boost/variant/apply_visitor.hpp>
+
+#include <CGAL/Circular_kernel_2/Intersection_traits.h>
+
 #include <jlcxx/module.hpp>
+#include <jlcxx/type_conversion.hpp>
+
+#include <julia/julia.h>
 
 #include "macros.hpp"
 
@@ -15,6 +24,12 @@
   cgal.SPFUNC(, intersection, T2, T1)
 #define INTERSECTION_SELF(T) cgal.SPFUNC(, intersection, T, T)
 
+#define CK_INTERSECTION(T1, T2) \
+  cgal.PFUNC(, intersection, ck_intersection, T1, T2); \
+  cgal.PFUNC(, intersection, ck_intersection, T2, T1);
+#define CK_INTERSECTION_SELF(T) \
+  cgal.PFUNC(, intersection, ck_intersection, T, T)
+
 #define SQUARED_DISTANCE(T) \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Line_2&); \
@@ -25,16 +40,34 @@
 struct Intersection_visitor {
   typedef jl_value_t* result_type;
 
+  jl_value_t* operator()(const std::pair<K::Circular_arc_point_2, unsigned>& p) const {
+    return jlcxx::create<Point_2>(p.first.x(), p.first.y());
+  }
+
   template<typename T>
-  jl_value_t* operator()(const T& t) const {
-    return jlcxx::box<T>(t);
+  jl_value_t* operator()(const T& t) const { return jlcxx::box<T>(t); }
+
+  template<typename... TS>
+  jl_value_t* operator()(const boost::variant<TS...>& v) const {
+    return boost::apply_visitor(*this, v);
   }
 
   template<typename T>
   jl_value_t* operator()(const std::vector<T>& ts) const {
-    jlcxx::Array<T> jlarr;
-    for (T t : ts) jlarr.push_back(jlcxx::unbox<T>(operator()(t)));
-    return (jl_value_t*)jlarr.wrapped();
+    if (ts.empty()) return jl_nothing;
+
+    auto first = (*this)(ts[0]);
+    if (ts.size() == 1) return first;
+
+    jl_value_t* atype = jl_apply_array_type(jl_typeof(first), 1);
+    jl_array_t* ja = jl_alloc_array_1d(atype, ts.size());
+    JL_GC_PUSH1(&ja);
+    for (size_t i = 0; i < ts.size(); ++i) {
+      jl_arrayset(ja, (*this)(ts[i]), i);
+    }
+    JL_GC_POP();
+
+    return (jl_value_t*)ja;
   }
 };
 
@@ -45,6 +78,14 @@ jl_value_t* intersection(const T1& t1, const T2& t2) {
     return boost::apply_visitor(Intersection_visitor(), *result);
   }
   return jl_nothing;
+}
+
+template <typename T1, typename T2>
+jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
+  std::vector<typename CGAL::CK2_Intersection_traits<K, T1, T2>::type> results;
+  CGAL::intersection(t1, t2, std::back_inserter(results));
+  auto v = boost::variant<decltype(results)>(results);
+  return boost::apply_visitor(Intersection_visitor(), v);
 }
 
 void wrap_global_kernel_functions(jlcxx::Module& cgal) {
@@ -173,7 +214,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   INTERSECTION_SELF(Segment_2);
   INTERSECTION(Segment_2, Triangle_2);
   INTERSECTION_SELF(Triangle_2);
-  // TODO: Circular Intersections
+  // TODO: Other circular Intersections
+  CK_INTERSECTION_SELF(Circle_2);
 
   CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
 
