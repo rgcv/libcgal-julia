@@ -33,6 +33,10 @@
 #define SBITS(N)   BITS(N, N)
 #define CONST(N, V) set_const(#N, V)
 
+#define OVERRIDE_MOD(M, T, E) ; M.set_override_module(T); E
+#define OVERRIDE_BASE(M, E) OVERRIDE_MOD(M, jl_base_module, E)
+#define UNSET_OVERRIDE(M, E) ; M.unset_override_module(); E
+
 // CGAL specific
 #define CGAL_TYPE(T, N) cgal.TYPE(CGAL::T, N)
 #define CGAL_STYPE(N)   CGAL_TYPE(N, N)

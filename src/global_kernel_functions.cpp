@@ -89,9 +89,11 @@ jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
 }
 
 void wrap_global_kernel_functions(jlcxx::Module& cgal) {
+  OVERRIDE_BASE(cgal,);
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_2&, const Vector_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&, const Point_2&);
+  UNSET_OVERRIDE(cgal,);
 
   CGAL_GLOBAL_FUNCTION(FT, area, const Point_2&, const Point_2&, const Point_2&);
 
