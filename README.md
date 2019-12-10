@@ -1,17 +1,16 @@
+# libcgal-julia
+
 :warning: **DISCLAIMER** :warning: This project is still very young and, thus,
 incredibly brittle and scarce. Currently, the kernel is being fixed on the C++
-side of things. Currently, the
-`Exact_predicates_exact_constructions_kernel_with_sqrt` 2D/3D kernel is being
-fixed, consequently fixing the kernel's constructs. This limits the imense
-toolset CGAL provides, namely, for example, the usage of the Circular kernel, or
-the dD Kernel.
+side of things. Currently, a circular kernel, backed by the
+`Exact_predicates_exact_constructions_kernel_with_sqrt` 2D/3D kernel, is being
+fixed, consequently fixing the kernel's constructs. This is a recognizable
+limitation. Ideally, the appropriate non-aliased underlying kernels would be
+made available as julia types, along with the multiple numeric types, and could
+be used directly instead of being hidden away in the C++ side of things... One
+can dream.
 
-Ideally, julia types would be parametric, mirroring their respective template
-types in CGAL, allowing for switching between any kind of kernel, seamlessly
-using the underlying field and ring number types as if they were primitive
-types. Alas, it isn't as simple as just making them parametric.
-
-# libcgal-julia
+---
 
 This library exposes a series of types and functions from [CGAL][1]
 (Computational Geometry Algorithms Library) to the [julia][2] language. It
@@ -19,22 +18,8 @@ serves as the supporting library for the [CGAL.jl][3] package (not yet
 published).
 
 [CGAL][1] is a powerful easily-accessible C++ library that aims to provide
-algorihtms in computational geometry (hence the name) with emphasis on
+algorithms in computational geometry (hence the name) with emphasis on
 reliability and efficiency while still providing robust results.
-
-# TODO
-
-- [ ] Type Parametrization
-- [ ] Global Functions
-  - [x] Global Kernel Functions (2D)
-  - [ ] Global Kernel Functions (3D)
-  - ...
-- [ ] Iterators
-- [ ] Circulators
-- [ ] Other packages, such as
-  - [ ] Convex Hulls
-  - [ ] Voronoi Delaunay
-  - ...
 
 # Building
 
@@ -45,7 +30,7 @@ required dependencies may be an arduous task.
 
 ## Using `build_tarballs.jl` (recommended)
 
-You're only required to have `julia>=1.0` installed. Once that requirement is
+You're only required to have `julia ≥ 1.0` installed. Once that requirement is
 met, just run:
 
 ```sh
@@ -70,12 +55,12 @@ $ julia .github/scripts/build_tarballs.jl x86_64-w64-mingw32-gcc7-cxx11
 Requirements:
 
 - [`CMake`][5]
-- [`CGAL==4.14.2`][6]
-  * [`Boost==1.71`][7]
+- [`CGAL = 4.14.2`][6]
+  * [`Boost = 1.71`][7]
   * [`GMP`][8]
   * [`MPFR`][9]
-- [`Julia>=1.0`][10]
-- [`JlCxx==0.5.3`][11]
+- [`Julia ≥ 1.0`][10]
+- [`JlCxx = 0.5.3`][11]
 
 Depending on your system, it may be easier to aggregate and install the listed
 requirements, with the exception of `JlCxx`, which, to my knowledge, isn't in
@@ -93,6 +78,28 @@ cmake --build . --target install
 
 We can see above that `JlCxx_DIR` is specified. However, if it's reachable by
 CMake, you won't need it.
+
+# TODO
+
+- [ ] Kernel
+  - [ ] Objects
+    - [x] 2D
+    - [ ] 3D
+    - [ ] Circular?
+    - [ ] Spherical?
+  - [ ] Global Functions
+    - [x] 2D
+    - [ ] 3D
+    - [ ] Circular
+    - [ ] Spherical
+  - ...
+- [ ] Type Parametrization?
+- [ ] Iterators
+- [ ] Circulators
+- [ ] Other packages, such as
+  - [ ] Convex Hulls
+  - [ ] Voronoi Delaunay
+  - ...
 
 # Related Projects
 
