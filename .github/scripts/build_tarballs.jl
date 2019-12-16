@@ -23,7 +23,7 @@ const sources = [
 const vBoost = v"1.71"
 const vGMP = v"6.1.2"
 const vMPFR = v"4.0.2"
-const vCGAL = v"4.14.2"
+const vCGAL = v"5"
 const vJulia = v"1"
 const vJlCxx = v"0.6.3"
 
@@ -34,7 +34,7 @@ dependencies = [
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v$vGMP-1/build_GMP.v$vGMP.jl",
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v$vMPFR-1/build_MPFR.v$vMPFR.jl",
     # for libcgal-julia
-    "https://github.com/rgcv/CGALBuilder/releases/download/v$vCGAL-1/build_CGAL.v$vCGAL.jl",
+    "https://github.com/rgcv/CGALBuilder/releases/download/v$vCGAL-2/build_CGAL.v$vCGAL.jl",
     "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v$vJulia-2/build_Julia.v$vJulia.jl",
     "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v$vJlCxx/build_libcxxwrap-julia-1.0.v$vJlCxx.jl"
 ]
