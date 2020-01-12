@@ -55,7 +55,7 @@ $ julia .github/scripts/build_tarballs.jl x86_64-w64-mingw32-gcc7-cxx11
 Requirements:
 
 - [`CMake`][5]
-- [`CGAL = 4.14.2`][6]
+- [`CGAL = 5.0`][6]
   * [`Boost = 1.71`][7]
   * [`GMP`][8]
   * [`MPFR`][9]
