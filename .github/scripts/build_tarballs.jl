@@ -58,12 +58,12 @@ VERBOSE=ON cmake --build . --config Release --target install
 
 # These are the platforms we will build for by default, unless further
 # platforms are passed in on the command line
-const platforms = [
+const platforms = filter(p -> cxxstring_abi(p) === :cxx11, [
     Linux(:x86_64, libc=:glibc),
     Windows(:i686),
     Windows(:x86_64),
     MacOS(:x86_64),
-] |> expand_cxxstring_abis
+] |> expand_cxxstring_abis)
 
 # The products that we will ensure are always built
 const products = [

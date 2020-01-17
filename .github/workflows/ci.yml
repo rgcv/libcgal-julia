@@ -18,13 +18,9 @@ jobs:
     strategy:
       matrix:
         target:
-          - i686-w64-mingw32-cxx03
           - i686-w64-mingw32-cxx11
-          - x86_64-apple-darwin14-cxx03
           - x86_64-apple-darwin14-cxx11
-          - x86_64-linux-gnu-cxx03
           - x86_64-linux-gnu-cxx11
-          - x86_64-w64-mingw32-cxx03
           - x86_64-w64-mingw32-cxx11
     steps:
       - uses: actions/checkout@v2
