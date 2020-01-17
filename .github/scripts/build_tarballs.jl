@@ -25,7 +25,7 @@ const vGMP = v"6.1.2"
 const vMPFR = v"4.0.2"
 const vCGAL = v"5"
 const vJulia = v"1"
-const vJlCxx = v"0.6.3"
+const vJlCxx = v"0.6.5"
 
 # Dependencies that must be installed before this package can be built
 dependencies = [
@@ -45,31 +45,17 @@ const script = raw"""
 # exit on error
 set -eu
 
-# check c++ standard reported by the compiler
-# CGAL uses CMake's try_run to check if it needs to link with Boost.Thread
-# depending on the c++ standard supported by the compiler. From c++11 onwards,
-# CGAL doesn't require Boost.Thread (by default since CGAL 5.0)
-__need_boost_thread=1
-__cplusplus=$($CXX -x c++ -dM -E - </dev/null | grep __cplusplus | grep -o '[0-9]*')
-
 ## configure build
 mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
 
-CMAKE_FLAGS=(
-  ## cmake specific
-  -DCMAKE_TOOLCHAIN_FILE="/opt/$target/$target.toolchain"
-  -DCMAKE_BUILD_TYPE=Release
-  -DCMAKE_CXX_FLAGS="-march=x86-64"
-  -DCMAKE_FIND_ROOT_PATH="$prefix"
-  -DCMAKE_INSTALL_PREFIX="$prefix"
-  # try_run doesn't like cross-compilation: this is required
-  -DCGAL_test_cpp_version_RUN_RES=$__need_boost_thread
-  -DCGAL_test_cpp_version_RUN_RES__TRYRUN_OUTPUT=$__cplusplus
-  # tell libcxxwrap-julia where julia is
+cmake ../ \
+  `# cmake specific` \
+  -DCMAKE_TOOLCHAIN_FILE="/opt/$target/$target.toolchain" \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_FIND_ROOT_PATH="$prefix" \
+  -DCMAKE_INSTALL_PREFIX="$prefix" \
+  `# tell libcxxwrap-julia where julia is` \
   -DJulia_PREFIX="$prefix"
-)
-
-cmake ${CMAKE_FLAGS[@]} ../
 
 ## and away we go..
 VERBOSE=ON cmake --build . --config Release --target install
