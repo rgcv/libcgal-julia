@@ -4,7 +4,7 @@
 
 #include "macros.hpp"
 
-#define CGAL_CONST(N)   cgal.CONST(N, CGAL::N)
+#define CGAL_CONST(N)   cgal.set_const(#N, CGAL::N)
 #define CGAL_ENUM(E, N) cgal.BITS_ST(CGAL::E, N, jlcxx::julia_type("CppEnum"))
 #define CGAL_SENUM(E)   CGAL_ENUM(E, E)
 

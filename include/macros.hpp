@@ -31,7 +31,6 @@
 #define BITS_ST(T, N, ST) add_bits<T>(#N, ST)
 #define BITS(T, N) add_bits<T>(#N)
 #define SBITS(N)   BITS(N, N)
-#define CONST(N, V) set_const(#N, V)
 
 #define OVERRIDE_MOD(M, T, E) ; M.set_override_module(T); E
 #define OVERRIDE_BASE(M, E) OVERRIDE_MOD(M, jl_base_module, E)
