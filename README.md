@@ -60,7 +60,7 @@ Requirements:
   * [`GMP`](https://gmplib.org/#DOWNLOAD)
   * [`MPFR`](https://www.mpfr.org/mpfr-current/)
 - [`Julia ≥ 1.0`](https://julialang.org/downloads/)
-- [`JlCxx = 0.5.3`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.5.3)
+- [`JlCxx ≥ 0.6.3`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.6.3)
 
 Depending on your system, it may be easier to aggregate and install the listed
 requirements, with the exception of `JlCxx`, which, to my knowledge, isn't in
