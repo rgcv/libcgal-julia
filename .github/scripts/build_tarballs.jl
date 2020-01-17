@@ -33,7 +33,9 @@ const script = raw"""
 set -eu
 
 # HACK: download julia..
-curl -L https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/julia-1.0.0-$target.tar.gz -o- | tar xzf - -C "$prefix"
+curl -Lo julia.tar.gz https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/julia-1.0.0-$target.tar.gz
+mkdir julia && tar xf julia.tar.gz -C julia
+Julia_PREFIX="$PWD/julia"
 
 ## configure build
 mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
@@ -46,10 +48,15 @@ cmake ../ \
   -DCMAKE_FIND_ROOT_PATH="$prefix" \
   -DCMAKE_INSTALL_PREFIX="$prefix" \
   `# tell libcxxwrap-julia where julia is` \
-  -DJulia_PREFIX="$prefix"
+  -DJulia_PREFIX="$Julia_PREFIX"
 
 ## and away we go..
 VERBOSE=ON cmake --build . --config Release --target install
+
+# HACK: Apparently, this isn't a simple build system anymore..
+case $target in
+  *mingw32*) mv "$prefix/lib/"*.dll "$prefix/bin" ;;
+esac
 """
 
 # These are the platforms we will build for by default, unless further
