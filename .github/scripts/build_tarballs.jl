@@ -25,7 +25,7 @@ const vGMP = v"6.1.2"
 const vMPFR = v"4.0.2"
 const vCGAL = v"5"
 const vJulia = v"1"
-const vJlCxx = v"0.6.5"
+const vJlCxx = v"0.6.3"
 
 # Dependencies that must be installed before this package can be built
 dependencies = [
