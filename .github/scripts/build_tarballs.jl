@@ -52,6 +52,7 @@ cmake ../ \
   `# cmake specific` \
   -DCMAKE_TOOLCHAIN_FILE="/opt/$target/$target.toolchain" \
   -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_CXX_FLAGS="-march=x86-64" \
   -DCMAKE_FIND_ROOT_PATH="$prefix" \
   -DCMAKE_INSTALL_PREFIX="$prefix" \
   `# tell libcxxwrap-julia where julia is` \
