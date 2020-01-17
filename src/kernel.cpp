@@ -7,7 +7,7 @@
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
 
-#include <julia/julia.h>
+#include <julia.h>
 
 #include "io.hpp"
 #include "macros.hpp"
