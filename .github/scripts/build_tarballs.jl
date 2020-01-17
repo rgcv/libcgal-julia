@@ -33,14 +33,10 @@ const script = raw"""
 set -eu
 
 # HACK: download julia..
-curl -LO https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/julia-1.0.0-$target.tar.gz
-mkdir julia && cd julia
-tar xf ../julia-1.0.0-$target.tar.gz
-Julia_PREFIX="$PWD"
-cd ..
+curl -L https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/julia-1.0.0-$target.tar.gz -o- | tar xzf - -C "$prefix"
 
 ## configure build
-mkdir build && cd build
+mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
 
 cmake ../ \
   `# cmake specific` \
@@ -50,7 +46,7 @@ cmake ../ \
   -DCMAKE_FIND_ROOT_PATH="$prefix" \
   -DCMAKE_INSTALL_PREFIX="$prefix" \
   `# tell libcxxwrap-julia where julia is` \
-  -DJulia_PREFIX="$Julia_PREFIX"
+  -DJulia_PREFIX="$prefix"
 
 ## and away we go..
 VERBOSE=ON cmake --build . --config Release --target install
