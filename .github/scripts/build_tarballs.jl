@@ -20,23 +20,10 @@ const sources = [
     "."
 ]
 
-const vBoost = v"1.71"
-const vGMP = v"6.1.2"
-const vMPFR = v"4.0.2"
-const vCGAL = v"5"
-const vJulia = v"1"
-const vJlCxx = v"0.6.3"
-
 # Dependencies that must be installed before this package can be built
-dependencies = [
-    # for CGAL
-    "https://github.com/benlorenz/boostBuilder/releases/download/v$vBoost-1/build_boost.v$vBoost.jl",
-    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v$vGMP-1/build_GMP.v$vGMP.jl",
-    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v$vMPFR-1/build_MPFR.v$vMPFR.jl",
-    # for libcgal-julia
-    "https://github.com/rgcv/CGALBuilder/releases/download/v$vCGAL-2/build_CGAL.v$vCGAL.jl",
-    "https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v$vJulia-2/build_Julia.v$vJulia.jl",
-    "https://github.com/JuliaInterop/libcxxwrap-julia/releases/download/v$vJlCxx/build_libcxxwrap-julia-1.0.v$vJlCxx.jl"
+const dependencies = [
+    "CGAL_jll",
+    "libcxxwrap_julia_jll",
 ]
 
 # Bash recipe for building across all platforms
@@ -45,18 +32,25 @@ const script = raw"""
 # exit on error
 set -eu
 
+# HACK: download julia..
+curl -LO https://github.com/JuliaPackaging/JuliaBuilder/releases/download/v1.0.0-2/julia-1.0.0-$target.tar.gz
+mkdir julia && cd julia
+tar xf ../julia-1.0.0-$target.tar.gz
+Julia_PREFIX="$PWD"
+cd ..
+
 ## configure build
-mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
+mkdir build && cd build
 
 cmake ../ \
   `# cmake specific` \
-  -DCMAKE_TOOLCHAIN_FILE="/opt/$target/$target.toolchain" \
+  -DCMAKE_TOOLCHAIN_FILE="$CMAKE_TARGET_TOOLCHAIN" \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_CXX_FLAGS="-march=x86-64" \
   -DCMAKE_FIND_ROOT_PATH="$prefix" \
   -DCMAKE_INSTALL_PREFIX="$prefix" \
   `# tell libcxxwrap-julia where julia is` \
-  -DJulia_PREFIX="$prefix"
+  -DJulia_PREFIX="$Julia_PREFIX"
 
 ## and away we go..
 VERBOSE=ON cmake --build . --config Release --target install
@@ -64,23 +58,17 @@ VERBOSE=ON cmake --build . --config Release --target install
 
 # These are the platforms we will build for by default, unless further
 # platforms are passed in on the command line
-_abis( ::Type{<:Platform}) = (:gcc7,   :gcc8)
-_archs(::Type{<:Platform}) = (:x86_64, :i686)
-_archs(::Type{Linux})      = (:x86_64,)
-platforms = Platform[]
-for p in (Linux, Windows)
-    for arch in _archs(p)
-        for abi in _abis(p)
-            push!(platforms, p(arch; compiler_abi=CompilerABI(abi, :cxx11)))
-        end
-    end
-end
-push!(platforms, MacOS(:x86_64))
+const platforms = [
+    Linux(:x86_64, libc=:glibc),
+    Windows(:i686),
+    Windows(:x86_64),
+    MacOS(:x86_64),
+] |> expand_cxxstring_abis
 
 # The products that we will ensure are always built
-products(prefix) = [
-    LibraryProduct(prefix, "libcgal_julia", :libcgal_julia),
+const products = [
+    LibraryProduct("libcgal_julia", :libcgal_julia),
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
-build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies)
+build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies; preferred_gcc_version=v"7")
