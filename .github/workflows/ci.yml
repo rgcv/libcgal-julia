@@ -36,8 +36,8 @@ jobs:
           BINARYBUILDER_RUNNER: privileged
           BINARYBUILDER_AUTOMATIC_APPLE: true
         run: |
-          julia --color=yes -e 'using Pkg; pkg"add BinaryBuilder; build"'
-          julia --color=yes .github/scripts/build_tarballs.jl ${{ matrix.target }}
+          julia --color=yes -e 'using Pkg; pkg"add BinaryBuilder#master; build"'
+          julia --color=yes .github/scripts/build_tarballs.jl --verbose ${{ matrix.target }}
       - name: Publish tarball
         if: startsWith(github.ref, 'refs/tags')
         uses: softprops/action-gh-release@v1

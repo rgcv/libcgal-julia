@@ -53,7 +53,7 @@ cmake ../ \
 ## and away we go..
 VERBOSE=ON cmake --build . --config Release --target install -- -j$nproc
 
-install_license ../libcgal-julia*/LICENSE
+install_license ../LICENSE
 
 # HACK: Apparently, this isn't a simple build system anymore..
 case $target in
