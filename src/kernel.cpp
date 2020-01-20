@@ -14,11 +14,6 @@
 
 #include "kernel.hpp"
 
-template<> struct jlcxx::IsMirroredType<CGAL::Identity_transformation> : std::false_type {};
-template<> struct jlcxx::IsMirroredType<CGAL::Rotation>                : std::false_type {};
-template<> struct jlcxx::IsMirroredType<CGAL::Scaling>                 : std::false_type {};
-template<> struct jlcxx::IsMirroredType<CGAL::Translation>             : std::false_type {};
-
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 
@@ -41,10 +36,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   // Can't set consts, they get erased post pre-compilation.
   // Therefore, their constant counterparts are defined on the julia side.
-  CGAL_TYPE(Identity_transformation, IdentityTransformation);
-  CGAL_STYPE(Rotation);
-  CGAL_STYPE(Scaling);
-  CGAL_STYPE(Translation);
+  CGAL_MAP(Identity_transformation, IdentityTransformation);
+  CGAL_SMAP(Rotation);
+  CGAL_SMAP(Scaling);
+  CGAL_SMAP(Translation);
 
   /// TYPES (cont.) ============================================================
 
