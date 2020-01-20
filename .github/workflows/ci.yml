@@ -18,9 +18,13 @@ jobs:
     strategy:
       matrix:
         target:
+          - i686-w64-mingw32-cxx03
           - i686-w64-mingw32-cxx11
+          - x86_64-apple-darwin14-cxx03
           - x86_64-apple-darwin14-cxx11
+          - x86_64-linux-gnu-cxx03
           - x86_64-linux-gnu-cxx11
+          - x86_64-w64-mingw32-cxx03
           - x86_64-w64-mingw32-cxx11
     steps:
       - uses: actions/checkout@v2
@@ -34,8 +38,10 @@ jobs:
         run: |
           julia --color=yes -e 'using Pkg; pkg"add BinaryBuilder; build"'
           julia --color=yes .github/scripts/build_tarballs.jl ${{ matrix.target }}
-      - name: Publish
+      - name: Publish tarball
         if: startsWith(github.ref, 'refs/tags')
-        run: julia --color=yes .github/scripts/build_tarballs.jl --deploy=rgcv/libcgal-julia_jll.jl
+        uses: softprops/action-gh-release@v1
+        with:
+          files: products/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

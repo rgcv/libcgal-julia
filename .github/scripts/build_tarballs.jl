@@ -17,7 +17,7 @@ end
 
 # Collection of sources required to build CGAL
 const sources = [
-    "."
+     "$(@__DIR__)/../../"
 ]
 
 # Dependencies that must be installed before this package can be built
@@ -38,7 +38,7 @@ mkdir julia && tar xf julia.tar.gz -C julia
 Julia_PREFIX="$PWD/julia"
 
 ## configure build
-mkdir -p "$WORKSPACE/srcdir/build" && cd "$WORKSPACE/srcdir/build"
+mkdir -p build && cd build
 
 cmake ../ \
   `# cmake specific` \
@@ -51,7 +51,7 @@ cmake ../ \
   -DJulia_PREFIX="$Julia_PREFIX"
 
 ## and away we go..
-VERBOSE=ON cmake --build . --config Release --target install
+VERBOSE=ON cmake --build . --config Release --target install -- -j$nproc
 
 # HACK: Apparently, this isn't a simple build system anymore..
 case $target in
@@ -61,12 +61,12 @@ esac
 
 # These are the platforms we will build for by default, unless further
 # platforms are passed in on the command line
-const platforms = filter(p -> cxxstring_abi(p) === :cxx11, [
+const platforms = [
     Linux(:x86_64, libc=:glibc),
     Windows(:i686),
     Windows(:x86_64),
     MacOS(:x86_64),
-] |> expand_cxxstring_abis)
+] |> expand_cxxstring_abis
 
 # The products that we will ensure are always built
 const products = [
