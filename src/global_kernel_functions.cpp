@@ -47,7 +47,7 @@ typedef Kernel::RT RT;
 struct Intersection_visitor {
   typedef jl_value_t* result_type;
 
-  result_type operator()(const std::pair<K::Circular_arc_point_2, unsigned>& p) const {
+  result_type operator()(const std::pair<CK::Circular_arc_point_2, unsigned>& p) const {
     return jlcxx::create<Point_2>(p.first.x(), p.first.y());
   }
 
@@ -89,7 +89,7 @@ jl_value_t* intersection(const T1& t1, const T2& t2) {
 
 template <typename T1, typename T2>
 jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
-  std::vector<typename CGAL::CK2_Intersection_traits<K, T1, T2>::type> results;
+  std::vector<typename CGAL::CK2_Intersection_traits<CK, T1, T2>::type> results;
   CGAL::intersection(t1, t2, std::back_inserter(results));
   auto v = boost::variant<decltype(results)>(results);
   return boost::apply_visitor(Intersection_visitor(), v);
