@@ -14,6 +14,9 @@
 
 #include "kernel.hpp"
 
+typedef Kernel::FT FT;
+typedef Kernel::RT RT;
+
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 

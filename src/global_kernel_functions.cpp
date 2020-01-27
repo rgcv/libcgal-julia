@@ -37,6 +37,12 @@
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Triangle_2&)
 
+typedef Kernel K;
+typedef Circular_kernel CK;
+
+typedef Kernel::FT FT;
+typedef Kernel::RT RT;
+
 struct Intersection_visitor {
   typedef jl_value_t* result_type;
 
