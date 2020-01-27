@@ -46,20 +46,20 @@ typedef Kernel::RT RT;
 struct Intersection_visitor {
   typedef jl_value_t* result_type;
 
-  jl_value_t* operator()(const std::pair<K::Circular_arc_point_2, unsigned>& p) const {
+  result_type operator()(const std::pair<K::Circular_arc_point_2, unsigned>& p) const {
     return jlcxx::create<Point_2>(p.first.x(), p.first.y());
   }
 
   template<typename T>
-  jl_value_t* operator()(const T& t) const { return jlcxx::box<T>(t); }
+  result_type operator()(const T& t) const { return jlcxx::box<T>(t); }
 
   template<typename... TS>
-  jl_value_t* operator()(const boost::variant<TS...>& v) const {
+  result_type operator()(const boost::variant<TS...>& v) const {
     return boost::apply_visitor(*this, v);
   }
 
   template<typename T>
-  jl_value_t* operator()(const std::vector<T>& ts) const {
+  result_type operator()(const std::vector<T>& ts) const {
     if (ts.empty()) return jl_nothing;
 
     auto first = (*this)(ts[0]);
