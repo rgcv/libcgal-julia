@@ -22,18 +22,18 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
 
-  auto aff_transformation_2 = cgal.TYPE(Aff_transformation_2, AffTransformation2);
-  auto bbox_2 = cgal.TYPE(Bbox_2, BBox2);
-  auto circle_2 = cgal.TYPE(Circle_2, Circle2);
-  auto direction_2 = cgal.TYPE(Direction_2, Direction2);
-  auto iso_rectangle_2 = cgal.TYPE(Iso_rectangle_2, IsoRectangle2);
-  auto line_2 = cgal.TYPE(Line_2, Line2);
-  auto point_2 = cgal.TYPE(Point_2, Point2);
-  auto ray_2 = cgal.TYPE(Ray_2, Ray2);
-  auto segment_2 = cgal.TYPE(Segment_2, Segment2);
-  auto triangle_2 = cgal.TYPE(Triangle_2, Triangle2);
-  auto vector_2 = cgal.TYPE(Vector_2, Vector2);
-  auto weighted_point_2 = cgal.TYPE(Weighted_point_2, WeightedPoint2);
+  auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
+  auto bbox_2               = cgal.add_type<Bbox_2>              ("BBox2");
+  auto circle_2             = cgal.add_type<Circle_2>            ("Circle2");
+  auto direction_2          = cgal.add_type<Direction_2>         ("Direction2");
+  auto iso_rectangle_2      = cgal.add_type<Iso_rectangle_2>     ("IsoRectangle2");
+  auto line_2               = cgal.add_type<Line_2>              ("Line2");
+  auto point_2              = cgal.add_type<Point_2>             ("Point2");
+  auto ray_2                = cgal.add_type<Ray_2>               ("Ray2");
+  auto segment_2            = cgal.add_type<Segment_2>           ("Segment2");
+  auto triangle_2           = cgal.add_type<Triangle_2>          ("Triangle2");
+  auto vector_2             = cgal.add_type<Vector_2>            ("Vector2");
+  auto weighted_point_2     = cgal.add_type<Weighted_point_2>    ("WeightedPoint2");
 
   /// CONSTANTS ================================================================
 
