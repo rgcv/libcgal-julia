@@ -79,6 +79,11 @@ struct Intersection_visitor {
 };
 
 template <typename T1, typename T2>
+bool do_intersect(const T1& t1, const T2& t2) {
+  return CGAL::do_intersect(t1, t2);
+}
+
+template <typename T1, typename T2>
 jl_value_t* intersection(const T1& t1, const T2& t2) {
   auto result = CGAL::intersection(t1, t2);
   if (result) {
