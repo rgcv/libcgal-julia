@@ -3,6 +3,7 @@
 #include <boost/variant/apply_visitor.hpp>
 
 #include <CGAL/Circular_kernel_2/Intersection_traits.h>
+#include <CGAL/Kernel/global_functions_2.h>
 
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
