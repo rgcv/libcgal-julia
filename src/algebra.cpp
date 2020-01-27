@@ -5,7 +5,7 @@
 #include "macros.hpp"
 #include "kernel.hpp"
 
-using NT = K::FT;
+typedef Kernel::FT NT;
 
 void wrap_algebra(jlcxx::Module& cgal) {
   // missing functions that involve EuclideanRing concept:
