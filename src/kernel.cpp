@@ -23,7 +23,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
 
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
-  auto bbox_2               = cgal.add_type<Bbox_2>              ("BBox2");
+  auto bbox_2               = cgal.add_type<Bbox_2>              ("Bbox2");
   auto circle_2             = cgal.add_type<Circle_2>            ("Circle2");
   auto direction_2          = cgal.add_type<Direction_2>         ("Direction2");
   auto iso_rectangle_2      = cgal.add_type<Iso_rectangle_2>     ("IsoRectangle2");
