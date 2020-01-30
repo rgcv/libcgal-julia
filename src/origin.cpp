@@ -1,5 +1,3 @@
-#include <type_traits>
-
 #include <CGAL/Origin.h>
 
 #include <jlcxx/module.hpp>

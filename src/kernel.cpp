@@ -1,5 +1,3 @@
-#include <type_traits>
-
 #include <CGAL/Origin.h>
 #include <CGAL/aff_transformation_tags.h>
 #include <CGAL/enum.h>
