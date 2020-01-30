@@ -15,6 +15,28 @@
 typedef Kernel::FT FT;
 typedef Kernel::RT RT;
 
+#define OPERATION(T, op) \
+   BINARY_OP(     T, op, double) \
+  .BINARY_OP(double, op,      T) \
+  .BINARY_OP_SELF(T, op)
+
+#define OPERATORS(T) \
+  /* RealEmbeddable Operations */ \
+   OPERATION(T, ==) \
+  .OPERATION(T,  <) \
+  .OPERATION(T, <=) \
+  .OPERATION(T,  >) \
+  .OPERATION(T, >=) \
+  /* Field Operations */ \
+  .OPERATION(T, /) \
+  /* IntegralDomainWithoutDivision Operations */ \
+  .OPERATION(T, +) \
+  .OPERATION(T, -) \
+  .OPERATION(T, *) \
+  .UNARY_OP(+, T) \
+  .UNARY_OP(-, T)
+
+
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 
@@ -49,20 +71,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     // Creation
     .CTOR(double)
     OVERRIDE_BASE(cgal, field_type)
-    // RealEmbeddable Operations
-    .BINARY_OP_SELF(const FT&, ==)
-    .BINARY_OP_SELF(const FT&,  <)
-    .BINARY_OP_SELF(const FT&, <=)
-    .BINARY_OP_SELF(const FT&,  >)
-    .BINARY_OP_SELF(const FT&, >=)
-    // Field Operations
-    .BINARY_OP_SELF(const FT&, /)
-    // IntegralDomainWithoutDivision Operations
-    .BINARY_OP_SELF(const FT&, +)
-    .BINARY_OP_SELF(const FT&, -)
-    .BINARY_OP_SELF(const FT&, *)
-    .UNARY_OP(+, const FT&)
-    .UNARY_OP(-, const FT&)
+    .OPERATORS(const FT&)
     UNSET_OVERRIDE(cgal, field_type)
     // Representation
     .REPR(FT)
