@@ -38,6 +38,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   // Can't set consts, they get erased post pre-compilation.
   // Therefore, their constant counterparts are defined on the julia side.
   CGAL_MAP(Identity_transformation, IdentityTransformation);
+  CGAL_SMAP(Reflection);
   CGAL_SMAP(Rotation);
   CGAL_SMAP(Scaling);
   CGAL_SMAP(Translation);
@@ -77,6 +78,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .CTOR(const CGAL::Rotation&, const RT&, const RT&, const RT&)
     .CTOR(const CGAL::Scaling&, const RT&)
     .CTOR(const CGAL::Scaling&, const RT&, const RT&)
+    .CTOR(const CGAL::Reflection&, const Line_2&)
     .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
     .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
     .CTOR(const RT&, const RT&, const RT&, const RT&)
