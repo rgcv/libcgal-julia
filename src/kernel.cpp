@@ -141,7 +141,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   circle_2
     // Creation
-    .CTOR(const Point_2&, double)
     .CTOR(const Point_2&, const FT&)
     .CTOR(const Point_2&, const FT&, const CGAL::Orientation&)
     .CTOR(const Point_2&, const Point_2&, Point_2)
@@ -206,6 +205,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .CTOR(const Point_2&, const Point_2&, int)
     .CTOR(const Point_2&, const Point_2&, const Point_2&, const Point_2&)
     .CTOR(const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&)
     .CTOR(const Bbox_2&)
     // Operations
     OVERRIDE_BASE(cgal, iso_rectangle_2)
@@ -287,7 +287,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
     UNSET_OVERRIDE(cgal, point_2)
     // Creation
     .CTOR(const CGAL::Origin&)
-    .CTOR(double, double)
     .CTOR(const RT&, const RT&, const RT&)
     .CTOR(const FT&, const FT&) // in a Cartesian kernel, covers (RT, RT) ctor
     .CTOR(const Weighted_point_2&)
@@ -408,7 +407,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .CTOR(const Ray_2&)
     .CTOR(const Line_2&)
     .CTOR(const CGAL::Null_vector&)
-    .CTOR(double, double)
     .CTOR(const RT&, const RT&, const RT&)
     .CTOR(const FT&, const FT&)
     // Coordinate Access
