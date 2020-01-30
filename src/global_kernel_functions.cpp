@@ -100,9 +100,9 @@ jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
   return boost::apply_visitor(Intersection_visitor(), v);
 }
 
-template <typename ...TS>
-FT squared_distance(const TS&... ts) {
-  return CGAL::squared_distance(ts...);
+template <typename T1, typename T2>
+FT squared_distance(const T1& t1, const T2& t2) {
+  return CGAL::squared_distance(t1, t2);
 }
 
 void wrap_global_kernel_functions(jlcxx::Module& cgal) {
