@@ -47,8 +47,6 @@ auto safe_division(const T1& t1, const T2& t2) -> decltype(t1/t2) {
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
 
-  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
-
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
   auto bbox_2               = cgal.add_type<Bbox_2>              ("Bbox2");
   auto circle_2             = cgal.add_type<Circle_2>            ("Circle2");
@@ -74,6 +72,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
 
   /// TYPES (cont.) ============================================================
 
+#ifdef JLCGAL_EXACT_CONSTRUCTIONS
+  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"));
   field_type
     // Creation
     .CTOR(double)
@@ -86,6 +86,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     // Representation
     .REPR(FT)
     ;
+#endif
 
   aff_transformation_2
     // Creation

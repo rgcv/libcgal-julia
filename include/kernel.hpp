@@ -3,10 +3,16 @@
 
 #include <CGAL/Algebraic_kernel_for_circles_2_2.h>
 #include <CGAL/Circular_kernel_2.h>
-#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 
 /// Kernel
+#ifdef JLCGAL_EXACT_CONSTRUCTIONS
+#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt Linear_kernel;
+#else
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+typedef CGAL::Exact_predicates_inexact_constructions_kernel         Linear_kernel;
+#endif
+
 typedef CGAL::Algebraic_kernel_for_circles_2_2<Linear_kernel::FT> Algebraic_kernel;
 typedef CGAL::Circular_kernel_2<Linear_kernel, Algebraic_kernel> Circular_kernel;
 
