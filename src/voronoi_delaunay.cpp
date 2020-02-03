@@ -18,17 +18,19 @@
 typedef Kernel K;
 
 typedef CGAL::Triangulation_2<K> Triangulation;
-typedef Triangulation::Vertex T_Vertex;
-typedef Triangulation::Face   T_Face;
+typedef Triangulation::Edge      T_Edge;
+typedef Triangulation::Face      T_Face;
+typedef Triangulation::Vertex    T_Vertex;
 
 typedef CGAL::Delaunay_triangulation_2<K>                                    DT;
 typedef CGAL::Delaunay_triangulation_adaptation_traits_2<DT>                 AT;
 typedef CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DT> AP;
 typedef CGAL::Voronoi_diagram_2<DT, AT, AP>                                  VD;
 
-typedef VD::Face VD_Face;
+typedef VD::Face     VD_Face;
 typedef VD::Halfedge VD_Halfedge;
-typedef VD::Vertex VD_Vertex;
+typedef VD::Site_2   VD_Site;
+typedef VD::Vertex   VD_Vertex;
 
 template <typename T, typename Iterator>
 jlcxx::Array<T> collect(Iterator begin, Iterator end) {
@@ -38,13 +40,15 @@ jlcxx::Array<T> collect(Iterator begin, Iterator end) {
 }
 
 void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
-  auto tvertex    = cgal.add_type<T_Vertex>   ("TriangulationVertex");
+  auto tedge      = cgal.add_type<T_Edge>     ("TriangulationEdge");
   auto tface      = cgal.add_type<T_Face>     ("TriangulationFace");
+  auto tvertex    = cgal.add_type<T_Vertex>   ("TriangulationVertex");
 
   auto vdface     = cgal.add_type<VD_Face>    ("VoronoiFace");
-  auto vdvertex   = cgal.add_type<VD_Vertex>  ("VoronoiVertex");
   auto vdhalfedge = cgal.add_type<VD_Halfedge>("VoronoiHalfedge");
+  auto vdvertex   = cgal.add_type<VD_Vertex>  ("VoronoiVertex");
   auto voronoi    = cgal.add_type<VD>         ("VoronoiDiagram");
+
   auto delaunay   = cgal.add_type<DT>         ("DelaunayTriangulation");
 
   tvertex
@@ -103,9 +107,9 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .METHOD(VD, number_of_faces)
     .METHOD(VD, number_of_halfedges)
     .METHOD(VD, number_of_vertices)
-    /* .method("sites", [](const VD& vd) { */
-    /*   return collect<VD_Site>(); */
-    /* }) */
+    .method("sites", [](const VD& vd) {
+      return collect<VD_Site>(vd.sites_begin(), vd.sites_end());
+    })
     .method("vertices", [](const VD& vd) {
       return collect<VD_Vertex>(vd.vertices_begin(), vd.vertices_end());
     })
@@ -131,15 +135,18 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .REPR(VD)
     ;
 
-  /* delaunay */
-  /*   OVERRIDE_BASE(cgal, delaunay) */
-  /*   /1* .method("push!", [](DT& dt, const Point_2& p) { dt.push_back(p); dt }) *1/ */
-  /*   UNSET_OVERRIDE(cgal, delaunay) */
-  /*   .method("edges", [](const DT& dt) { */
-  /*     jlcxx::Array<DT::Edge> vs; */
-  /*     for (auto dit = dt.edges_begin(); dit != dt.edges_end(); ) */
-  /*       vs.push_back(*(dit++)); */
-  /*     return vs; */
-  /*   }) */
-  /*   ; */
+  delaunay
+    .CTOR(const DT&)
+    OVERRIDE_BASE(cgal, delaunay)
+    .method("insert!", [](DT& dt, jlcxx::ArrayRef<Point_2> ps) -> DT& {
+      dt.insert(ps.begin(), ps.end());
+      return dt;
+    })
+    .method("push!", [](DT& dt, const Point_2& p) -> DT& { dt.push_back(p); return dt; })
+    UNSET_OVERRIDE(cgal, delaunay)
+    .METHOD(DT, is_valid)
+    .method("edges", [](const DT& dt) {
+      return collect<T_Edge>(dt.edges_begin(), dt.edges_end());
+    })
+    ;
 }
