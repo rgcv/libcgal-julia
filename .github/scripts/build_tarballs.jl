@@ -72,7 +72,8 @@ const platforms = [
 
 # The products that we will ensure are always built
 const products = [
-    LibraryProduct("libcgal_julia", :libcgal_julia),
+    LibraryProduct("libcgal_julia_exact", :libcgal_julia_exact),
+    LibraryProduct("libcgal_julia_inexact", :libcgal_julia_inexact),
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
