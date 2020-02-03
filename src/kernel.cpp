@@ -1,3 +1,5 @@
+#include <exception>
+
 #include <CGAL/Origin.h>
 #include <CGAL/aff_transformation_tags.h>
 #include <CGAL/enum.h>
@@ -28,7 +30,7 @@ typedef Kernel::RT RT;
   .OPERATION(T,  >) \
   .OPERATION(T, >=) \
   /* Field Operations */ \
-  .OPERATION(T, /) \
+  /* .OPERATION(T, /) */ \
   /* IntegralDomainWithoutDivision Operations */ \
   .OPERATION(T, +) \
   .OPERATION(T, -) \
@@ -36,6 +38,11 @@ typedef Kernel::RT RT;
   .UNARY_OP(+, T) \
   .UNARY_OP(-, T)
 
+template <typename T1, typename T2>
+auto safe_division(const T1& t1, const T2& t2) -> decltype(t1/t2) {
+  if (t2 == 0) throw std::overflow_error("division by zero");
+  return t1 / t2;
+}
 
 void wrap_kernel(jlcxx::Module& cgal) {
   /// TYPES ====================================================================
@@ -72,6 +79,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .CTOR(double)
     OVERRIDE_BASE(cgal, field_type)
     .OPERATORS(const FT&)
+    .method("/", &safe_division<FT, FT>)
+    .method("/", &safe_division<FT, double>)
+    .method("/", &safe_division<double, FT>)
     UNSET_OVERRIDE(cgal, field_type)
     // Representation
     .REPR(FT)
@@ -430,7 +440,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(const Vector_2&,  -)
     .UNARY_OP(-, const Vector_2&)
     .BINARY_OP_SELF(const Vector_2&,  *)
-    .BINARY_OP(const Vector_2&, /,  const RT&)
+    /* .BINARY_OP(const Vector_2&, /,  const RT&) */
+    .method("/", &safe_division<Vector_2, RT>)
     UNSET_OVERRIDE(cgal, vector_2)
     //.BINARY_OP(Vector_2, *,  RT)
     //.BINARY_OP(Vector_2, *,  RT     )
