@@ -105,8 +105,9 @@ CMake, you won't need it.
 
 - [cgal-swig-bindings](https://github.com/CGAL/cgal-swig-bindings) - CGAL
   bindings using SWIG
-- [PYGAL - Python Geometric Algorithms Library](https://github.com/wolfv/pygal) -
-CGAL python bindings using pybind11
+- [scikit-geometry](https://github.com/scikit-geometry/scikit-geometry) -
+  Scientific Python Geometric Algorithms Library (f.k.a. PYGAL, CGAL python
+  bindings using pybind11 by [wolfv](https://github.com/wolfv)
 
 [1]:  https://github.com/CGAL/cgal
 [2]:  https://github.com/JuliaInterop/BinaryBuilder.jl
