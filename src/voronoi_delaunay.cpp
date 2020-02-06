@@ -39,6 +39,23 @@ jlcxx::Array<T> collect(Iterator begin, Iterator end) {
   return jlarr;
 }
 
+template<typename T, typename Circulator>
+jlcxx::Array<T> collect(Circulator begin) {
+  Circulator cc = begin;
+  jlcxx::Array<T> jlarr;
+  do { jlarr.push_back(*cc); } while(++cc != begin);
+  return jlarr;
+}
+
+struct Handle_visitor {
+  typedef jl_value_t* result_type;
+
+  template <typename Handle>
+  result_type operator()(const Handle& h) const {
+    return jlcxx::box<typename Handle::value_type>(*h);
+  }
+};
+
 void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
   auto tedge      = cgal.add_type<T_Edge>     ("TriangulationEdge");
   auto tface      = cgal.add_type<T_Face>     ("TriangulationFace");
@@ -52,8 +69,8 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
   auto delaunay   = cgal.add_type<DT>         ("DelaunayTriangulation");
 
   tvertex
+    .METHOD(T_Vertex, degree)
     .UNAMBIG_METHOD(const Point_2&, T_Vertex, point)
-    .REPR(T_Vertex)
     ;
 
   vdface
@@ -63,7 +80,11 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     UNSET_OVERRIDE(cgal, vdface)
     .method("dual", [](const VD_Face& f) { return *(f.dual()); })
     .method("halfedge", [](const VD_Face& f) { return *(f.halfedge()); })
+    .method("is_halfedge_on_ccb", [](const VD_Face& f, const VD_Halfedge& hf) {
+      return f.is_halfedge_on_ccb(VD::Halfedge_handle(hf));
+    })
     .METHOD(VD_Face, is_unbounded)
+    .METHOD(VD_Face, is_valid)
     ;
 
   vdvertex
@@ -71,15 +92,35 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(VD_Vertex, ==)
     .BINARY_OP_SELF(VD_Vertex,  <)
     UNSET_OVERRIDE(cgal, vdvertex)
+    .METHOD(VD_Vertex, degree)
     .method("dual", [](const VD_Vertex& v) { return *(v.dual()); })
     .method("halfedge", [](const VD_Vertex& v) { return *(v.halfedge()); })
+    .method("incident_halfedges", [](const VD_Vertex& v) {
+      return collect<VD_Halfedge>(v.incident_halfedges());
+    })
+    .method("is_incident_edge", [](const VD_Vertex& v, const VD_Halfedge& hf) {
+      return v.is_incident_edge(VD::Halfedge_handle(hf));
+    })
+    .method("is_incident_face", [](const VD_Vertex& v, const VD_Face& f) {
+      return v.is_incident_face(VD::Face_handle(f));
+    })
     .METHOD(VD_Vertex, is_valid)
     .METHOD(VD_Vertex, point)
     ;
 
   vdhalfedge
+    OVERRIDE_BASE(cgal, vdhalfedge)
+    .BINARY_OP_SELF(VD_Halfedge, ==)
+    .BINARY_OP_SELF(VD_Halfedge,  <)
+    UNSET_OVERRIDE(cgal, vdhalfedge)
     .METHOD(VD_Halfedge, has_source)
     .METHOD(VD_Halfedge, has_target)
+    .METHOD(VD_Halfedge, is_bisector)
+    .METHOD(VD_Halfedge, is_unbounded)
+    .METHOD(VD_Halfedge, is_ray)
+    .METHOD(VD_Halfedge, is_segment)
+    .method("next", [](const VD_Halfedge& hf) { return *(hf.next()); })
+    .method("previous", [](const VD_Halfedge& hf) { return *(hf.previous()); })
     .method("source", [](const VD_Halfedge& hf) {
       if (hf.has_source()) {
         return (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.source()));
@@ -92,39 +133,40 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       }
       return jl_nothing;
     })
-    .method("next", [](const VD_Halfedge& hf) { return *(hf.next()); })
     ;
 
   voronoi
     OVERRIDE_BASE(cgal, voronoi)
+    .method("empty!", &VD::clear)
+    .method("insert!", [](VD& vd, jlcxx::ArrayRef<Point_2> ps) -> VD& {
+      vd.insert(ps.begin(), ps.end());
+      return vd;
+    })
     .method("push!", [](VD& vd, const Point_2& p) -> VD& {
       vd.insert(p);
       return vd;
     })
-    .method("empty!", &VD::clear)
     UNSET_OVERRIDE(cgal, voronoi)
+    .method("dual", [](const VD& vd) { return vd.dual(); })
     .METHOD(VD, is_valid)
     .METHOD(VD, number_of_faces)
     .METHOD(VD, number_of_halfedges)
     .METHOD(VD, number_of_vertices)
-    .method("sites", [](const VD& vd) {
-      return collect<VD_Site>(vd.sites_begin(), vd.sites_end());
-    })
-    .method("vertices", [](const VD& vd) {
-      return collect<VD_Vertex>(vd.vertices_begin(), vd.vertices_end());
+    .method("edges", [](const VD& vd) {
+      return collect<VD_Halfedge>(vd.edges_begin(), vd.edges_end());
     })
     .method("finite_edges", [](const VD& vd) {
       jl_array_t* ja = jl_alloc_array_1d(jl_array_any_type, 0);
       JL_GC_PUSH1(&ja);
 
-      auto& d = vd.dual();
-      for (auto eit = d.finite_edges_begin(); eit != d.finite_edges_end();) {
-        CGAL::Object o = d.dual(*(eit++));
-        if (const Line_2 * l = CGAL::object_cast<Line_2>(&o)) {
+      auto&& dt = vd.dual();
+      for (auto eit = dt.finite_edges_begin(); eit != dt.finite_edges_end();) {
+        CGAL::Object o = dt.dual(*(eit++));
+        if (const Line_2* l = CGAL::object_cast<Line_2>(&o)) {
           jl_array_ptr_1d_push(ja, jlcxx::box<Line_2>(*l));
-        } else if (const Ray_2 * r = CGAL::object_cast<Ray_2>(&o)) {
+        } else if (const Ray_2* r = CGAL::object_cast<Ray_2>(&o)) {
           jl_array_ptr_1d_push(ja, jlcxx::box<Ray_2>(*r));
-        } else if (const Segment_2 * s = CGAL::object_cast<Segment_2>(&o)) {
+        } else if (const Segment_2* s = CGAL::object_cast<Segment_2>(&o)) {
           jl_array_ptr_1d_push(ja, jlcxx::box<Segment_2>(*s));
         }
       }
@@ -132,7 +174,15 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       JL_GC_POP();
       return (jl_value_t*)ja;
     })
-    .REPR(VD)
+    .method("locate", [](const VD& vd, const Point_2& p) {
+      return boost::apply_visitor(Handle_visitor(), vd.locate(p));
+    })
+    .method("sites", [](const VD& vd) {
+      return collect<VD_Site>(vd.sites_begin(), vd.sites_end());
+    })
+    .method("vertices", [](const VD& vd) {
+      return collect<VD_Vertex>(vd.vertices_begin(), vd.vertices_end());
+    })
     ;
 
   delaunay
@@ -142,11 +192,31 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       dt.insert(ps.begin(), ps.end());
       return dt;
     })
-    .method("push!", [](DT& dt, const Point_2& p) -> DT& { dt.push_back(p); return dt; })
+    .method("push!", [](DT& dt, const Point_2& p) -> DT& {
+      dt.push_back(p);
+      return dt;
+    })
     UNSET_OVERRIDE(cgal, delaunay)
-    .METHOD(DT, is_valid)
+    .method("all_edges", [](const DT& dt) {
+      return collect<T_Edge>(dt.all_edges_begin(), dt.all_edges_end());
+    })
     .method("edges", [](const DT& dt) {
       return collect<T_Edge>(dt.edges_begin(), dt.edges_end());
+    })
+    .method("finite_edges", [](const DT& dt) {
+      return collect<T_Edge>(dt.finite_edges_begin(), dt.finite_edges_end());
+    })
+    .METHOD(DT, is_valid)
+    .method("locate", [](const DT& dt, const Point_2& p) {
+      auto&& fh = dt.locate(p);
+      if (fh == nullptr) return jl_nothing;
+      return (jl_value_t*)jlcxx::box<T_Face>(*fh);
+    })
+    .method("points", [](const DT& dt) {
+      return collect<Point_2>(dt.points_begin(), dt.points_end());
+    })
+    .method("segment", [](const DT& dt, const T_Edge& e) {
+      return dt.segment(e);
     })
     ;
 }
