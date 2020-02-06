@@ -31,6 +31,10 @@
 #define CK_INTERSECTION_SELF(T) \
   cgal.PFUNC(, intersection, ck_intersection, T, T)
 
+#define CK_INTERSECTION_CONVERT(T1, T2, C1, C2) \
+  cgal.PFUNC(, intersection, ck_intersection_convert, T1, T2, C1, C2); \
+  cgal.PFUNC(, intersection, ck_intersection_convert, T2, T1, C2, C1)
+
 #define SQUARED_DISTANCE(T) \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Line_2&); \
@@ -98,6 +102,12 @@ jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
   CGAL::intersection(t1, t2, std::back_inserter(results));
   auto v = boost::variant<decltype(results)>(results);
   return boost::apply_visitor(Intersection_visitor(), v);
+}
+
+template <typename T1, typename T2, typename C1 = T1, typename C2 = T2>
+jl_value_t* ck_intersection_convert(const T1& t1, const T2& t2) {
+  C1 c1(t1); C2 c2(t2);
+  return ck_intersection(c1, c2);
 }
 
 template <typename T1, typename T2>
@@ -235,6 +245,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   INTERSECTION_SELF(Triangle_2);
   // TODO: Other circular Intersections
   CK_INTERSECTION_SELF(Circle_2);
+  CK_INTERSECTION(Circle_2, Line_2);
+  CK_INTERSECTION_CONVERT(Circle_2, Segment_2, Circle_2, CK::Line_arc_2);
 
   CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
 
