@@ -41,8 +41,8 @@ jlcxx::Array<T> collect(Iterator begin, Iterator end) {
 
 template<typename T, typename Circulator>
 jlcxx::Array<T> collect(Circulator begin) {
-  Circulator cc = begin;
   jlcxx::Array<T> jlarr;
+  Circulator cc = begin;
   do jlarr.push_back(*(cc++)); while(cc != begin);
   return jlarr;
 }
