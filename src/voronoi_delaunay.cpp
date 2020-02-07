@@ -138,11 +138,11 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
   voronoi
     OVERRIDE_BASE(cgal, voronoi)
     .method("empty!", &VD::clear)
-    .method("insert!", [](VD& vd, jlcxx::ArrayRef<Point_2> ps) -> VD& {
+    .method("insert!", [](VD& vd, jlcxx::ArrayRef<Point_2> ps) {
       vd.insert(ps.begin(), ps.end());
       return vd;
     })
-    .method("push!", [](VD& vd, const Point_2& p) -> VD& {
+    .method("push!", [](VD& vd, const Point_2& p) {
       vd.insert(p);
       return vd;
     })
@@ -188,11 +188,11 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
   delaunay
     .CTOR(const DT&)
     OVERRIDE_BASE(cgal, delaunay)
-    .method("insert!", [](DT& dt, jlcxx::ArrayRef<Point_2> ps) -> DT& {
+    .method("insert!", [](DT& dt, jlcxx::ArrayRef<Point_2> ps) {
       dt.insert(ps.begin(), ps.end());
       return dt;
     })
-    .method("push!", [](DT& dt, const Point_2& p) -> DT& {
+    .method("push!", [](DT& dt, const Point_2& p) {
       dt.push_back(p);
       return dt;
     })
