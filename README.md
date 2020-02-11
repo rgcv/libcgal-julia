@@ -2,13 +2,17 @@
 
 :warning: **DISCLAIMER** :warning: This project is still very young and, thus,
 incredibly brittle and scarce. Currently, the kernel is being fixed on the C++
-side of things. Currently, a circular kernel, backed by the
-`Exact_predicates_exact_constructions_kernel_with_sqrt` 2D/3D kernel, is being
-fixed, consequently fixing the kernel's constructs. This is a recognizable
-limitation. Ideally, the appropriate non-aliased underlying kernels would be
-made available as julia types, along with the multiple numeric types, and could
-be used directly instead of being hidden away in the C++ side of things... One
-can dream.
+side of things. Currently, a circular kernel, backed by a 2D/3D kernel, is being
+fixed, consequently fixing the kernel's constructs. This linear kernel can be
+the `Exact_predicates_exact_constructions_kernel_with_sqrt` or the
+`Exact_predicates_inexact_constructions_kernel`. If the
+`JLCGAL_EXACT_CONSTRUCTIONS` pre-processor definition exists, the former will be
+used. Otherwise, the latter will be used.
+
+This is a recognizable limitation. Ideally, the appropriate non-aliased
+underlying kernels would be made available as julia types, along with the
+multiple numeric types, and could be used directly instead of being hidden away
+in the C++ side of things... One can dream.
 
 ---
 
@@ -27,6 +31,12 @@ The project can be built using the `build_tarballs.jl` [`BinaryBuilder`][2] scri
 under `.github/scripts`. This is also used in CI and for publishing artifacts on
 release. It can also be built manually, albeit discouraged since setting up the
 required dependencies may be an arduous task.
+
+Currently, two shared libraries are being built: One with inexact constructions,
+i.e., using the `Exact_predicates_inexact_constructions_kernel` linear kernel,
+and another with exact constructions, i.e., using the
+`Exact_predicates_exact_constructions_kernel_with_sqrt`, each library being
+respectively suffixed with `_inexact` and `_exact`.
 
 ## Using `build_tarballs.jl` (recommended)
 
@@ -55,12 +65,12 @@ $ julia .github/scripts/build_tarballs.jl x86_64-w64-mingw32-gcc7-cxx11
 Requirements:
 
 - [`CMake ≥ 3.1`](https://cmake.org/download/#latest)
-- [`CGAL = 5.0`](https://github.com/CGAL/cgal/releases/tag/releases%2FCGAL-5.0)
-  * [`Boost = 1.71`](https://www.boost.org/users/history/version_1_71_0.html)
+- [`CGAL ≥ 5.0`](https://github.com/CGAL/cgal/releases/tag/releases%2FCGAL-5.0)
+  * [`Boost ≥ 1.57`](https://www.boost.org/users/history/version_1_57_0.html)
   * [`GMP`](https://gmplib.org/#DOWNLOAD)
   * [`MPFR`](https://www.mpfr.org/mpfr-current/)
 - [`Julia ≥ 1.0`](https://julialang.org/downloads/)
-- [`JlCxx ≥ 0.6.3`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.6.3)
+- [`JlCxx ≥ 0.6.6`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.6.6)
 
 Depending on your system, it may be easier to aggregate and install the listed
 requirements, with the exception of `JlCxx`, which, to my knowledge, isn't in
