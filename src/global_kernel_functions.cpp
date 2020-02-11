@@ -35,12 +35,17 @@
   cgal.PFUNC(, intersection, ck_intersection_convert, T1, T2, C1, C2); \
   cgal.PFUNC(, intersection, ck_intersection_convert, T2, T1, C2, C1)
 
-#define SQUARED_DISTANCE(T) \
+#define SQUARED_DISTANCE_2(T) \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Line_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Ray_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_2&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Triangle_2&)
+
+#define SQUARED_DISTANCE_3(T) \
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_3&); \
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_3&); \
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Plane_3&)
 
 typedef Kernel K;
 typedef Circular_kernel CK;
@@ -120,13 +125,24 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_2&, const Vector_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_3&, const Vector_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&, const Vector_3&);
   UNSET_OVERRIDE(cgal,);
+
+  CGAL_GLOBAL_FUNCTION(FT, approximate_angle, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(FT, approximate_angle, const Vector_3&, const Vector_3&);
+
+  CGAL_GLOBAL_FUNCTION(FT, approximate_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(FT, area, const Point_2&, const Point_2&, const Point_2&);
 
   CGAL_GLOBAL_FUNCTION(bool, are_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, are_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, are_strictly_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, are_strictly_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&);
@@ -134,37 +150,71 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&);
   CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&);
 
   CGAL_GLOBAL_FUNCTION(Line_2, bisector, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Line_2, bisector, const Line_2&,  const Line_2&);
+  CGAL_GLOBAL_FUNCTION(Plane_3, bisector, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Plane_3, bisector, const Plane_3&,  const Plane_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Triangle_2&);
+  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Triangle_2&);
+  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, collinear_are_strictly_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, collinear_are_strictly_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, collinear, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, collinear, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Vector_3&, const Vector_3&, const Vector_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_lexicographically, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_lexicographically, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
 
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Line_2&,    const Line_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Segment_2&, const Segment_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_distance, const Point_2&, const Point_2&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_distance, const Point_3&, const Point_3&, const FT&);
+
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const Point_3&, const FT&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_2&, const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Line_2&,  const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
@@ -184,13 +234,28 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Point_2&, const Segment_2&, const Segment_2&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_2&, const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Line_2&,  const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
 
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_xyz, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_z, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_yx, const Point_2&, const Point_2&);
 
+  CGAL_GLOBAL_FUNCTION(bool, coplanar, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, coplanar_orientation, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, coplanar_orientation, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, coplanar_side_of_bounded_circle, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(Vector_3, cross_product, const Vector_3&, const Vector_3&);
+
   CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_2&, const Vector_2&);
+  CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_3&, const Vector_3&, const Vector_3&);
 
   DO_INTERSECT_SELF(Circle_2);
   DO_INTERSECT(Circle_2, Iso_rectangle_2);
@@ -218,15 +283,30 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   DO_INTERSECT(Segment_2, Triangle_2);
   DO_INTERSECT_SELF(Triangle_2);
 
+  DO_INTERSECT_SELF(Point_3);
+  DO_INTERSECT(Point_3, Plane_3);
+  DO_INTERSECT(Point_3, Segment_3);
+  DO_INTERSECT_SELF(Plane_3);
+  DO_INTERSECT(Plane_3, Segment_3);
+  DO_INTERSECT_SELF(Segment_3);
+
   CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
 
+  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(bool, has_smaller_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, has_smaller_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
+
+  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   INTERSECTION_SELF(Iso_rectangle_2);
   INTERSECTION(Iso_rectangle_2, Line_2);
@@ -243,12 +323,16 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   INTERSECTION_SELF(Segment_2);
   INTERSECTION(Segment_2, Triangle_2);
   INTERSECTION_SELF(Triangle_2);
+  // TODO: More 3D
+  INTERSECTION_SELF(Plane_3);
+  INTERSECTION(Plane_3, Segment_3);
   // TODO: Other circular Intersections
   CK_INTERSECTION_SELF(Circle_2);
   CK_INTERSECTION(Circle_2, Line_2);
   CK_INTERSECTION_CONVERT(Circle_2, Segment_2, Circle_2, CK::Line_arc_2);
 
   CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, left_turn, const Point_2&, const Point_2&, const Point_2&);
 
@@ -260,18 +344,31 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
 
   CGAL_GLOBAL_FUNCTION(bool, lexicographically_xy_smaller_or_equal, const Point_2&, const Point_2&);
 
+  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xyz_smaller, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xyz_smaller_or_equal, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(Point_2, max_vertex, const Iso_rectangle_2&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, midpoint, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(Point_3, midpoint, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, min_vertex, const Iso_rectangle_2&);
 
+  CGAL_GLOBAL_FUNCTION(Vector_3, normal, const Point_3&, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Point_2&,  const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Vector_2&, const Vector_2&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Point_3&,  const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Vector_3&, const Vector_3&, const Vector_3&);
+
+  CGAL_GLOBAL_FUNCTION(Vector_3, orthogonal_vector, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Ray_2&, const Ray_2&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_2&, const Segment_2&);
+  CGAL_GLOBAL_FUNCTION(bool, parallel, const Plane_3&, const Plane_3&);
+  CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_3&, const Segment_3&);
 
   CGAL_GLOBAL_FUNCTION(Line_2, radical_line, const Circle_2&, const Circle_2&);
 
@@ -280,24 +377,48 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, right_turn, const Point_2&, const Point_2&, const Point_2&);
 
   CGAL_GLOBAL_FUNCTION(FT, scalar_product, const Vector_2&, const Vector_2&);
+  CGAL_GLOBAL_FUNCTION(FT, scalar_product, const Vector_3&, const Vector_3&);
 
   CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_circle, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_circle, const Point_2&, const Point_2&, const Point_2&);
 
+  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&);
+
   CGAL_GLOBAL_FUNCTION(CGAL::Oriented_side, side_of_oriented_circle, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
 
-  SQUARED_DISTANCE(Point_2);
-  SQUARED_DISTANCE(Line_2);
-  SQUARED_DISTANCE(Ray_2);
-  SQUARED_DISTANCE(Segment_2);
-  SQUARED_DISTANCE(Triangle_2);
+  CGAL_GLOBAL_FUNCTION(CGAL::Oriented_side, side_of_oriented_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(FT, squared_area, const Point_3&, const Point_3&, const Point_3&);
+
+  SQUARED_DISTANCE_2(Point_2);
+  SQUARED_DISTANCE_2(Line_2);
+  SQUARED_DISTANCE_2(Ray_2);
+  SQUARED_DISTANCE_2(Segment_2);
+  SQUARED_DISTANCE_2(Triangle_2);
+
+  SQUARED_DISTANCE_3(Point_3);
+  SQUARED_DISTANCE_3(Segment_3);
+  SQUARED_DISTANCE_3(Plane_3);
 
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(Vector_3, unit_normal, const Point_3&, const Point_3&, const Point_3&);
+
+  CGAL_GLOBAL_FUNCTION(FT, volume, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, x_equal, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, x_equal, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(bool, y_equal, const Point_2&, const Point_2&);
+  CGAL_GLOBAL_FUNCTION(bool, y_equal, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(bool, z_equal, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_2&, const Bbox_2&);
 }

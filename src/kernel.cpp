@@ -60,6 +60,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
   auto vector_2             = cgal.add_type<Vector_2>            ("Vector2");
   auto weighted_point_2     = cgal.add_type<Weighted_point_2>    ("WeightedPoint2");
 
+  auto plane_3              = cgal.add_type<Plane_3>             ("Plane3");
+  auto point_3              = cgal.add_type<Point_3>             ("Point3");
+  auto segment_3            = cgal.add_type<Segment_3>           ("Segment3");
+  auto vector_3             = cgal.add_type<Vector_3>            ("Vector3");
+
   /// CONSTANTS ================================================================
 
   // Can't set consts, they get erased post pre-compilation.
@@ -88,6 +93,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     ;
 #endif
 
+  // 2D Constructions =========================================================
   aff_transformation_2
     // Creation
     .CTOR(const CGAL::Identity_transformation&)
@@ -484,5 +490,150 @@ void wrap_kernel(jlcxx::Module& cgal) {
     })
     // Representation
     .REPR(Weighted_point_2)
+    ;
+
+  // 3D Constructions =========================================================
+  point_3
+    // Creation
+    .CTOR(const CGAL::Origin&)
+    .CTOR(const FT&, const FT&, const FT&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&)
+    /* .CTOR(const Weighted_point_3&) */
+    OVERRIDE_BASE(cgal, point_3)
+    // Related functions
+    .BINARY_OP_SELF(const Point_3&,  <)
+    .BINARY_OP_SELF(const Point_3&,  >)
+    .BINARY_OP_SELF(const Point_3&, <=)
+    .BINARY_OP_SELF(const Point_3&, >=)
+    .BINARY_OP(const Point_3&, +, const Vector_3&)
+    .BINARY_OP(const Point_3&, -, const Vector_3&)
+    // Operations
+    .BINARY_OP_SELF(const Point_3&, ==)
+    UNSET_OVERRIDE(cgal, point_3)
+    // Coordinate access
+    .METHOD(Point_3, hx)
+    .METHOD(Point_3, hy)
+    .METHOD(Point_3, hz)
+    .METHOD(Point_3, x)
+    .METHOD(Point_3, y)
+    .METHOD(Point_3, z)
+    // Convenience operators
+    .METHOD(Point_3, homogeneous)
+    .METHOD(Point_3, cartesian  )
+    .METHOD(Point_3, dimension  )
+    /* .METHOD(Point_3, bbox) */
+    /* .METHOD(Point_3, transform) */
+    // Representation
+    .REPR(Point_3)
+    ;
+
+  plane_3
+    // Creation
+    .CTOR(const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const Point_3&, const Point_3&, const Point_3&)
+    .CTOR(const Point_3&, const Vector_3&)
+    /* .CTOR(const Point_3&, const Direction_3&) */
+    /* .CTOR(const Line_3&, const Point_3&) */
+    /* .CTOR(const Ray_3&, const Point_3&) */
+    .CTOR(const Segment_3&, const Point_3&)
+    /* .CTOR(const Circle_3&) */
+    OVERRIDE_BASE(cgal, plane_3)
+    .BINARY_OP_SELF(Plane_3, ==)
+    UNSET_OVERRIDE(cgal, plane_3)
+    .METHOD(Plane_3, a)
+    .METHOD(Plane_3, b)
+    .METHOD(Plane_3, c)
+    .METHOD(Plane_3, d)
+    /* .METHOD(Plane_3, perpendicular_line) */
+    .METHOD(Plane_3, projection)
+    .METHOD(Plane_3, opposite)
+    .METHOD(Plane_3, point)
+    .METHOD(Plane_3, orthogonal_vector)
+    /* .METHOD(Plane_3, orthogonal_direction) */
+    .METHOD(Plane_3, base1)
+    .METHOD(Plane_3, base2)
+    // Conversion
+    .METHOD(Plane_3, to_2d)
+    .METHOD(Plane_3, to_3d)
+    // Predicates
+    .METHOD(Plane_3, oriented_side)
+    // Convenience boolean functions
+    .UNAMBIG_METHOD(bool, Plane_3, has_on, const Point_3&)
+    /* .UNAMBIG_METHOD(bool, Plane_3, has_on, const Line_3&) */
+    /* .UNAMBIG_METHOD(bool, Plane_3, has_on, const Circle_3&) */
+    .METHOD(Plane_3, has_on_positive_side)
+    .METHOD(Plane_3, has_on_negative_side)
+    .METHOD(Plane_3, is_degenerate)
+    // Miscellaneous
+    /* .METHOD(Plane_3, transform) */
+    // Representation
+    .REPR(Plane_3)
+    ;
+
+  segment_3
+    // Creation
+    .CTOR(const Point_3&, const Point_3&)
+    // Operations
+    OVERRIDE_BASE(cgal, segment_3)
+    .BINARY_OP_SELF(const Segment_3&, ==)
+    UNSET_OVERRIDE(cgal, segment_3)
+    .METHOD(Segment_3, source)
+    .METHOD(Segment_3, target)
+    .METHOD(Segment_3, min)
+    .METHOD(Segment_3, max)
+    .METHOD(Segment_3, vertex)
+    .METHOD(Segment_3, point)
+    .METHOD(Segment_3, squared_length)
+    .METHOD(Segment_3, to_vector)
+    /* .METHOD(Segment_3, direction) */
+    .METHOD(Segment_3, opposite)
+    /* .METHOD(Segment_3, supporting_line) */
+    .METHOD(Segment_3, is_degenerate)
+    .METHOD(Segment_3, has_on)
+    /* .METHOD(Segment_3, bbox) */
+    /* .METHOD(Segment_3, transform) */
+    // Representation
+    .REPR(Segment_3)
+    ;
+
+  vector_3
+    // Public member functions
+    .METHOD(Vector_3, squared_length)
+    OVERRIDE_BASE(cgal, vector_3)
+    .BINARY_OP(const Vector_3&, *, const RT&      )
+    .BINARY_OP(const RT&,       *, const Vector_3&)
+    UNSET_OVERRIDE(cgal, vector_3)
+    // Creation
+    .CTOR(const Point_3&, const Point_3&)
+    .CTOR(const Segment_3&)
+    /* .CTOR(const Line_3&) */
+    /* .CTOR(const Ray_3&) */
+    .CTOR(const CGAL::Null_vector&)
+    .CTOR(const RT&, const RT&, const RT&, const RT&)
+    .CTOR(const FT&, const FT&, const FT&)
+    // Coordinate access
+    .METHOD(Vector_3, hx)
+    .METHOD(Vector_3, hy)
+    .METHOD(Vector_3, hz)
+    .METHOD(Vector_3, hw)
+    .METHOD(Vector_3, x)
+    .METHOD(Vector_3, y)
+    .METHOD(Vector_3, z)
+    // Convenience operations
+    .METHOD(Vector_3, homogeneous)
+    .METHOD(Vector_3, cartesian  )
+    .METHOD(Vector_3, dimension  )
+    /* .METHOD(Point_3, transform) */
+    /* .METHOD(Point_3, direction) */
+    OVERRIDE_BASE(cgal, vector_3)
+    // Operators
+    .BINARY_OP_SELF(const Vector_3&, ==)
+    .BINARY_OP_SELF(const Vector_3&,  +)
+    .BINARY_OP_SELF(const Vector_3&,  -)
+    .BINARY_OP(const Vector_3&, /, const RT&)
+    .BINARY_OP_SELF(const Vector_3&,  *)
+    UNSET_OVERRIDE(cgal, vector_3)
+    // Representation
+    .REPR(Vector_3)
     ;
 }

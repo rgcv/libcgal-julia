@@ -32,4 +32,10 @@ typedef Kernel::Triangle_2           Triangle_2;
 typedef Kernel::Vector_2             Vector_2;
 typedef Kernel::Weighted_point_2     Weighted_point_2;
 
+/// 2D Kernel Objects
+typedef Kernel::Plane_3   Plane_3;
+typedef Kernel::Point_3   Point_3;
+typedef Kernel::Segment_3 Segment_3;
+typedef Kernel::Vector_3  Vector_3;
+
 #endif // CGAL_JLCXX_KERNEL_HPP
