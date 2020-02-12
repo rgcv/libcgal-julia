@@ -576,11 +576,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
     // Operations
     OVERRIDE_BASE(cgal, segment_3)
     .BINARY_OP_SELF(const Segment_3&, ==)
+    .METHOD(Segment_3, min)
+    .METHOD(Segment_3, max)
     UNSET_OVERRIDE(cgal, segment_3)
     .METHOD(Segment_3, source)
     .METHOD(Segment_3, target)
-    .METHOD(Segment_3, min)
-    .METHOD(Segment_3, max)
     .METHOD(Segment_3, vertex)
     .METHOD(Segment_3, point)
     .METHOD(Segment_3, squared_length)
