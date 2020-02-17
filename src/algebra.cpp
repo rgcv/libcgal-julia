@@ -11,9 +11,11 @@ void wrap_algebra(jlcxx::Module& cgal) {
   // missing functions that involve EuclideanRing concept:
   // div, div_mod, mod
   OVERRIDE_BASE(cgal,);
+#ifdef JLCGAL_EXACT_CONSTRUCTIONS
   CGAL_GLOBAL_FUNCTION(NT, abs, const NT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Sign, sign, const NT&);
   CGAL_GLOBAL_FUNCTION(NT, sqrt, const NT&);
+#endif
+  CGAL_GLOBAL_FUNCTION(CGAL::Sign, sign, const NT&);
   UNSET_OVERRIDE(cgal,);
   CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare, const NT&, const NT&);
   CGAL_GLOBAL_FUNCTION(NT, integral_division, const NT&, const NT&);
