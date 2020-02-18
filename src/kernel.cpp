@@ -298,9 +298,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(const Point_2&, >=)
     .BINARY_OP_SELF(const Point_2&,  -)
     .BINARY_OP_SELF(const Point_2&, ==)
-    .BINARY_OP(const Point_2&, ==, CGAL::Origin)
-    .BINARY_OP(const Point_2&, +,  Vector_2    )
-    .BINARY_OP(const Point_2&, -,  Vector_2    )
+    .BINARY_OP(const Point_2&, ==, const CGAL::Origin&)
+    .BINARY_OP(const Point_2&,  +, const Vector_2&    )
+    .BINARY_OP(const Point_2&,  -, const Vector_2&    )
+    .BINARY_OP(const Point_2&,  -, const CGAL::Origin&)
     UNSET_OVERRIDE(cgal, point_2)
     // Creation
     .CTOR(const CGAL::Origin&)
@@ -505,8 +506,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(const Point_3&,  >)
     .BINARY_OP_SELF(const Point_3&, <=)
     .BINARY_OP_SELF(const Point_3&, >=)
-    .BINARY_OP(const Point_3&, +, const Vector_3&)
-    .BINARY_OP(const Point_3&, -, const Vector_3&)
+    .BINARY_OP(const Point_3&, ==, const CGAL::Origin&)
+    .BINARY_OP(const Point_3&,  +, const Vector_3&    )
+    .BINARY_OP(const Point_3&,  -, const Vector_3&    )
+    .BINARY_OP(const Point_3&,  -, const CGAL::Origin&)
     // Operations
     .BINARY_OP_SELF(const Point_3&, ==)
     UNSET_OVERRIDE(cgal, point_3)
@@ -538,16 +541,16 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .CTOR(const Segment_3&, const Point_3&)
     /* .CTOR(const Circle_3&) */
     OVERRIDE_BASE(cgal, plane_3)
-    .BINARY_OP_SELF(Plane_3, ==)
+    .BINARY_OP_SELF(const Plane_3&, ==)
     UNSET_OVERRIDE(cgal, plane_3)
     .METHOD(Plane_3, a)
     .METHOD(Plane_3, b)
     .METHOD(Plane_3, c)
     .METHOD(Plane_3, d)
     /* .METHOD(Plane_3, perpendicular_line) */
-    .METHOD(Plane_3, projection)
-    .METHOD(Plane_3, opposite)
-    .METHOD(Plane_3, point)
+    .METHOD(Plane_3, projection       )
+    .METHOD(Plane_3, opposite         )
+    .METHOD(Plane_3, point            )
     .METHOD(Plane_3, orthogonal_vector)
     /* .METHOD(Plane_3, orthogonal_direction) */
     .METHOD(Plane_3, base1)
@@ -563,7 +566,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     /* .UNAMBIG_METHOD(bool, Plane_3, has_on, const Circle_3&) */
     .METHOD(Plane_3, has_on_positive_side)
     .METHOD(Plane_3, has_on_negative_side)
-    .METHOD(Plane_3, is_degenerate)
+    .METHOD(Plane_3, is_degenerate       )
     // Miscellaneous
     /* .METHOD(Plane_3, transform) */
     // Representation
@@ -579,17 +582,17 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Segment_3, min)
     .METHOD(Segment_3, max)
     UNSET_OVERRIDE(cgal, segment_3)
-    .METHOD(Segment_3, source)
-    .METHOD(Segment_3, target)
-    .METHOD(Segment_3, vertex)
-    .METHOD(Segment_3, point)
+    .METHOD(Segment_3, source        )
+    .METHOD(Segment_3, target        )
+    .METHOD(Segment_3, vertex        )
+    .METHOD(Segment_3, point         )
     .METHOD(Segment_3, squared_length)
-    .METHOD(Segment_3, to_vector)
+    .METHOD(Segment_3, to_vector     )
     /* .METHOD(Segment_3, direction) */
-    .METHOD(Segment_3, opposite)
+    .METHOD(Segment_3, opposite      )
     /* .METHOD(Segment_3, supporting_line) */
-    .METHOD(Segment_3, is_degenerate)
-    .METHOD(Segment_3, has_on)
+    .METHOD(Segment_3, is_degenerate )
+    .METHOD(Segment_3, has_on        )
     /* .METHOD(Segment_3, bbox) */
     /* .METHOD(Segment_3, transform) */
     // Representation
@@ -616,9 +619,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Vector_3, hy)
     .METHOD(Vector_3, hz)
     .METHOD(Vector_3, hw)
-    .METHOD(Vector_3, x)
-    .METHOD(Vector_3, y)
-    .METHOD(Vector_3, z)
+    .METHOD(Vector_3, x )
+    .METHOD(Vector_3, y )
+    .METHOD(Vector_3, z )
     // Convenience operations
     .METHOD(Vector_3, homogeneous)
     .METHOD(Vector_3, cartesian  )
