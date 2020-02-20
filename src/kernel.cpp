@@ -444,6 +444,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Vector_2, perpendicular )
     // Operators
     OVERRIDE_BASE(cgal, vector_2)
+    .BINARY_OP(const Vector_2&,          ==, const CGAL::Null_vector&)
+    .BINARY_OP(const CGAL::Null_vector&, ==, const Vector_2&         )
     .BINARY_OP_SELF(const Vector_2&, ==)
     .BINARY_OP_SELF(const Vector_2&,  +)
     .BINARY_OP_SELF(const Vector_2&,  -)
@@ -469,6 +471,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .METHOD(Weighted_point_2, weight)
     // Operations (delegated to underlying Point_2)
     OVERRIDE_BASE(cgal, weighted_point_2)
+    .method("==", [](const Weighted_point_2& wp, const CGAL::Origin& o) {
+      return wp.point() == o;
+    })
     .BINARY_OP_SELF(const Weighted_point_2&, ==)
     .BINARY_OP_SELF(const Weighted_point_2&,  <)
     UNSET_OVERRIDE(cgal, weighted_point_2)
@@ -632,6 +637,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     /* .METHOD(Point_3, direction) */
     OVERRIDE_BASE(cgal, vector_3)
     // Operators
+    .BINARY_OP(const Vector_3&,          ==, const CGAL::Null_vector&)
+    .BINARY_OP(const CGAL::Null_vector&, ==, const Vector_3&         )
     .BINARY_OP_SELF(const Vector_3&, ==)
     .BINARY_OP_SELF(const Vector_3&,  +)
     .BINARY_OP_SELF(const Vector_3&,  -)
