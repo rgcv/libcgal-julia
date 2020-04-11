@@ -1,5 +1,5 @@
-#ifndef CGAL_JLCXX_MACROS_HPP
-#define CGAL_JLCXX_MACROS_HPP
+#ifndef CGAL_JL_MACROS_HPP
+#define CGAL_JL_MACROS_HPP
 
 #define CAST_FUNC(R, F, M, ArgsT...) static_cast<R (*)(ArgsT) M>(&F)
 #define CAST_METHOD(R, T, F, M, ArgsT...) static_cast<R (T::*)(ArgsT) M>(&T::F)
@@ -51,4 +51,4 @@
 #define CGAL_GLOBAL_FUNCTION(R, F, ArgsT...) \
   cgal.UNAMBIG_FUNC(R, CGAL, F, ArgsT)
 
-#endif // CGAL_JLCXX_MACROS_HPP
+#endif // CGAL_JL_MACROS_HPP

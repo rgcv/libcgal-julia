@@ -1,5 +1,5 @@
-#ifndef CGAL_JLCXX_IO_HPP
-#define CGAL_JLCXX_IO_HPP
+#ifndef CGAL_JL_IO_HPP
+#define CGAL_JL_IO_HPP
 
 #include <sstream>
 
@@ -18,4 +18,4 @@ const std::string repr(const T &t) {
   return oss.str();
 }
 
-#endif // CGAL_JLCXX_IO_HPP
+#endif // CGAL_JL_IO_HPP

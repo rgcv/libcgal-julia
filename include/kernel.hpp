@@ -1,5 +1,5 @@
-#ifndef CGAL_JLCXX_KERNEL_HPP
-#define CGAL_JLCXX_KERNEL_HPP
+#ifndef CGAL_JL_KERNEL_HPP
+#define CGAL_JL_KERNEL_HPP
 
 #include <CGAL/Algebraic_kernel_for_circles_2_2.h>
 #include <CGAL/Circular_kernel_2.h>
@@ -38,4 +38,4 @@ typedef Kernel::Point_3   Point_3;
 typedef Kernel::Segment_3 Segment_3;
 typedef Kernel::Vector_3  Vector_3;
 
-#endif // CGAL_JLCXX_KERNEL_HPP
+#endif // CGAL_JL_KERNEL_HPP
