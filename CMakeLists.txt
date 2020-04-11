@@ -17,7 +17,7 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${JlCxx_location}")
 
 include_directories(${CGAL_INCLUDE_DIRS} ${Julia_INCLUDE_DIRS})
 include_directories(include)
-set(CGAL_JLCXX_SOURCES
+set(CGAL_JL_SOURCES
   src/origin.cpp
   src/enum.cpp
   src/algebra.cpp
@@ -27,9 +27,9 @@ set(CGAL_JLCXX_SOURCES
   src/cgal_julia.cpp
 )
 
-add_library(cgal_julia_exact SHARED ${CGAL_JLCXX_SOURCES})
+add_library(cgal_julia_exact SHARED ${CGAL_JL_SOURCES})
 target_compile_definitions(cgal_julia_exact PUBLIC JLCGAL_EXACT_CONSTRUCTIONS)
-add_library(cgal_julia_inexact SHARED ${CGAL_JLCXX_SOURCES})
+add_library(cgal_julia_inexact SHARED ${CGAL_JL_SOURCES})
 target_link_libraries(cgal_julia_exact JlCxx::cxxwrap_julia ${CGAL_LIBRARIES})
 target_link_libraries(cgal_julia_inexact JlCxx::cxxwrap_julia ${CGAL_LIBRARIES})
 install(TARGETS
