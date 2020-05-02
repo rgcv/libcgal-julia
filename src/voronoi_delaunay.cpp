@@ -122,16 +122,14 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .method("next", [](const VD_Halfedge& hf) { return *(hf.next()); })
     .method("previous", [](const VD_Halfedge& hf) { return *(hf.previous()); })
     .method("source", [](const VD_Halfedge& hf) {
-      if (hf.has_source()) {
-        return (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.source()));
-      }
-      return jl_nothing;
+      return hf.has_source() ?
+        (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.source())) :
+        jl_nothing;
     })
     .method("target", [](const VD_Halfedge& hf) {
-      if (hf.has_target()) {
-        return (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.target()));
-      }
-      return jl_nothing;
+      return hf.has_target() ?
+        (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.target())) :
+        jl_nothing;
     })
     ;
 
@@ -209,8 +207,9 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .METHOD(DT, is_valid)
     .method("locate", [](const DT& dt, const Point_2& p) {
       auto&& fh = dt.locate(p);
-      if (fh == nullptr) return jl_nothing;
-      return (jl_value_t*)jlcxx::box<T_Face>(*fh);
+      return fh != nullptr ?
+        (jl_value_t*)jlcxx::box<T_Face>(*fh) :
+        jl_nothing;
     })
     .method("points", [](const DT& dt) {
       return collect<Point_2>(dt.points_begin(), dt.points_end());
