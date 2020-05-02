@@ -5,7 +5,7 @@
 #include "macros.hpp"
 
 #define CGAL_CONST(N)   cgal.set_const(#N, CGAL::N)
-#define CGAL_ENUM(E, N) cgal.BITS_ST(CGAL::E, N, jlcxx::julia_type("CppEnum"))
+#define CGAL_ENUM(E, N) cgal.add_bits<CGAL::E>(#N, jlcxx::julia_type("CppEnum"))
 #define CGAL_SENUM(E)   CGAL_ENUM(E, E)
 
 void wrap_enum(jlcxx::Module& cgal) {
@@ -14,7 +14,7 @@ void wrap_enum(jlcxx::Module& cgal) {
   cgal.UNARY_OP(-, CGAL::Sign);
   cgal.BINARY_OP(CGAL::Sign, *, CGAL::Sign);
   UNSET_OVERRIDE(cgal,);
-  CGAL_SIMPLE_PFUNC(opposite, CGAL::Sign);
+  cgal.SPFUNC(CGAL, opposite, CGAL::Sign);
   // Sign
   CGAL_CONST(NEGATIVE ); CGAL_CONST(ZERO    ); CGAL_CONST(POSITIVE  );
   CGAL_CONST(COLLINEAR); CGAL_CONST(COPLANAR); CGAL_CONST(DEGENERATE);

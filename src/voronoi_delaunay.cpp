@@ -5,7 +5,6 @@
 #include <CGAL/Delaunay_triangulation_adaptation_policies_2.h>
 #include <CGAL/Voronoi_diagram_2.h>
 
-#include <jlcxx/const_array.hpp>
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
 
@@ -15,22 +14,23 @@
 #include "macros.hpp"
 #include "io.hpp"
 
-typedef Kernel K;
+using K = Kernel;
 
-typedef CGAL::Triangulation_2<K> Triangulation;
-typedef Triangulation::Edge      T_Edge;
-typedef Triangulation::Face      T_Face;
-typedef Triangulation::Vertex    T_Vertex;
+using Triangulation = CGAL::Triangulation_2<K>;
 
-typedef CGAL::Delaunay_triangulation_2<K>                                    DT;
-typedef CGAL::Delaunay_triangulation_adaptation_traits_2<DT>                 AT;
-typedef CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DT> AP;
-typedef CGAL::Voronoi_diagram_2<DT, AT, AP>                                  VD;
+using T_Edge   = Triangulation::Edge;
+using T_Face   = Triangulation::Face;
+using T_Vertex = Triangulation::Vertex;
 
-typedef VD::Face     VD_Face;
-typedef VD::Halfedge VD_Halfedge;
-typedef VD::Site_2   VD_Site;
-typedef VD::Vertex   VD_Vertex;
+using DT = CGAL::Delaunay_triangulation_2<K>;
+using AT = CGAL::Delaunay_triangulation_adaptation_traits_2<DT>;
+using AP = CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DT>;
+using VD = CGAL::Voronoi_diagram_2<DT, AT, AP>;
+
+using VD_Face     = VD::Face;
+using VD_Halfedge = VD::Halfedge;
+using VD_Site     = VD::Site_2;
+using VD_Vertex   = VD::Vertex;
 
 template <typename T, typename Iterator>
 jlcxx::Array<T> collect(Iterator begin, Iterator end) {
@@ -48,7 +48,7 @@ jlcxx::Array<T> collect(Circulator begin) {
 }
 
 struct Handle_visitor {
-  typedef jl_value_t* result_type;
+  using result_type = jl_value_t*;
 
   template <typename Handle>
   result_type operator()(const Handle& h) const {

@@ -3,16 +3,15 @@
 #include <boost/variant/apply_visitor.hpp>
 
 #include <CGAL/Circular_kernel_2/Intersection_traits.h>
-#include <CGAL/Kernel/global_functions_2.h>
+#include <CGAL/Kernel/global_functions.h>
 
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
 
 #include <julia.h>
 
-#include "macros.hpp"
-
 #include "kernel.hpp"
+#include "macros.hpp"
 
 #define DO_INTERSECT(T1, T2) \
   CGAL_GLOBAL_FUNCTION(bool, do_intersect, const T1&, const T2&); \
@@ -47,14 +46,11 @@
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_3&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Plane_3&)
 
-typedef Kernel K;
-typedef Circular_kernel CK;
-
-typedef Kernel::FT FT;
-typedef Kernel::RT RT;
+using K  = Kernel;
+using CK = Circular_kernel;
 
 struct Intersection_visitor {
-  typedef jl_value_t* result_type;
+  using result_type = jl_value_t*;
 
   result_type operator()(const std::pair<CK::Circular_arc_point_2, unsigned>& p) const {
     return jlcxx::create<Point_2>(p.first.x(), p.first.y());
@@ -95,18 +91,18 @@ bool do_intersect(const T1& t1, const T2& t2) {
 template <typename T1, typename T2>
 jl_value_t* intersection(const T1& t1, const T2& t2) {
   auto result = CGAL::intersection(t1, t2);
-  if (result) {
-    return boost::apply_visitor(Intersection_visitor(), *result);
-  }
-  return jl_nothing;
+  return result ?
+    boost::apply_visitor(Intersection_visitor(), *result) :
+    jl_nothing;
 }
 
 template <typename T1, typename T2>
 jl_value_t* ck_intersection(const T1& t1, const T2& t2) {
-  std::vector<typename CGAL::CK2_Intersection_traits<CK, T1, T2>::type> results;
+  using R = typename CGAL::CK2_Intersection_traits<CK, T1, T2>::type;
+  std::vector<R> results;
   CGAL::intersection(t1, t2, std::back_inserter(results));
-  auto v = boost::variant<decltype(results)>(results);
-  return boost::apply_visitor(Intersection_visitor(), v);
+  return boost::apply_visitor(Intersection_visitor(),
+                              boost::variant<std::vector<R>>(results));
 }
 
 template <typename T1, typename T2, typename C1 = T1, typename C2 = T2>

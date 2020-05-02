@@ -40,12 +40,6 @@
 #define UNSET_OVERRIDE(M, E) ; M.unset_override_module(); E
 
 // CGAL specific
-#define CGAL_TYPE(T, N) cgal.TYPE(CGAL::T, N)
-#define CGAL_STYPE(N)   CGAL_TYPE(N, N)
-
-#define CGAL_MAP(T, N) cgal.MAP(CGAL::T, N)
-#define CGAL_SMAP(N)   CGAL_MAP(N, N)
-
 #define CGAL_SIMPLE_PFUNC(F, ArgsT...) cgal.SPFUNC(CGAL, F, ArgsT)
 #define CGAL_UNAMBIG_FUNC(R, F, ArgsT...) cgal.UNAMBIG_FUNC(R, CGAL, F, ArgsT)
 #define CGAL_GLOBAL_FUNCTION(R, F, ArgsT...) \

@@ -21,6 +21,22 @@ set(CGAL_JL_SOURCES
   src/origin.cpp
   src/enum.cpp
   src/algebra.cpp
+  src/kernel/aff_transformation_2.cpp
+  src/kernel/bbox_2.cpp
+  src/kernel/circle_2.cpp
+  src/kernel/direction_2.cpp
+  src/kernel/iso_rectangle_2.cpp
+  src/kernel/line_2.cpp
+  src/kernel/plane_3.cpp
+  src/kernel/point_2.cpp
+  src/kernel/point_3.cpp
+  src/kernel/ray_2.cpp
+  src/kernel/segment_2.cpp
+  src/kernel/segment_3.cpp
+  src/kernel/triangle_2.cpp
+  src/kernel/vector_2.cpp
+  src/kernel/vector_3.cpp
+  src/kernel/weighted_point_2.cpp
   src/kernel.cpp
   src/global_kernel_functions.cpp
   src/voronoi_delaunay.cpp

@@ -1,11 +1,10 @@
 #include <CGAL/Origin.h>
 
 #include <jlcxx/module.hpp>
-#include <jlcxx/type_conversion.hpp>
 
 #include "macros.hpp"
 
 void wrap_origin(jlcxx::Module& cgal) {
-  CGAL_SMAP(Origin);
-  CGAL_MAP(Null_vector, NullVector);
+  cgal.map_type<CGAL::Origin>("Origin");
+  cgal.map_type<CGAL::Null_vector>("NullVector");
 }
