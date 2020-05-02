@@ -20,7 +20,7 @@ void wrap_line_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_2>& line_2) {
     .METHOD(Line_2, a         )
     .METHOD(Line_2, b         )
     .METHOD(Line_2, c         )
-    .UNAMBIG_METHOD(Point_2, Line_2, point, int)
+    .UNAMBIG_METHOD(Point_2, Line_2, point, const FT&)
     .METHOD(Line_2, projection)
     .METHOD(Line_2, x_at_y    )
     .METHOD(Line_2, y_at_x    )
