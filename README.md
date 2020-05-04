@@ -40,6 +40,9 @@ respectively suffixed with `_inexact` and `_exact`.
 
 ## Using `build_tarballs.jl` (recommended)
 
+**NOTE**: This method is relatively outdated. It might work, but be warned.
+YMMV. I haven't relied on it since adopting the `jll` artifacts system.
+
 You're only required to have `julia ≥ 1.0` installed. Once that requirement is
 met, just run:
 
@@ -69,8 +72,8 @@ Requirements:
   * [`Boost ≥ 1.57`](https://www.boost.org/users/history/version_1_57_0.html)
   * [`GMP`](https://gmplib.org/#DOWNLOAD)
   * [`MPFR`](https://www.mpfr.org/mpfr-current/)
-- [`Julia ≥ 1.0`](https://julialang.org/downloads/)
-- [`JlCxx ≥ 0.6.6`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.6.6)
+- [`Julia ≥ 1.3`](https://julialang.org/downloads/)
+- [`JlCxx ≥ 0.7`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.7.0)
 
 Depending on your system, it may be easier to aggregate and install the listed
 requirements, with the exception of `JlCxx`, which, to my knowledge, isn't in
@@ -78,7 +81,8 @@ as readily available on any platform I've tested. However, the former ones are.
 On Windows, (most) via neatly packed installers; on Linux & co., via the
 distribution's package manager; on macOS, maybe homebrew, although I'm not sure.
 
-Afterwards, it is a mostly typical run-of-the-mill CMake build:
+Afterwards, it is a mostly typical run-of-the-mill CMake build (remove `--target
+install` if you do not wish to install it in your system):
 
 ```
 mkdir build && cd build
@@ -94,12 +98,12 @@ CMake, you won't need it.
 - [ ] Kernel
   - [ ] Objects
     - [x] 2D
-    - [ ] 3D
+    - [x] 3D
     - [ ] Circular?
     - [ ] Spherical?
   - [ ] Global Functions
     - [x] 2D
-    - [ ] 3D
+    - [x] 3D
     - [ ] Circular
     - [ ] Spherical
   - ...
