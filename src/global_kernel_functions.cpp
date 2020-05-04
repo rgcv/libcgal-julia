@@ -43,6 +43,8 @@
 
 #define SQUARED_DISTANCE_3(T) \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Point_3&); \
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Line_3&); \
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Ray_3&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Segment_3&); \
   CGAL_GLOBAL_FUNCTION(FT, squared_distance, const T&, const Plane_3&)
 
@@ -163,6 +165,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Triangle_2&);
   CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Triangle_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Tetrahedron_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&, const Point_2&);
@@ -170,6 +174,8 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Triangle_3&);
+  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Tetrahedron_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
@@ -253,6 +259,10 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_2&, const Vector_2&);
   CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_3&, const Vector_3&, const Vector_3&);
 
+  DO_INTERSECT(Bbox_2, Circle_2);
+  DO_INTERSECT(Bbox_2, Line_2);
+  DO_INTERSECT(Bbox_2, Point_2);
+  DO_INTERSECT(Bbox_2, Ray_2);
   DO_INTERSECT_SELF(Circle_2);
   DO_INTERSECT(Circle_2, Iso_rectangle_2);
   DO_INTERSECT(Circle_2, Line_2);
@@ -279,12 +289,61 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   DO_INTERSECT(Segment_2, Triangle_2);
   DO_INTERSECT_SELF(Triangle_2);
 
-  DO_INTERSECT_SELF(Point_3);
-  DO_INTERSECT(Point_3, Plane_3);
-  DO_INTERSECT(Point_3, Segment_3);
+  DO_INTERSECT_SELF(Bbox_3);
+  DO_INTERSECT(Bbox_3, Iso_cuboid_3);
+  DO_INTERSECT(Bbox_3, Line_3);
+  DO_INTERSECT(Bbox_3, Plane_3);
+  DO_INTERSECT(Bbox_3, Point_3);
+  DO_INTERSECT(Bbox_3, Ray_3);
+  DO_INTERSECT(Bbox_3, Segment_3);
+  DO_INTERSECT(Bbox_3, Sphere_3);
+  DO_INTERSECT(Bbox_3, Tetrahedron_3);
+  DO_INTERSECT(Bbox_3, Triangle_3);
+  DO_INTERSECT_SELF(Iso_cuboid_3);
+  DO_INTERSECT(Iso_cuboid_3, Line_3);
+  DO_INTERSECT(Iso_cuboid_3, Plane_3);
+  DO_INTERSECT(Iso_cuboid_3, Point_3);
+  DO_INTERSECT(Iso_cuboid_3, Ray_3);
+  DO_INTERSECT(Iso_cuboid_3, Segment_3);
+  DO_INTERSECT(Iso_cuboid_3, Sphere_3);
+  DO_INTERSECT(Iso_cuboid_3, Tetrahedron_3);
+  DO_INTERSECT(Iso_cuboid_3, Triangle_3);
+  DO_INTERSECT_SELF(Line_3);
+  DO_INTERSECT(Line_3, Plane_3);
+  DO_INTERSECT(Line_3, Point_3);
+  DO_INTERSECT(Line_3, Ray_3);
+  DO_INTERSECT(Line_3, Segment_3);
+  DO_INTERSECT(Line_3, Sphere_3);
+  DO_INTERSECT(Line_3, Tetrahedron_3);
+  DO_INTERSECT(Line_3, Triangle_3);
   DO_INTERSECT_SELF(Plane_3);
+  DO_INTERSECT(Plane_3, Point_3);
+  DO_INTERSECT(Plane_3, Ray_3);
   DO_INTERSECT(Plane_3, Segment_3);
+  DO_INTERSECT(Plane_3, Sphere_3);
+  DO_INTERSECT(Plane_3, Tetrahedron_3);
+  DO_INTERSECT(Plane_3, Triangle_3);
+  DO_INTERSECT_SELF(Point_3);
+  DO_INTERSECT(Point_3, Ray_3);
+  DO_INTERSECT(Point_3, Segment_3);
+  DO_INTERSECT(Point_3, Sphere_3);
+  DO_INTERSECT(Point_3, Tetrahedron_3);
+  DO_INTERSECT(Point_3, Triangle_3);
+  DO_INTERSECT_SELF(Ray_3);
+  DO_INTERSECT(Ray_3, Segment_3);
+  DO_INTERSECT(Ray_3, Sphere_3);
+  DO_INTERSECT(Ray_3, Tetrahedron_3);
+  DO_INTERSECT(Ray_3, Triangle_3);
   DO_INTERSECT_SELF(Segment_3);
+  DO_INTERSECT(Segment_3, Sphere_3);
+  DO_INTERSECT(Segment_3, Tetrahedron_3);
+  DO_INTERSECT(Segment_3, Triangle_3);
+  DO_INTERSECT_SELF(Sphere_3);
+  DO_INTERSECT(Sphere_3, Tetrahedron_3);
+  DO_INTERSECT(Sphere_3, Triangle_3);
+  DO_INTERSECT_SELF(Tetrahedron_3);
+  DO_INTERSECT(Tetrahedron_3, Triangle_3);
+  DO_INTERSECT_SELF(Triangle_3);
 
   CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
@@ -319,9 +378,30 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   INTERSECTION_SELF(Segment_2);
   INTERSECTION(Segment_2, Triangle_2);
   INTERSECTION_SELF(Triangle_2);
-  // TODO: More 3D
+
+  INTERSECTION_SELF(Point_3);
+  INTERSECTION(Point_3, Line_3);
+  INTERSECTION(Point_3, Plane_3);
+  INTERSECTION(Point_3, Ray_3);
+  INTERSECTION(Point_3, Segment_3);
+  INTERSECTION(Point_3, Sphere_3);
+  INTERSECTION(Point_3, Triangle_3);
+  INTERSECTION_SELF(Line_3);
+  INTERSECTION(Line_3, Plane_3);
+  INTERSECTION(Line_3, Ray_3);
+  INTERSECTION(Line_3, Segment_3);
+  INTERSECTION(Line_3, Triangle_3);
   INTERSECTION_SELF(Plane_3);
+  INTERSECTION(Plane_3, Ray_3);
   INTERSECTION(Plane_3, Segment_3);
+  INTERSECTION(Plane_3, Sphere_3);
+  INTERSECTION(Plane_3, Triangle_3);
+  INTERSECTION_SELF(Ray_3);
+  INTERSECTION(Ray_3, Triangle_3);
+  INTERSECTION_SELF(Segment_3);
+  INTERSECTION(Segment_3, Triangle_3);
+  INTERSECTION_SELF(Sphere_3);
+  INTERSECTION_SELF(Triangle_3);
   // TODO: Other circular Intersections
   CK_INTERSECTION_SELF(Circle_2);
   CK_INTERSECTION(Circle_2, Line_2);
@@ -345,11 +425,13 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, lexicographically_xyz_smaller_or_equal, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, max_vertex, const Iso_rectangle_2&);
+  CGAL_GLOBAL_FUNCTION(Point_3, max_vertex, const Iso_cuboid_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, midpoint, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(Point_3, midpoint, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(Point_2, min_vertex, const Iso_rectangle_2&);
+  CGAL_GLOBAL_FUNCTION(Point_3, min_vertex, const Iso_cuboid_3&);
 
   CGAL_GLOBAL_FUNCTION(Vector_3, normal, const Point_3&, const Point_3&, const Point_3&);
 
@@ -363,8 +445,12 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Line_2&, const Line_2&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Ray_2&, const Ray_2&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_2&, const Segment_2&);
+  CGAL_GLOBAL_FUNCTION(bool, parallel, const Line_3&, const Line_3&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Plane_3&, const Plane_3&);
+  CGAL_GLOBAL_FUNCTION(bool, parallel, const Ray_3&, const Ray_3&);
   CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_3&, const Segment_3&);
+
+  CGAL_GLOBAL_FUNCTION(Plane_3, radical_plane, const Sphere_3&, const Sphere_3&);
 
   CGAL_GLOBAL_FUNCTION(Line_2, radical_line, const Circle_2&, const Circle_2&);
 
@@ -395,8 +481,12 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   SQUARED_DISTANCE_2(Triangle_2);
 
   SQUARED_DISTANCE_3(Point_3);
+  SQUARED_DISTANCE_3(Line_3);
+  SQUARED_DISTANCE_3(Ray_3);
   SQUARED_DISTANCE_3(Segment_3);
   SQUARED_DISTANCE_3(Plane_3);
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const Point_3&, const Triangle_3&);
+  CGAL_GLOBAL_FUNCTION(FT, squared_distance, const Triangle_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&);
@@ -417,6 +507,7 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, z_equal, const Point_3&, const Point_3&);
 
   CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_2&, const Bbox_2&);
+  CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_3&, const Bbox_3&);
 }
 
 #undef DO_INTERSECT
