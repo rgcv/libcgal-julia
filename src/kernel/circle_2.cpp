@@ -10,7 +10,7 @@ void wrap_circle_2(jlcxx::Module& kernel,
     // Creation
     .CTOR(const Point_2&, const FT&)
     .CTOR(const Point_2&, const FT&, const CGAL::Orientation&)
-    .CTOR(const Point_2&, const Point_2&, Point_2)
+    .CTOR(const Point_2&, const Point_2&, const Point_2&)
     .CTOR(const Point_2&, const Point_2&)
     .CTOR(const Point_2&, const Point_2&, const CGAL::Orientation&)
     .CTOR(const Point_2&)
