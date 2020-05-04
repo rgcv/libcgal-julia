@@ -23,7 +23,7 @@ void wrap_point_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_3>& point_3) {
     .CTOR(const CGAL::Origin&)
     .CTOR(const FT&, const FT&, const FT&)
     .CTOR(const RT&, const RT&, const RT&, const RT&)
-    /* .CTOR(const Weighted_point_3&) */
+    .CTOR(const Weighted_point_3&)
     // Operations
     .BINARY_OP_SELF(const Point_3&, ==)
     .BINARY_OP(const Point_3&, ==, const CGAL::Origin&)
@@ -40,8 +40,8 @@ void wrap_point_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_3>& point_3) {
     .METHOD(Point_3, homogeneous)
     .METHOD(Point_3, cartesian  )
     .METHOD(Point_3, dimension  )
-    /* .METHOD(Point_3, bbox) */
-    /* .METHOD(Point_3, transform) */
+    .METHOD(Point_3, bbox       )
+    .METHOD(Point_3, transform  )
     // Representation
     .REPR(Point_3)
     ;

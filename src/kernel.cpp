@@ -38,10 +38,21 @@ void wrap_triangle_2(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_2>&);
 void wrap_vector_2(jlcxx::Module&, jlcxx::TypeWrapper<Vector_2>&);
 void wrap_weighted_point_2(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_2>&);
 
+void wrap_aff_transformation_3(jlcxx::Module&, jlcxx::TypeWrapper<Aff_transformation_3>&);
+void wrap_bbox_3(jlcxx::Module&, jlcxx::TypeWrapper<Bbox_3>&);
+void wrap_circle_3(jlcxx::Module&, jlcxx::TypeWrapper<Circle_3>&);
+void wrap_direction_3(jlcxx::Module&, jlcxx::TypeWrapper<Direction_3>&);
+void wrap_iso_cuboid_3(jlcxx::Module&, jlcxx::TypeWrapper<Iso_cuboid_3>&);
+void wrap_line_3(jlcxx::Module&, jlcxx::TypeWrapper<Line_3>&);
 void wrap_plane_3(jlcxx::Module&, jlcxx::TypeWrapper<Plane_3>&);
 void wrap_point_3(jlcxx::Module&, jlcxx::TypeWrapper<Point_3>&);
+void wrap_ray_3(jlcxx::Module&, jlcxx::TypeWrapper<Ray_3>&);
 void wrap_segment_3(jlcxx::Module&, jlcxx::TypeWrapper<Segment_3>&);
+void wrap_sphere_3(jlcxx::Module&, jlcxx::TypeWrapper<Sphere_3>&);
+void wrap_tetrahedron_3(jlcxx::Module&, jlcxx::TypeWrapper<Tetrahedron_3>&);
+void wrap_triangle_3(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_3>&);
 void wrap_vector_3(jlcxx::Module&, jlcxx::TypeWrapper<Vector_3>&);
+void wrap_weighted_point_3(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_3>&);
 
 void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
@@ -73,6 +84,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   auto vector_2             = cgal.add_type<Vector_2>            ("Vector2");
   auto weighted_point_2     = cgal.add_type<Weighted_point_2>    ("WeightedPoint2");
 
+  wrap_aff_transformation_2(cgal, aff_transformation_2);
   wrap_bbox_2(cgal, bbox_2);
   wrap_point_2(cgal, point_2);
   wrap_vector_2(cgal, vector_2);
@@ -84,16 +96,37 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_segment_2(cgal, segment_2);
   wrap_triangle_2(cgal, triangle_2);
   wrap_weighted_point_2(cgal, weighted_point_2);
-  wrap_aff_transformation_2(cgal, aff_transformation_2);
 
   // 3D
+  auto aff_transformation_3 = cgal.add_type<Aff_transformation_3>("AffTransformation3");
+  auto bbox_3               = cgal.add_type<Bbox_3>              ("Bbox3");
+  auto circle_3             = cgal.add_type<Circle_3>            ("Circle3");
+  auto direction_3          = cgal.add_type<Direction_3>         ("Direction3");
+  auto iso_cuboid_3         = cgal.add_type<Iso_cuboid_3>        ("IsoCuboid3");
+  auto line_3               = cgal.add_type<Line_3>              ("Line3");
   auto plane_3              = cgal.add_type<Plane_3>             ("Plane3");
   auto point_3              = cgal.add_type<Point_3>             ("Point3");
+  auto ray_3                = cgal.add_type<Ray_3>               ("Ray3");
   auto segment_3            = cgal.add_type<Segment_3>           ("Segment3");
+  auto sphere_3             = cgal.add_type<Sphere_3>            ("Sphere3");
+  auto tetrahedron_3        = cgal.add_type<Tetrahedron_3>       ("Tetrahedron3");
+  auto triangle_3           = cgal.add_type<Triangle_3>          ("Triangle3");
   auto vector_3             = cgal.add_type<Vector_3>            ("Vector3");
+  auto weighted_point_3     = cgal.add_type<Weighted_point_3>    ("WeightedPoint3");
 
+  wrap_aff_transformation_3(cgal, aff_transformation_3);
+  wrap_bbox_3(cgal, bbox_3);
+  wrap_circle_3(cgal, circle_3);
+  wrap_direction_3(cgal, direction_3);
+  wrap_iso_cuboid_3(cgal, iso_cuboid_3);
+  wrap_line_3(cgal, line_3);
   wrap_plane_3(cgal, plane_3);
   wrap_point_3(cgal, point_3);
+  wrap_ray_3(cgal, ray_3);
   wrap_segment_3(cgal, segment_3);
+  wrap_sphere_3(cgal, sphere_3);
+  wrap_tetrahedron_3(cgal, tetrahedron_3);
+  wrap_triangle_3(cgal, triangle_3);
   wrap_vector_3(cgal, vector_3);
+  wrap_weighted_point_3(cgal, weighted_point_3);
 }

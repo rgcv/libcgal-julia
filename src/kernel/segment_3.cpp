@@ -21,13 +21,13 @@ void wrap_segment_3(jlcxx::Module& kernel,
     .METHOD(Segment_3, point         )
     .METHOD(Segment_3, squared_length)
     .METHOD(Segment_3, to_vector     )
-    /* .METHOD(Segment_3, direction) */
+    .METHOD(Segment_3, direction)
     .METHOD(Segment_3, opposite      )
-    /* .METHOD(Segment_3, supporting_line) */
+    .METHOD(Segment_3, supporting_line)
     .METHOD(Segment_3, is_degenerate )
     .METHOD(Segment_3, has_on        )
-    /* .METHOD(Segment_3, bbox) */
-    /* .METHOD(Segment_3, transform) */
+    .METHOD(Segment_3, bbox)
+    .METHOD(Segment_3, transform)
     // Representation
     .REPR(Segment_3)
     ;

@@ -18,8 +18,8 @@ void wrap_vector_3(jlcxx::Module& kernel,
     // Creation
     .CTOR(const Point_3&, const Point_3&)
     .CTOR(const Segment_3&)
-    /* .CTOR(const Line_3&) */
-    /* .CTOR(const Ray_3&) */
+    .CTOR(const Line_3&)
+    .CTOR(const Ray_3&)
     .CTOR(const CGAL::Null_vector&)
     .CTOR(const RT&, const RT&, const RT&, const RT&)
     .CTOR(const FT&, const FT&, const FT&)
@@ -35,8 +35,8 @@ void wrap_vector_3(jlcxx::Module& kernel,
     .METHOD(Vector_3, homogeneous)
     .METHOD(Vector_3, cartesian  )
     .METHOD(Vector_3, dimension  )
-    /* .METHOD(Vector_3, transform  ) */
-    /* .METHOD(Point_3, direction   ) */
+    .METHOD(Vector_3, transform  )
+    .METHOD(Vector_3, direction  )
     OVERRIDE_BASE(kernel, vector_3)
     // Operators
     .BINARY_OP_SELF(const Vector_3&, ==)
