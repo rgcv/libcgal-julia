@@ -6,7 +6,8 @@
 template <typename T, typename InputIterator>
 jlcxx::Array<T> collect(InputIterator begin, InputIterator end) {
   jlcxx::Array<T> jlarr;
-  while (begin != end) jlarr.push_back(*begin++);
+  InputIterator it = begin;
+  while (it != end) jlarr.push_back(*it++);
   return jlarr;
 }
 
