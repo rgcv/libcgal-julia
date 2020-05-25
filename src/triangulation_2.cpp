@@ -1,221 +1,255 @@
-#include <vector>
-
-#include <CGAL/Delaunay_triangulation_2.h>
-#include <CGAL/Delaunay_triangulation_adaptation_traits_2.h>
-#include <CGAL/Delaunay_triangulation_adaptation_policies_2.h>
-#include <CGAL/Voronoi_diagram_2.h>
-
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
 
 #include <julia.h>
 
-#include "kernel.hpp"
 #include "macros.hpp"
-#include "io.hpp"
+#include "triangulation.hpp"
+#include "utils.hpp"
 
-using K = Kernel;
+#define WRAP_TRIANGULATION(T, JT) \
+  /* Creation */ \
+  CTOR(const T&) \
+  .METHOD(T, swap) \
+  /* Access Functions */ \
+  .METHOD(T, dimension) \
+  .METHOD(T, number_of_faces) \
+  .METHOD(T, number_of_vertices) \
+  /* Queries */ \
+  .method("locate", [](const T& t, const T::Point& query) { \
+    T::Face_handle fh = t.locate(query); \
+    return fh != nullptr ? \
+      (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
+      jl_nothing; \
+  }) \
+  .method("inexact_locate", [](const T& t, const T::Point& query) { \
+    T::Face_handle fh = t.inexact_locate(query); \
+    return fh != nullptr ? \
+      (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
+      jl_nothing; \
+  }) \
+  /* Modifiers */ \
+  OVERRIDE_BASE(cgal, JT) \
+  .method("empty!", &T::clear) \
+  .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) { \
+    t.insert(ps.begin(), ps.end()); \
+    return t; \
+  }) \
+  .method("push!", [](T& t, const T::Point& p) { \
+    t.push_back(p); \
+    return t; \
+  }) \
+  UNSET_OVERRIDE(cgal, JT) \
+  /* Finite Face, Edge and Vertex Iterators */ \
+  .method("vertices", [](const T& t) { \
+    return collect<T::Vertex>(t.vertices_begin(), t.vertices_end()); \
+  }) \
+  .method("edges", [](const T& t) { \
+    return collect<T::Edge>(t.edges_begin(), t.edges_end()); \
+  }) \
+  .method("faces", [](const T& t) { \
+    return collect<T::Face>(t.faces_begin(), t.faces_end()); \
+  }) \
+  .method("points", [](const T& t) { \
+    return collect<T::Point>(t.points_begin(), t.points_end()); \
+  }) \
+  /* All Face, Edge and Vertex Iterators */ \
+  .method("all_vertices", [](const T& t) { \
+    return collect<T::Vertex>(t.all_vertices_begin(), t.all_vertices_end()); \
+  }) \
+  .method("all_edges", [](const T& t) { \
+    return collect<T::Edge>(t.all_edges_begin(), t.all_edges_end()); \
+  }) \
+  .method("all_faces", [](const T& t) { \
+    return collect<T::Face>(t.all_faces_begin(), t.all_faces_end()); \
+  }) \
+  /* Line Face Circulator */ \
+  .method("line_walk", [](const T& t, const T::Point& p, const T::Point& q) { \
+    return collect<T::Face>(t.line_walk(p, q)); \
+  }) \
+  /* Traversal Between Adjacent Faces */ \
+  .METHOD(T, mirror_edge) \
+  /* Miscellaneous */ \
+  .UNAMBIG_METHOD(T::Segment, T, segment, const T::Edge&) \
+  /* Checking */ \
+  .METHOD(T, is_valid)
 
-using Triangulation = CGAL::Triangulation_2<K>;
+namespace jlcxx {
+  template<> struct SuperType<CTr::Edge>   { using type = CTr::Triangulation::Edge; };
+  template<> struct SuperType<CTr::Face>   { using type = CTr::Triangulation::Face; };
+  template<> struct SuperType<CTr::Vertex> { using type = CTr::Triangulation::Vertex; };
 
-using T_Edge   = Triangulation::Edge;
-using T_Face   = Triangulation::Face;
-using T_Vertex = Triangulation::Vertex;
+  template<> struct SuperType<CDTr> { using type = CTr; };
 
-using DT = CGAL::Delaunay_triangulation_2<K>;
-using AT = CGAL::Delaunay_triangulation_adaptation_traits_2<DT>;
-using AP = CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DT>;
-using VD = CGAL::Voronoi_diagram_2<DT, AT, AP>;
+  template<> struct SuperType<DTr>  { using type = Tr; };
 
-using VD_Face     = VD::Face;
-using VD_Halfedge = VD::Halfedge;
-using VD_Site     = VD::Site_2;
-using VD_Vertex   = VD::Vertex;
-
-template <typename T, typename Iterator>
-jlcxx::Array<T> collect(Iterator begin, Iterator end) {
-  jlcxx::Array<T> jlarr;
-  for (auto it = begin; it != end; ) jlarr.push_back(*(it++));
-  return jlarr;
+  template<> struct SuperType<RTr::Edge>   { using type = RTr::Triangulation_base::Edge; };
+  template<> struct SuperType<RTr::Face>   { using type = RTr::Triangulation_base::Face; };
+  template<> struct SuperType<RTr::Vertex> { using type = RTr::Triangulation_base::Vertex; };
 }
 
-template<typename T, typename Circulator>
-jlcxx::Array<T> collect(Circulator begin) {
-  jlcxx::Array<T> jlarr;
-  Circulator cc = begin;
-  do jlarr.push_back(*(cc++)); while(cc != begin);
-  return jlarr;
-}
+void wrap_triangulation_2(jlcxx::Module& cgal) {
+  const std::string tr_name = "Triangulation2";
+  auto tr      = cgal.add_type<Tr>        (tr_name);
+  auto tedge   = cgal.add_type<Tr::Edge>  (tr_name + "Edge");
+  auto tface   = cgal.add_type<Tr::Face>  (tr_name + "Face");
+  auto tvertex = cgal.add_type<Tr::Vertex>(tr_name + "Vertex");
 
-struct Handle_visitor {
-  using result_type = jl_value_t*;
+  const std::string ctr_name = "Constrained" + tr_name;
+  cgal.add_type<CTr::Triangulation>(ctr_name + "Base");
+  auto ctr      = cgal.add_type<CTr>        (ctr_name);
+  auto ctedge   = cgal.add_type<CTr::Edge>  (ctr_name + "Edge",   tedge.dt());
+  auto ctface   = cgal.add_type<CTr::Face>  (ctr_name + "Face",   tface.dt());
+  auto ctvertex = cgal.add_type<CTr::Vertex>(ctr_name + "Vertex", tvertex.dt());
 
-  template <typename Handle>
-  result_type operator()(const Handle& h) const {
-    return jlcxx::box<typename Handle::value_type>(*h);
-  }
-};
+  auto cdtr = cgal.add_type<CDTr>("ConstrainedDelaunay" + tr_name, ctr.dt());
 
-void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
-  auto tedge      = cgal.add_type<T_Edge>     ("TriangulationEdge");
-  auto tface      = cgal.add_type<T_Face>     ("TriangulationFace");
-  auto tvertex    = cgal.add_type<T_Vertex>   ("TriangulationVertex");
+  const std::string dtr_name = "Delaunay" + tr_name;
+  auto dtr = cgal.add_type<DTr>(dtr_name, tr.dt());
 
-  auto vdface     = cgal.add_type<VD_Face>    ("VoronoiFace");
-  auto vdhalfedge = cgal.add_type<VD_Halfedge>("VoronoiHalfedge");
-  auto vdvertex   = cgal.add_type<VD_Vertex>  ("VoronoiVertex");
-  auto voronoi    = cgal.add_type<VD>         ("VoronoiDiagram");
-
-  auto delaunay   = cgal.add_type<DT>         ("DelaunayTriangulation");
+  const std::string rtr_name = "Regular" + tr_name;
+  cgal.add_type<RTr::Triangulation_base>(rtr_name + "Base");
+  auto rtr      = cgal.add_type<RTr>        (rtr_name);
+  auto rtedge   = cgal.add_type<RTr::Edge>  (rtr_name + "Edge",   tedge.dt());
+  auto rtface   = cgal.add_type<RTr::Face>  (rtr_name + "Face",   tface.dt());
+  auto rtvertex = cgal.add_type<RTr::Vertex>(rtr_name + "Vertex", tvertex.dt());
 
   tvertex
-    .METHOD(T_Vertex, degree)
-    .UNAMBIG_METHOD(const Point_2&, T_Vertex, point)
+    .METHOD(Tr::Vertex, degree)
+    .UNAMBIG_METHOD(const Tr::Point&, Tr::Vertex, point)
     ;
 
-  vdface
-    OVERRIDE_BASE(cgal, vdface)
-    .BINARY_OP_SELF(VD_Face, ==)
-    .BINARY_OP_SELF(VD_Face,  <)
-    UNSET_OVERRIDE(cgal, vdface)
-    .method("dual", [](const VD_Face& f) { return *(f.dual()); })
-    .method("halfedge", [](const VD_Face& f) { return *(f.halfedge()); })
-    .method("is_halfedge_on_ccb", [](const VD_Face& f, const VD_Halfedge& hf) {
-      return f.is_halfedge_on_ccb(VD::Halfedge_handle(hf));
+  tface
+    .METHOD(Tr::Face, dimension)
+    .METHOD(Tr::Face, is_valid)
+    .method("neighbor", [](const Tr::Face& f, int i) {
+      return *f.neighbor(i - 1);
     })
-    .METHOD(VD_Face, is_unbounded)
-    .METHOD(VD_Face, is_valid)
-    ;
-
-  vdvertex
-    OVERRIDE_BASE(cgal, vdvertex)
-    .BINARY_OP_SELF(VD_Vertex, ==)
-    .BINARY_OP_SELF(VD_Vertex,  <)
-    UNSET_OVERRIDE(cgal, vdvertex)
-    .METHOD(VD_Vertex, degree)
-    .method("dual", [](const VD_Vertex& v) { return *(v.dual()); })
-    .method("halfedge", [](const VD_Vertex& v) { return *(v.halfedge()); })
-    .method("incident_halfedges", [](const VD_Vertex& v) {
-      return collect<VD_Halfedge>(v.incident_halfedges());
-    })
-    .method("is_incident_edge", [](const VD_Vertex& v, const VD_Halfedge& hf) {
-      return v.is_incident_edge(VD::Halfedge_handle(hf));
-    })
-    .method("is_incident_face", [](const VD_Vertex& v, const VD_Face& f) {
-      return v.is_incident_face(VD::Face_handle(f));
-    })
-    .METHOD(VD_Vertex, is_valid)
-    .METHOD(VD_Vertex, point)
-    ;
-
-  vdhalfedge
-    OVERRIDE_BASE(cgal, vdhalfedge)
-    .BINARY_OP_SELF(VD_Halfedge, ==)
-    .BINARY_OP_SELF(VD_Halfedge,  <)
-    UNSET_OVERRIDE(cgal, vdhalfedge)
-    .METHOD(VD_Halfedge, has_source)
-    .METHOD(VD_Halfedge, has_target)
-    .METHOD(VD_Halfedge, is_bisector)
-    .METHOD(VD_Halfedge, is_unbounded)
-    .METHOD(VD_Halfedge, is_ray)
-    .METHOD(VD_Halfedge, is_segment)
-    .method("next", [](const VD_Halfedge& hf) { return *(hf.next()); })
-    .method("previous", [](const VD_Halfedge& hf) { return *(hf.previous()); })
-    .method("source", [](const VD_Halfedge& hf) {
-      return hf.has_source() ?
-        (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.source())) :
-        jl_nothing;
-    })
-    .method("target", [](const VD_Halfedge& hf) {
-      return hf.has_target() ?
-        (jl_value_t*)jlcxx::box<VD_Vertex>(*(hf.target())) :
-        jl_nothing;
+    .method("vertex", [](const Tr::Face& f, int i) {
+      return *f.vertex(i - 1);
     })
     ;
 
-  voronoi
-    OVERRIDE_BASE(cgal, voronoi)
-    .method("empty!", &VD::clear)
-    .method("insert!", [](VD& vd, jlcxx::ArrayRef<Point_2> ps) {
-      vd.insert(ps.begin(), ps.end());
-      return vd;
-    })
-    .method("push!", [](VD& vd, const Point_2& p) {
-      vd.insert(p);
-      return vd;
-    })
-    UNSET_OVERRIDE(cgal, voronoi)
-    .method("dual", [](const VD& vd) { return vd.dual(); })
-    .METHOD(VD, is_valid)
-    .METHOD(VD, number_of_faces)
-    .METHOD(VD, number_of_halfedges)
-    .METHOD(VD, number_of_vertices)
-    .method("edges", [](const VD& vd) {
-      return collect<VD_Halfedge>(vd.edges_begin(), vd.edges_end());
-    })
-    .method("finite_edges", [](const VD& vd) {
-      jl_array_t* ja = jl_alloc_array_1d(jl_array_any_type, 0);
-      JL_GC_PUSH1(&ja);
-
-      auto&& dt = vd.dual();
-      for (auto eit = dt.finite_edges_begin(); eit != dt.finite_edges_end();) {
-        CGAL::Object o = dt.dual(*(eit++));
-        if (const Line_2* l = CGAL::object_cast<Line_2>(&o)) {
-          jl_array_ptr_1d_push(ja, jlcxx::box<Line_2>(*l));
-        } else if (const Ray_2* r = CGAL::object_cast<Ray_2>(&o)) {
-          jl_array_ptr_1d_push(ja, jlcxx::box<Ray_2>(*r));
-        } else if (const Segment_2* s = CGAL::object_cast<Segment_2>(&o)) {
-          jl_array_ptr_1d_push(ja, jlcxx::box<Segment_2>(*s));
-        }
-      }
-
-      JL_GC_POP();
-      return (jl_value_t*)ja;
-    })
-    .method("locate", [](const VD& vd, const Point_2& p) {
-      return boost::apply_visitor(Handle_visitor(), vd.locate(p));
-    })
-    .method("sites", [](const VD& vd) {
-      return collect<VD_Site>(vd.sites_begin(), vd.sites_end());
-    })
-    .method("vertices", [](const VD& vd) {
-      return collect<VD_Vertex>(vd.vertices_begin(), vd.vertices_end());
+  tr
+    .WRAP_TRIANGULATION(Tr, tr)
+    .method(tr_name, [](jlcxx::ArrayRef<Tr::Point> ps) {
+      return jlcxx::create<Tr>(ps.begin(), ps.end());
     })
     ;
 
-  delaunay
-    .CTOR(const DT&)
-    OVERRIDE_BASE(cgal, delaunay)
-    .method("insert!", [](DT& dt, jlcxx::ArrayRef<Point_2> ps) {
+  ctr
+    .WRAP_TRIANGULATION(CTr, ctr)
+    // Queries
+    .METHOD(CTr, is_constrained)
+    .method("constrained_edges", [](const CTr& ct) {
+      return collect<CTr::Edge>(ct.constrained_edges_begin(),
+                                ct.constrained_edges_end());
+    })
+    .method("insert_constraint", CAST_METHOD(void, CTr, insert_constraint,,
+                                                        const CTr::Point&,
+                                                        const CTr::Point&))
+    .method("insert_constraint", [](CTr& ct, jlcxx::ArrayRef<CTr::Point> ps) {
+      ct.insert_constraint(ps.begin(), ps.end());
+    })
+    ;
+
+  cdtr
+    // Creation
+    .CTOR(const CDTr&)
+    // Insertion and Removal
+    OVERRIDE_BASE(cgal, cdtr)
+    .method("insert!", [](CDTr& cdtr, jlcxx::ArrayRef<CDTr::Point> ps) {
+      cdtr.insert(ps.begin(), ps.end());
+      return cdtr;
+    })
+    .method("push!", [](CDTr& cdtr, const CDTr::Point& p) {
+      cdtr.push_back(p);
+      return cdtr;
+    })
+    UNSET_OVERRIDE(cgal, cdtr)
+    // Miscellaneous
+    .METHOD(CDTr, is_valid)
+    ;
+
+  dtr
+    // Creation
+    .CTOR(const DTr&)
+    .method(dtr_name, [](jlcxx::ArrayRef<DTr::Point> ps) {
+      return jlcxx::create<DTr>(ps.begin(), ps.end());
+    })
+    // Insertion and Removal
+    OVERRIDE_BASE(cgal, dtr)
+    .method("insert!", [](DTr& dt, jlcxx::ArrayRef<DTr::Point> ps) {
       dt.insert(ps.begin(), ps.end());
       return dt;
     })
-    .method("push!", [](DT& dt, const Point_2& p) {
+    .method("push!", [](DTr& dt, const DTr::Point& p) {
       dt.push_back(p);
       return dt;
     })
-    UNSET_OVERRIDE(cgal, delaunay)
-    .method("all_edges", [](const DT& dt) {
-      return collect<T_Edge>(dt.all_edges_begin(), dt.all_edges_end());
+    UNSET_OVERRIDE(cgal, dtr)
+    // Queries
+    .method("nearest_vertex", [](const DTr& dt, const DTr::Point& p) {
+      return *dt.nearest_vertex(p);
     })
-    .method("edges", [](const DT& dt) {
-      return collect<T_Edge>(dt.edges_begin(), dt.edges_end());
+    // Voronoi Diagram
+    .method("dual", [](const DTr& dt, const Tr::Edge& e) {
+      auto&& o = dt.dual(e);
+
+      if (const Line_2* l = CGAL::object_cast<Line_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Line_2>(*l);
+      } else if (const Ray_2* r = CGAL::object_cast<Ray_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Ray_2>(*r);
+      } else if (const Segment_2* s = CGAL::object_cast<Segment_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Segment_2>(*s);
+      }
+
+      return jl_nothing; // unreachable
     })
-    .method("finite_edges", [](const DT& dt) {
-      return collect<T_Edge>(dt.finite_edges_begin(), dt.finite_edges_end());
+    // Miscellaneous
+    .METHOD(DTr, is_valid)
+    ;
+
+  rtvertex
+    .UNAMBIG_METHOD(const RTr::Point&, RTr::Vertex, point)
+    .METHOD(RTr::Vertex, is_hidden)
+    .METHOD(RTr::Vertex, set_hidden)
+    ;
+
+  rtr
+    .WRAP_TRIANGULATION(RTr, rtr)
+    .method(rtr_name, [](jlcxx::ArrayRef<RTr::Point> ps) {
+      return jlcxx::create<RTr>(ps.begin(), ps.end());
     })
-    .METHOD(DT, is_valid)
-    .method("locate", [](const DT& dt, const Point_2& p) {
-      auto&& fh = dt.locate(p);
-      return fh != nullptr ?
-        (jl_value_t*)jlcxx::box<T_Face>(*fh) :
-        jl_nothing;
+    // Queries
+    .method("nearest_power_vertex", [](const RTr& rt, const RTr::Bare_point& p) {
+      return *rt.nearest_power_vertex(p);
     })
-    .method("points", [](const DT& dt) {
-      return collect<Point_2>(dt.points_begin(), dt.points_end());
+    // Access Functions
+    .METHOD(RTr, number_of_hidden_vertices)
+    .method("hidden_vertices", [](const RTr& rt) {
+      return collect<RTr::Vertex>(rt.hidden_vertices_begin(),
+                                  rt.hidden_vertices_end());
     })
-    .method("segment", [](const DT& dt, const T_Edge& e) {
-      return dt.segment(e);
+    .method("finite_vertices", [](const RTr& rt) {
+      return collect<RTr::Vertex>(rt.finite_vertices_begin(),
+                                  rt.finite_vertices_end());
+    })
+    // Dual Power Diagram
+    .method("dual", [](const RTr& rt, const RTr::Edge& e) {
+      auto&& o = rt.dual(e);
+
+      if (const Line_2* l = CGAL::object_cast<Line_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Line_2>(*l);
+      } else if (const Ray_2* r = CGAL::object_cast<Ray_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Ray_2>(*r);
+      } else if (const Segment_2* s = CGAL::object_cast<Segment_2>(&o)) {
+        return (jl_value_t*)jlcxx::box<Segment_2>(*s);
+      }
+
+      return jl_nothing; // unreachable
     })
     ;
 }
+
+#undef WRAP_TRIANGULATION

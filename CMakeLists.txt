@@ -50,6 +50,7 @@ set(CGAL_JL_SOURCES
   src/kernel/vector_3.cpp
   src/kernel/weighted_point_3.cpp
   src/global_kernel_functions.cpp
+  src/triangulation_2.cpp
   src/voronoi_delaunay.cpp
   src/cgal_julia.cpp
 )
