@@ -186,7 +186,10 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       vd.insert(ps.begin(), ps.end());
       return vd;
     })
-    .method("empty!", &VD::clear) // Misc
+    .method("empty!", (VD& vd) {
+      vd.clear();
+      return vd;
+    }) // Misc
     UNSET_OVERRIDE(cgal, vd)
     // Queries
     .method("locate", [](const VD& vd, const VD::Point_2& p) {

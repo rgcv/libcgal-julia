@@ -29,7 +29,10 @@
   }) \
   /* Modifiers */ \
   OVERRIDE_BASE(cgal, JT) \
-  .method("empty!", &T::clear) \
+  .method("empty!", [](T& t) { \
+    t.clear(); \
+    return t; \
+  }) \
   .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) { \
     t.insert(ps.begin(), ps.end()); \
     return t; \
