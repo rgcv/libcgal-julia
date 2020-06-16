@@ -186,7 +186,7 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       vd.insert(ps.begin(), ps.end());
       return vd;
     })
-    .method("empty!", (VD& vd) {
+    .method("empty!", [](VD& vd) {
       vd.clear();
       return vd;
     }) // Misc
