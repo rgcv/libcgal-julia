@@ -3,7 +3,6 @@
 #include <CGAL/Voronoi_diagram_2.h>
 
 #include <jlcxx/module.hpp>
-#include <jlcxx/type_conversion.hpp>
 
 #include <julia.h>
 

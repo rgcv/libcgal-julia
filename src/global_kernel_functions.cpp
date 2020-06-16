@@ -6,7 +6,6 @@
 #include <CGAL/Kernel/global_functions.h>
 
 #include <jlcxx/module.hpp>
-#include <jlcxx/type_conversion.hpp>
 
 #include <julia.h>
 
