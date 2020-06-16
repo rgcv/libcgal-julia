@@ -93,7 +93,7 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .METHOD(VD::Vertex, degree)
     .METHOD(VD::Vertex, point)
     .method("dual", [](const VD::Vertex& v) { return *v.dual(); })
-    .method("site", [](const VD::Vertex& v, unsigned int i) {
+    .method("site", [](const VD::Vertex& v, const jlcxx::cxxint_t i) {
       return *v.site(i - 1);
     })
     .method("incident_halfedges", [](const VD::Vertex& v) {

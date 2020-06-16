@@ -124,10 +124,10 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
   tface
     .METHOD(Tr::Face, dimension)
     .METHOD(Tr::Face, is_valid)
-    .method("neighbor", [](const Tr::Face& f, int i) {
+    .method("neighbor", [](const Tr::Face& f, const jlcxx::cxxint_t i) {
       return *f.neighbor(i - 1);
     })
-    .method("vertex", [](const Tr::Face& f, int i) {
+    .method("vertex", [](const Tr::Face& f, const jlcxx::cxxint_t i) {
       return *f.vertex(i - 1);
     })
     ;
