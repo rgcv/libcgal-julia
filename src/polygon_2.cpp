@@ -98,12 +98,13 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
 
   const std::string poly_2_w_holes_name = "PolygonWithHoles2";
   auto poly_2_w_holes = cgal.add_type<Polygon_with_holes_2>(poly_2_w_holes_name)
-    // Creation
+    // Public Member Functions
     .CTOR(const Polygon_2&)
     .method(poly_2_w_holes_name, [](const Polygon_2& outer,
                                     jlcxx::ArrayRef<Polygon_2> ps) {
       return Polygon_with_holes_2(outer, ps.begin(), ps.end());
     })
+    .METHOD(Polygon_with_holes_2, bbox)
     // Predicates
     .METHOD(Polygon_with_holes_2, is_unbounded)
     // Access Functions
@@ -111,6 +112,8 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     .method("holes", [](const Polygon_with_holes_2& poly) {
       return collect<Polygon_2>(poly.holes_begin(), poly.holes_end());
     })
+    // Related Functions
+    .REPR(Polygon_with_holes_2)
     ;
 }
 
