@@ -38,6 +38,8 @@ void wrap_triangle_2(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_2>&);
 void wrap_vector_2(jlcxx::Module&, jlcxx::TypeWrapper<Vector_2>&);
 void wrap_weighted_point_2(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_2>&);
 
+void wrap_circular_arc_2(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_2>&);
+
 void wrap_aff_transformation_3(jlcxx::Module&, jlcxx::TypeWrapper<Aff_transformation_3>&);
 void wrap_bbox_3(jlcxx::Module&, jlcxx::TypeWrapper<Bbox_3>&);
 void wrap_circle_3(jlcxx::Module&, jlcxx::TypeWrapper<Circle_3>&);
@@ -70,7 +72,8 @@ void wrap_kernel(jlcxx::Module& cgal) {
     ;
 #endif
 
-  // 2D
+  /// 2D
+  // Linear
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
   auto bbox_2               = cgal.add_type<Bbox_2>              ("Bbox2");
   auto circle_2             = cgal.add_type<Circle_2>            ("Circle2");
@@ -97,7 +100,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_triangle_2(cgal, triangle_2);
   wrap_weighted_point_2(cgal, weighted_point_2);
 
-  // 3D
+  // Circular
+  auto circular_arc_2 = cgal.add_type<Circular_arc_2>("CircularArc2");
+
+  wrap_circular_arc_2(cgal, circular_arc_2);
+
+  /// 3D
   auto aff_transformation_3 = cgal.add_type<Aff_transformation_3>("AffTransformation3");
   auto bbox_3               = cgal.add_type<Bbox_3>              ("Bbox3");
   auto circle_3             = cgal.add_type<Circle_3>            ("Circle3");

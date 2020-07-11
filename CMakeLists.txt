@@ -22,6 +22,7 @@ set(CGAL_JL_SOURCES
   src/enum.cpp
   src/algebra.cpp
   src/kernel.cpp
+
   src/kernel/aff_transformation_2.cpp
   src/kernel/bbox_2.cpp
   src/kernel/circle_2.cpp
@@ -34,6 +35,9 @@ set(CGAL_JL_SOURCES
   src/kernel/triangle_2.cpp
   src/kernel/vector_2.cpp
   src/kernel/weighted_point_2.cpp
+
+  src/kernel/circular_arc_2.cpp
+
   src/kernel/aff_transformation_3.cpp
   src/kernel/bbox_3.cpp
   src/kernel/circle_3.cpp

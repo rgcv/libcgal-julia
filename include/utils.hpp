@@ -4,7 +4,8 @@
 #include <jlcxx/type_conversion.hpp>
 
 template <typename T, typename InputIterator>
-jlcxx::Array<T> collect(InputIterator begin, InputIterator end) {
+jlcxx::Array<T>
+collect(InputIterator begin, InputIterator end) {
   jlcxx::Array<T> jlarr;
   InputIterator it = begin;
   while (it != end) {
@@ -15,7 +16,8 @@ jlcxx::Array<T> collect(InputIterator begin, InputIterator end) {
 }
 
 template<typename T, typename InputCirculator>
-jlcxx::Array<T> collect(InputCirculator begin) {
+jlcxx::Array<T>
+collect(InputCirculator begin) {
   jlcxx::Array<T> jlarr;
   InputCirculator cc = begin;
   do jlarr.push_back(*cc); while(++cc != begin);
