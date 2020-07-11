@@ -36,7 +36,7 @@
 
 #define CK_INTERSECTION(T1, T2) \
   cgal.PFUNC(, intersection, ck_intersection, T1, T2, CK::T1, CK::T2); \
-  cgal.PFUNC(, intersection, ck_intersection, T2, T1, CK::T2, CK::T1);
+  cgal.PFUNC(, intersection, ck_intersection, T2, T1, CK::T2, CK::T1)
 #define CK_INTERSECTION_SELF(T) \
   cgal.PFUNC(, intersection, ck_intersection, T, T, CK::T, CK::T)
 
@@ -103,7 +103,7 @@ struct Intersection_visitor {
   result_type
   operator()(const std::pair<Circular_arc_point_2, unsigned>& p) const {
     return jlcxx::box<Point_2>(To_linear<Circular_arc_point_2>()(p.first));
-
+  }
 
   result_type
   operator()(const CK::Circle_2& cc) const {
