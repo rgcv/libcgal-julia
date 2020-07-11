@@ -12,7 +12,7 @@
 template<typename T>
 inline
 const std::string repr(const T &t) {
-  std::ostringstream oss;
+  std::ostringstream oss("");
   CGAL::set_pretty_mode(oss);
   oss << t;
   return oss.str();
