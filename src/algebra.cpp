@@ -5,7 +5,7 @@
 #include "macros.hpp"
 #include "kernel.hpp"
 
-using NT = Kernel::FT;
+typedef Kernel::FT NT;
 
 void wrap_algebra(jlcxx::Module& cgal) {
   // missing functions that involve EuclideanRing concept:
@@ -14,6 +14,9 @@ void wrap_algebra(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
   CGAL_GLOBAL_FUNCTION(NT, abs, const NT&);
   CGAL_GLOBAL_FUNCTION(NT, sqrt, const NT&);
+  cgal.method("iszero", &CGAL::is_zero<NT>);
+  cgal.method("isone", &CGAL::is_one<NT>);
+  cgal.method("float", &CGAL::to_double<NT>);
 #endif
   CGAL_GLOBAL_FUNCTION(CGAL::Sign, sign, const NT&);
   UNSET_OVERRIDE(cgal,);
@@ -24,10 +27,8 @@ void wrap_algebra(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, is_positive, const NT&);
   CGAL_GLOBAL_FUNCTION(bool, is_square, const NT&);
   CGAL_GLOBAL_FUNCTION(bool, is_square, const NT&, NT&);
-  CGAL_GLOBAL_FUNCTION(bool, is_zero, const NT&);
   // no matching method for given NT
   //GLOBAL_FUNCTION(void, simplify, const NT&);
-  CGAL_GLOBAL_FUNCTION(double, to_double, const NT&);
   cgal.method("to_interval", [](const NT& nt) {
       auto pair = CGAL::to_interval(nt);
       return std::make_tuple(pair.first, pair.second);
