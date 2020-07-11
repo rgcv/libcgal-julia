@@ -56,6 +56,8 @@ void wrap_triangle_3(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_3>&);
 void wrap_vector_3(jlcxx::Module&, jlcxx::TypeWrapper<Vector_3>&);
 void wrap_weighted_point_3(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_3>&);
 
+void wrap_circular_arc_3(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_3>&);
+
 void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"))
@@ -106,6 +108,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_circular_arc_2(cgal, circular_arc_2);
 
   /// 3D
+  //Linear
   auto aff_transformation_3 = cgal.add_type<Aff_transformation_3>("AffTransformation3");
   auto bbox_3               = cgal.add_type<Bbox_3>              ("Bbox3");
   auto circle_3             = cgal.add_type<Circle_3>            ("Circle3");
@@ -137,4 +140,9 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_triangle_3(cgal, triangle_3);
   wrap_vector_3(cgal, vector_3);
   wrap_weighted_point_3(cgal, weighted_point_3);
+
+  // Spherical
+  auto circular_arc_3 = cgal.add_type<Circular_arc_3>("CircularArc3");
+
+  wrap_circular_arc_3(cgal, circular_arc_3);
 }

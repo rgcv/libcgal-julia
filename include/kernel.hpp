@@ -4,7 +4,9 @@
 #include <exception>
 
 #include <CGAL/Algebraic_kernel_for_circles_2_2.h>
+#include <CGAL/Algebraic_kernel_for_spheres_2_3.h>
 #include <CGAL/Circular_kernel_2.h>
+#include <CGAL/Spherical_kernel_3.h>
 
 /// Kernel
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
@@ -16,7 +18,9 @@ typedef CGAL::Exact_predicates_inexact_constructions_kernel Linear_kernel;
 #endif
 
 typedef CGAL::Algebraic_kernel_for_circles_2_2<Linear_kernel::RT> Algebraic_kernel_2;
+typedef CGAL::Algebraic_kernel_for_spheres_2_3<Linear_kernel::RT> Algebraic_kernel_3;
 typedef CGAL::Circular_kernel_2<Linear_kernel, Algebraic_kernel_2> Circular_kernel;
+typedef CGAL::Spherical_kernel_3<Linear_kernel, Algebraic_kernel_3> Spherical_kernel;
 
 typedef Linear_kernel Kernel;
 
@@ -59,6 +63,10 @@ typedef Kernel::Tetrahedron_3        Tetrahedron_3;
 typedef Kernel::Triangle_3           Triangle_3;
 typedef Kernel::Vector_3             Vector_3;
 typedef Kernel::Weighted_point_3     Weighted_point_3;
+// Spherical
+typedef Spherical_kernel::Line_arc_3     Line_arc_3;
+typedef Spherical_kernel::Circular_arc_3 Circular_arc_3;
+typedef Spherical_kernel::Circular_arc_point_3 Circular_arc_point_3;
 
 template <typename T1, typename T2>
 auto safe_division(const T1& t1, const T2& t2) -> decltype(t1/t2) {
