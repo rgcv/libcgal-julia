@@ -56,7 +56,11 @@ set(CGAL_JL_SOURCES
 
   src/kernel/circular_arc_3.cpp
  
+  src/global_kernel_functions/global_lk_functions.cpp
+  src/global_kernel_functions/global_ck_functions.cpp
+  src/global_kernel_functions/global_sk_functions.cpp
   src/global_kernel_functions.cpp
+  
   src/convex_hull_2.cpp
   src/principal_component_analysis.cpp
   src/polygon_2.cpp
