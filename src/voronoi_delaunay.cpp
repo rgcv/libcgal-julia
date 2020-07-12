@@ -29,11 +29,9 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .BINARY_OP_SELF(VD::Face,  <)
     UNSET_OVERRIDE(cgal, vdface)
     // Access Methods
-    .method("halfedge", [](const VD::Face& f) { return *f.halfedge(); })
-    .method("ccb", [](const VD::Face& f) {
-      return collect<VD::Halfedge>(f.ccb());
-    })
-    .method("dual", [](const VD::Face& f) { return *f.dual();     })
+    .method("halfedge", [](const VD::Face& f) { return *f.halfedge();    })
+    .method("ccb",      [](const VD::Face& f) { return collect(f.ccb()); })
+    .method("dual",     [](const VD::Face& f) { return *f.dual();        })
     // Predicate Methods
     .METHOD(VD::Face, is_unbounded)
     .method("is_halfedge_on_ccb", [](const VD::Face& f, const VD::Halfedge& hf) {
@@ -65,7 +63,7 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
         jl_nothing;
     })
     .method("ccb", [](const VD::Halfedge he) {
-      return collect<VD::Halfedge>(he.ccb());
+      return collect(he.ccb());
     })
     .METHOD(VD::Halfedge, dual)
     .method("up",    [](const VD::Halfedge he) { return *he.up();    })
@@ -97,10 +95,11 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
       return *v.site(i - 1);
     })
     .method("incident_halfedges", [](const VD::Vertex& v) {
-      return collect<VD::Halfedge>(v.incident_halfedges());
+      return collect(v.incident_halfedges());
     })
     // Predicate Methods
-    .method("is_incident_edge", [](const VD::Vertex& v, const VD::Halfedge& hf) {
+    .method("is_incident_edge", [](const VD::Vertex& v,
+                                   const VD::Halfedge& hf) {
       return v.is_incident_edge(VD::Halfedge_handle(hf));
     })
     .method("is_incident_face", [](const VD::Vertex& v, const VD::Face& f) {
@@ -125,56 +124,51 @@ void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
     .METHOD(VD, number_of_connected_components)
     // "Iterators"
     .method("faces", [](const VD& vd) {
-      return collect<VD::Face>(vd.faces_begin(), vd.faces_end());
+      return collect(vd.faces_begin(), vd.faces_end());
     })
     .method("unbounded_faces", [](const VD& vd) {
-      return collect<VD::Face>(vd.unbounded_faces_begin(),
-                               vd.unbounded_faces_end());
+      return collect(vd.unbounded_faces_begin(), vd.unbounded_faces_end());
     })
     .method("bounded_faces", [](const VD& vd) {
-      return collect<VD::Face>(vd.bounded_faces_begin(),
-                               vd.bounded_faces_end());
+      return collect(vd.bounded_faces_begin(), vd.bounded_faces_end());
     })
     .method("edges", [](const VD& vd) {
-      return collect<VD::Halfedge>(vd.edges_begin(),
-                                   vd.edges_end());
+      return collect(vd.edges_begin(), vd.edges_end());
     })
     .method("halfedges", [](const VD& vd) {
-      return collect<VD::Halfedge>(vd.halfedges_begin(),
-                                   vd.halfedges_end());
+      return collect(vd.halfedges_begin(), vd.halfedges_end());
     })
     .method("unbounded_halfedges", [](const VD& vd) {
-      return collect<VD::Halfedge>(vd.unbounded_halfedges_begin(),
-                                   vd.unbounded_halfedges_end());
+      return collect(vd.unbounded_halfedges_begin(),
+                     vd.unbounded_halfedges_end());
     })
     .method("bounded_halfedges", [](const VD& vd) {
-      return collect<VD::Halfedge>(vd.bounded_halfedges_begin(),
-                                   vd.bounded_halfedges_end());
+      return collect(vd.bounded_halfedges_begin(), vd.bounded_halfedges_end());
     })
     .method("vertices", [](const VD& vd) {
-      return collect<VD::Vertex>(vd.vertices_begin(), vd.vertices_end());
+      return collect(vd.vertices_begin(), vd.vertices_end());
     })
     .method("sites", [](const VD& vd) {
-      return collect<VD::Site_2>(vd.sites_begin(), vd.sites_end());
+      return collect(vd.sites_begin(), vd.sites_end());
     })
     // "Circulators"
     .method("ccb_halfedges", [](const VD& vd, const VD::Face& f) {
-      return collect<VD::Halfedge>(vd.ccb_halfedges(VD::Face_handle(f)));
+      return collect(vd.ccb_halfedges(VD::Face_handle(f)));
     })
     .method("ccb_halfedges", [](const VD& vd,
                                 const VD::Face& f,
                                 const VD::Halfedge& he) {
-      return collect<VD::Halfedge>(vd.ccb_halfedges(VD::Face_handle(f),
-                                                    VD::Halfedge_handle(he)));
+      return collect(vd.ccb_halfedges(VD::Face_handle(f),
+                                      VD::Halfedge_handle(he)));
     })
     .method("incident_halfedges", [](const VD& vd, const VD::Vertex& v) {
-      return collect<VD::Halfedge>(vd.incident_halfedges(VD::Vertex_handle(v)));
+      return collect(vd.incident_halfedges(VD::Vertex_handle(v)));
     })
     .method("incident_halfedges", [](const VD& vd,
                                      const VD::Vertex& v,
                                      const VD::Halfedge& he) {
-      return collect<VD::Halfedge>(
-          vd.incident_halfedges(VD::Vertex_handle(v), VD::Halfedge_handle(he)));
+      return collect(vd.incident_halfedges(VD::Vertex_handle(v),
+                                           VD::Halfedge_handle(he)));
     })
     // Insertion
     OVERRIDE_BASE(cgal, vd)

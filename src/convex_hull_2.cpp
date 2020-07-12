@@ -29,7 +29,7 @@ jlcxx::Array<Point_2>
 ch2(jlcxx::ArrayRef<Point_2> ps) {
   std::vector<Point_2> res;
   F(ps.begin(), ps.end(), std::back_inserter(res));
-  return collect<Point_2>(res.begin(), res.end());
+  return collect(res.begin(), res.end());
 }
 
 template<void (*F)(InIter, InIter, InIter&)>
@@ -79,7 +79,7 @@ void wrap_convex_hull_2(jlcxx::Module& cgal) {
                                     const Point_2& p, const Point_2& q) {
     std::vector<Point_2> res;
     CGAL::ch_jarvis_march(ps.begin(), ps.end(), p, q, std::back_inserter(res));
-    return collect<Point_2>(res.begin(), res.end());
+    return collect(res.begin(), res.end());
   });
 
   CH2(lower_hull_points_2);
@@ -104,4 +104,3 @@ void wrap_convex_hull_2(jlcxx::Module& cgal) {
 #undef CH2
 #undef CH2_EX
 #undef CH2_EX2
-

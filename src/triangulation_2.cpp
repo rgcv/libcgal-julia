@@ -44,30 +44,30 @@
   UNSET_OVERRIDE(cgal, JT) \
   /* Finite Face, Edge and Vertex Iterators */ \
   .method("vertices", [](const T& t) { \
-    return collect<T::Vertex>(t.vertices_begin(), t.vertices_end()); \
+    return collect(t.vertices_begin(), t.vertices_end()); \
   }) \
   .method("edges", [](const T& t) { \
-    return collect<T::Edge>(t.edges_begin(), t.edges_end()); \
+    return collect(t.edges_begin(), t.edges_end()); \
   }) \
   .method("faces", [](const T& t) { \
-    return collect<T::Face>(t.faces_begin(), t.faces_end()); \
+    return collect(t.faces_begin(), t.faces_end()); \
   }) \
   .method("points", [](const T& t) { \
-    return collect<T::Point>(t.points_begin(), t.points_end()); \
+    return collect(t.points_begin(), t.points_end()); \
   }) \
   /* All Face, Edge and Vertex Iterators */ \
   .method("all_vertices", [](const T& t) { \
-    return collect<T::Vertex>(t.all_vertices_begin(), t.all_vertices_end()); \
+    return collect(t.all_vertices_begin(), t.all_vertices_end()); \
   }) \
   .method("all_edges", [](const T& t) { \
-    return collect<T::Edge>(t.all_edges_begin(), t.all_edges_end()); \
+    return collect(t.all_edges_begin(), t.all_edges_end()); \
   }) \
   .method("all_faces", [](const T& t) { \
-    return collect<T::Face>(t.all_faces_begin(), t.all_faces_end()); \
+    return collect(t.all_faces_begin(), t.all_faces_end()); \
   }) \
   /* Line Face Circulator */ \
   .method("line_walk", [](const T& t, const T::Point& p, const T::Point& q) { \
-    return collect<T::Face>(t.line_walk(p, q)); \
+    return collect(t.line_walk(p, q)); \
   }) \
   /* Traversal Between Adjacent Faces */ \
   .METHOD(T, mirror_edge) \
@@ -144,8 +144,7 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
     // Queries
     .METHOD(CTr, is_constrained)
     .method("constrained_edges", [](const CTr& ct) {
-      return collect<CTr::Edge>(ct.constrained_edges_begin(),
-                                ct.constrained_edges_end());
+      return collect(ct.constrained_edges_begin(), ct.constrained_edges_end());
     })
     .method("insert_constraint", CAST_METHOD(void, CTr, insert_constraint,,
                                                         const CTr::Point&,
@@ -230,12 +229,10 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
     // Access Functions
     .METHOD(RTr, number_of_hidden_vertices)
     .method("hidden_vertices", [](const RTr& rt) {
-      return collect<RTr::Vertex>(rt.hidden_vertices_begin(),
-                                  rt.hidden_vertices_end());
+      return collect(rt.hidden_vertices_begin(), rt.hidden_vertices_end());
     })
     .method("finite_vertices", [](const RTr& rt) {
-      return collect<RTr::Vertex>(rt.finite_vertices_begin(),
-                                  rt.finite_vertices_end());
+      return collect(rt.finite_vertices_begin(), rt.finite_vertices_end());
     })
     // Dual Power Diagram
     .method("dual", [](const RTr& rt, const RTr::Edge& e) {

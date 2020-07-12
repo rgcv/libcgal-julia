@@ -51,10 +51,10 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     UNSET_OVERRIDE(cgal, poly_2)
     // Access Functions
     .method("vertices", [](const Polygon_2& poly) {
-      return collect<Point_2>(poly.vertices_begin(), poly.vertices_end());
+      return collect(poly.vertices_begin(), poly.vertices_end());
     })
     .method("edges", [](const Polygon_2& poly) {
-      return collect<Segment_2>(poly.edges_begin(), poly.edges_end());
+      return collect(poly.edges_begin(), poly.edges_end());
     })
     // Predicates
     .METHOD(Polygon_2, is_simple)
@@ -110,10 +110,9 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     // Access Functions
     .UNAMBIG_METHOD(const Polygon_2&, Polygon_with_holes_2, outer_boundary)
     .method("holes", [](const Polygon_with_holes_2& poly) {
-      return collect<Polygon_2>(poly.holes_begin(), poly.holes_end());
+      return collect(poly.holes_begin(), poly.holes_end());
     })
     // Related Functions
     .REPR(Polygon_with_holes_2)
     ;
 }
-
