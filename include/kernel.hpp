@@ -43,8 +43,6 @@ typedef Kernel::Vector_2             Vector_2;
 typedef Kernel::Weighted_point_2     Weighted_point_2;
 // Circular
 typedef Circular_kernel::Circular_arc_2       Circular_arc_2;
-typedef Circular_kernel::Circular_arc_point_2 Circular_arc_point_2;
-typedef Circular_kernel::Line_arc_2           Line_arc_2;
 
 /// 3D Kernel Objects
 // Linear
@@ -64,9 +62,7 @@ typedef Kernel::Triangle_3           Triangle_3;
 typedef Kernel::Vector_3             Vector_3;
 typedef Kernel::Weighted_point_3     Weighted_point_3;
 // Spherical
-typedef Spherical_kernel::Line_arc_3     Line_arc_3;
 typedef Spherical_kernel::Circular_arc_3 Circular_arc_3;
-typedef Spherical_kernel::Circular_arc_point_3 Circular_arc_point_3;
 
 template <typename T1, typename T2>
 auto safe_division(const T1& t1, const T2& t2) -> decltype(t1/t2) {

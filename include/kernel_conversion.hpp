@@ -36,8 +36,8 @@ struct To_linear<SK::Point_3> {
 };
 
 template<>
-struct To_linear<Circular_arc_point_2> {
-  Point_2 operator()(const Circular_arc_point_2& p) {
+struct To_linear<CK::Circular_arc_point_2> {
+  Point_2 operator()(const CK::Circular_arc_point_2& p) const {
     Point_2 lp(p.x(), p.y());
     return lp;
   }
@@ -108,9 +108,9 @@ struct To_circular<CK::Point_2> {
 };
 
 template<>
-struct To_circular<Circular_arc_point_2> {
-  Circular_arc_point_2 operator()(const Point_2& p) {
-    Circular_arc_point_2 cp(To_circular<CK::Point_2>()(p));
+struct To_circular<CK::Circular_arc_point_2> {
+  CK::Circular_arc_point_2 operator()(const Point_2& p) const {
+    CK::Circular_arc_point_2 cp(To_circular<CK::Point_2>()(p));
     return cp;
   }
 };
@@ -141,9 +141,9 @@ struct To_circular<CK::Segment_2> {
 };
 
 template<>
-struct To_circular<Line_arc_2> {
-  Line_arc_2 operator()(const Segment_2& s) {
-    Line_arc_2 la(To_circular<CK::Segment_2>()(s));
+struct To_circular<CK::Line_arc_2> {
+  CK::Line_arc_2 operator()(const Segment_2& s) const {
+    CK::Line_arc_2 la(To_circular<CK::Segment_2>()(s));
     return la;
   }
 };
