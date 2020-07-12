@@ -19,15 +19,12 @@
 #define DO_INTERSECT_SELF(T) \
   cgal.SPFUNC(, do_intersect, T, T)
 
-#define CK_DO_INTERSECT(T1, T2) \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T1, T2, CK::T1, CK::T2); \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T2, T1, CK::T2, CK::T1)
-#define CK_DO_INTERSECT_SELF(T) \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T, T, CK::T, CK::T)
-
 #define CK_DO_INTERSECT_CONVERT(T1, T2, C1, C2) \
   cgal.PFUNC(, do_intersect, ck_do_intersect, T1, T2, C1, C2); \
   cgal.PFUNC(, do_intersect, ck_do_intersect, T2, T1, C2, C1)
+#define CK_DO_INTERSECT(T1, T2) CK_DO_INTERSECT_CONVERT(T1, T2, CK::T1, CK::T2)
+#define CK_DO_INTERSECT_SELF(T) \
+  cgal.PFUNC(, do_intersect, ck_do_intersect, T, T, CK::T, CK::T)
 
 #define INTERSECTION(T1, T2) \
   cgal.SPFUNC(, intersection, T1, T2); \
