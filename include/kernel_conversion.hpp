@@ -78,6 +78,24 @@ struct To_linear<SK::Circle_3> {
 };
 
 template<>
+struct To_linear<SK::Line_3> {
+  Line_3 operator()(const SK::Line_3& l) const {
+    To_linear<SK::Point_3> p2l;
+    Line_3 ll(p2l(l.point(0)), p2l(l.point(1)));
+    return ll;
+  }
+};
+
+template<>
+struct To_linear<SK::Line_arc_3> {
+  Segment_3 operator()(const SK::Line_arc_3& s) const {
+    To_linear<SK::Circular_arc_point_3> p2l;
+    Segment_3 ls(p2l(s.source()), p2l(s.target()));
+    return ls;
+  }
+};
+
+template<>
 struct To_linear<SK::Sphere_3> {
   Sphere_3 operator()(const SK::Sphere_3& s) const {
     To_linear<SK::Point_3> p2l;
