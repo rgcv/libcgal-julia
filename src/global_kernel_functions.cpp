@@ -330,10 +330,10 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   DO_INTERSECT_SELF(Triangle_2);
 
   CK_DO_INTERSECT(Circle_2, Circular_arc_2);
-  CK_DO_INTERSECT_CONVERT(Circle_2, Segment_2, CK::Circle_2, Line_arc_2);
+  CK_DO_INTERSECT_CONVERT(Circle_2, Segment_2, CK::Circle_2, CK::Line_arc_2);
   CK_DO_INTERSECT_SELF(Circular_arc_2);
   CK_DO_INTERSECT(Circular_arc_2, Line_2);
-  CK_DO_INTERSECT_CONVERT(Circular_arc_2, Segment_2, Circular_arc_2, Line_arc_2);
+  CK_DO_INTERSECT_CONVERT(Circular_arc_2, Segment_2, CK::Circular_arc_2, CK::Line_arc_2);
 
   DO_INTERSECT_SELF(Bbox_3);
   DO_INTERSECT(Bbox_3, Iso_cuboid_3);
@@ -428,10 +428,10 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
   CK_INTERSECTION_SELF(Circle_2);
   CK_INTERSECTION(Circle_2, Circular_arc_2);
   CK_INTERSECTION(Circle_2, Line_2);
-  CK_INTERSECTION_CONVERT(Circle_2, Segment_2, CK::Circle_2, Line_arc_2);
+  CK_INTERSECTION_CONVERT(Circle_2, Segment_2, CK::Circle_2, CK::Line_arc_2);
   CK_INTERSECTION_SELF(Circular_arc_2);
   CK_INTERSECTION(Circular_arc_2, Line_2);
-  CK_INTERSECTION_CONVERT(Circular_arc_2, Segment_2, Circular_arc_2, Line_arc_2);
+  CK_INTERSECTION_CONVERT(Circular_arc_2, Segment_2, CK::Circular_arc_2, CK::Line_arc_2);
 
   INTERSECTION_SELF(Point_3);
   INTERSECTION(Point_3, Line_3);
@@ -563,15 +563,15 @@ void wrap_global_kernel_functions(jlcxx::Module& cgal) {
 #undef DO_INTERSECT
 #undef DO_INTERSECT_SELF
 
-#undef CK_DO_INTERSECT
 #undef CK_DO_INTERSECT_CONVERT
+#undef CK_DO_INTERSECT
 #undef CK_DO_INTERSECT_SELF
 
 #undef INTERSECTION
 #undef INTERSECTION_SELF
 
-#undef CK_INTERSECTION
 #undef CK_INTERSECTION_CONVERT
+#undef CK_INTERSECTION
 #undef CK_INTERSECTION_SELF
 
 #undef SQUARED_DISTANCE

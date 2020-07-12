@@ -9,6 +9,8 @@
 #include "kernel_conversion.hpp"
 #include "macros.hpp"
 
+typedef Circular_kernel CK;
+
 void wrap_circular_arc_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Circular_arc_2>& circular_arc_2) {
   const std::string name = jlcxx::julia_type_name(circular_arc_2.dt());
@@ -22,7 +24,7 @@ void wrap_circular_arc_2(jlcxx::Module& kernel,
       return jlcxx::create<Circular_arc_2>(To_circular<CK::Circle_2>()(c));
     })
     .method(name, [](const Circle_2& c, const Point_2& p, const Point_2& q) {
-      To_circular<Circular_arc_point_2> p2c;
+      To_circular<CK::Circular_arc_point_2> p2c;
       return jlcxx::create<Circular_arc_2>(To_circular<CK::Circle_2>()(c),
                                            p2c(p), p2c(q));
     })
@@ -39,16 +41,16 @@ void wrap_circular_arc_2(jlcxx::Module& kernel,
     })
     .METHOD(Circular_arc_2, squared_radius)
     .method("source", [](const Circular_arc_2& ca) {
-      return To_linear<Circular_arc_point_2>()(ca.source());
+      return To_linear<CK::Circular_arc_point_2>()(ca.source());
     })
     .method("target", [](const Circular_arc_2& ca) {
-      return To_linear<Circular_arc_point_2>()(ca.target());
+      return To_linear<CK::Circular_arc_point_2>()(ca.target());
     })
     .method("left", [](const Circular_arc_2& ca) {
-      return To_linear<Circular_arc_point_2>()(ca.left());
+      return To_linear<CK::Circular_arc_point_2>()(ca.left());
     })
     .method("right", [](const Circular_arc_2& ca) {
-      return To_linear<Circular_arc_point_2>()(ca.right());
+      return To_linear<CK::Circular_arc_point_2>()(ca.right());
     })
     .METHOD(Circular_arc_2, bbox)
     // Query Functions
@@ -56,7 +58,7 @@ void wrap_circular_arc_2(jlcxx::Module& kernel,
     .METHOD(Circular_arc_2, is_y_monotone)
     // Representation
     .method("repr", [](const Circular_arc_2& ca) {
-      To_linear<Circular_arc_point_2> p2l;
+      To_linear<CK::Circular_arc_point_2> p2l;
 
       auto c = To_linear<CK::Circle_2>()(ca.supporting_circle());
       auto s = p2l(ca.source());
@@ -70,4 +72,3 @@ void wrap_circular_arc_2(jlcxx::Module& kernel,
     })
     ;
 }
-
