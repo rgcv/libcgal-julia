@@ -64,11 +64,13 @@ struct Intersection_visitor {
   typedef jl_value_t* result_type;
 
   template<typename T>
+  inline
   result_type
   operator()(const T& t) const {
     return jlcxx::box<T>(t);
   }
 
+  inline
   template<typename... TS>
   result_type
   operator()(const boost::variant<TS...>& v) const {
@@ -100,9 +102,17 @@ struct Intersection_visitor {
     return (result_type)ja;
   }
 
+  // Circular results
+  inline
   result_type
-  operator()(const std::pair<Circular_arc_point_2, unsigned>& p) const {
-    return jlcxx::box<Point_2>(To_linear<Circular_arc_point_2>()(p.first));
+  operator()(const std::pair<CK::Circular_arc_point_2, unsigned>& p) const {
+    return jlcxx::box<Point_2>(To_linear<CK::Circular_arc_point_2>()(p.first));
+  }
+
+  inline
+  result_type
+  operator()(const CK::Circle_2& c) const {
+    return jlcxx::box<Circle_2>(To_linear<CK::Circle_2>()(c));
   }
 
   result_type
