@@ -60,7 +60,7 @@ void wrap_circular_arc_3(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_3>&);
 
 void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
-  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"))
+  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real", jl_base_module))
     // Creation
     .CTOR(double)
     OVERRIDE_BASE(cgal, field_type)
