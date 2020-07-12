@@ -28,6 +28,7 @@
 void wrap_aff_transformation_2(jlcxx::Module&, jlcxx::TypeWrapper<Aff_transformation_2>&);
 void wrap_bbox_2(jlcxx::Module&, jlcxx::TypeWrapper<Bbox_2>&);
 void wrap_circle_2(jlcxx::Module&, jlcxx::TypeWrapper<Circle_2>&);
+void wrap_circular_arc_2(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_2>&);
 void wrap_direction_2(jlcxx::Module&, jlcxx::TypeWrapper<Direction_2>&);
 void wrap_iso_rectangle_2(jlcxx::Module&, jlcxx::TypeWrapper<Iso_rectangle_2>&);
 void wrap_line_2(jlcxx::Module&, jlcxx::TypeWrapper<Line_2>&);
@@ -38,11 +39,10 @@ void wrap_triangle_2(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_2>&);
 void wrap_vector_2(jlcxx::Module&, jlcxx::TypeWrapper<Vector_2>&);
 void wrap_weighted_point_2(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_2>&);
 
-void wrap_circular_arc_2(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_2>&);
-
 void wrap_aff_transformation_3(jlcxx::Module&, jlcxx::TypeWrapper<Aff_transformation_3>&);
 void wrap_bbox_3(jlcxx::Module&, jlcxx::TypeWrapper<Bbox_3>&);
 void wrap_circle_3(jlcxx::Module&, jlcxx::TypeWrapper<Circle_3>&);
+void wrap_circular_arc_3(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_3>&);
 void wrap_direction_3(jlcxx::Module&, jlcxx::TypeWrapper<Direction_3>&);
 void wrap_iso_cuboid_3(jlcxx::Module&, jlcxx::TypeWrapper<Iso_cuboid_3>&);
 void wrap_line_3(jlcxx::Module&, jlcxx::TypeWrapper<Line_3>&);
@@ -55,8 +55,6 @@ void wrap_tetrahedron_3(jlcxx::Module&, jlcxx::TypeWrapper<Tetrahedron_3>&);
 void wrap_triangle_3(jlcxx::Module&, jlcxx::TypeWrapper<Triangle_3>&);
 void wrap_vector_3(jlcxx::Module&, jlcxx::TypeWrapper<Vector_3>&);
 void wrap_weighted_point_3(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_3>&);
-
-void wrap_circular_arc_3(jlcxx::Module&, jlcxx::TypeWrapper<Circular_arc_3>&);
 
 void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
