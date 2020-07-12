@@ -75,10 +75,10 @@ void wrap_kernel(jlcxx::Module& cgal) {
 #endif
 
   /// 2D
-  // Linear
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
   auto bbox_2               = cgal.add_type<Bbox_2>              ("Bbox2");
   auto circle_2             = cgal.add_type<Circle_2>            ("Circle2");
+  auto circular_arc_2       = cgal.add_type<Circular_arc_2>      ("CircularArc2");
   auto direction_2          = cgal.add_type<Direction_2>         ("Direction2");
   auto iso_rectangle_2      = cgal.add_type<Iso_rectangle_2>     ("IsoRectangle2");
   auto line_2               = cgal.add_type<Line_2>              ("Line2");
@@ -94,6 +94,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_point_2(cgal, point_2);
   wrap_vector_2(cgal, vector_2);
   wrap_circle_2(cgal, circle_2);
+  wrap_circular_arc_2(cgal, circular_arc_2);
   wrap_direction_2(cgal, direction_2);
   wrap_iso_rectangle_2(cgal, iso_rectangle_2);
   wrap_line_2(cgal, line_2);
@@ -102,16 +103,11 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_triangle_2(cgal, triangle_2);
   wrap_weighted_point_2(cgal, weighted_point_2);
 
-  // Circular
-  auto circular_arc_2 = cgal.add_type<Circular_arc_2>("CircularArc2");
-
-  wrap_circular_arc_2(cgal, circular_arc_2);
-
   /// 3D
-  //Linear
   auto aff_transformation_3 = cgal.add_type<Aff_transformation_3>("AffTransformation3");
   auto bbox_3               = cgal.add_type<Bbox_3>              ("Bbox3");
   auto circle_3             = cgal.add_type<Circle_3>            ("Circle3");
+  auto circular_arc_3       = cgal.add_type<Circular_arc_3>      ("CircularArc3");
   auto direction_3          = cgal.add_type<Direction_3>         ("Direction3");
   auto iso_cuboid_3         = cgal.add_type<Iso_cuboid_3>        ("IsoCuboid3");
   auto line_3               = cgal.add_type<Line_3>              ("Line3");
@@ -128,6 +124,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_aff_transformation_3(cgal, aff_transformation_3);
   wrap_bbox_3(cgal, bbox_3);
   wrap_circle_3(cgal, circle_3);
+  wrap_circular_arc_3(cgal, circular_arc_3);
   wrap_direction_3(cgal, direction_3);
   wrap_iso_cuboid_3(cgal, iso_cuboid_3);
   wrap_line_3(cgal, line_3);
@@ -140,9 +137,4 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_triangle_3(cgal, triangle_3);
   wrap_vector_3(cgal, vector_3);
   wrap_weighted_point_3(cgal, weighted_point_3);
-
-  // Spherical
-  auto circular_arc_3 = cgal.add_type<Circular_arc_3>("CircularArc3");
-
-  wrap_circular_arc_3(cgal, circular_arc_3);
 }

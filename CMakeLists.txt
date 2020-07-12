@@ -26,6 +26,7 @@ set(CGAL_JL_SOURCES
   src/kernel/aff_transformation_2.cpp
   src/kernel/bbox_2.cpp
   src/kernel/circle_2.cpp
+  src/kernel/circular_arc_2.cpp
   src/kernel/direction_2.cpp
   src/kernel/iso_rectangle_2.cpp
   src/kernel/line_2.cpp
@@ -36,11 +37,10 @@ set(CGAL_JL_SOURCES
   src/kernel/vector_2.cpp
   src/kernel/weighted_point_2.cpp
 
-  src/kernel/circular_arc_2.cpp
-
   src/kernel/aff_transformation_3.cpp
   src/kernel/bbox_3.cpp
   src/kernel/circle_3.cpp
+  src/kernel/circular_arc_3.cpp
   src/kernel/direction_3.cpp
   src/kernel/iso_cuboid_3.cpp
   src/kernel/line_3.cpp
@@ -54,8 +54,6 @@ set(CGAL_JL_SOURCES
   src/kernel/vector_3.cpp
   src/kernel/weighted_point_3.cpp
 
-  src/kernel/circular_arc_3.cpp
- 
   src/global_kernel_functions/global_lk_functions.cpp
   src/global_kernel_functions/global_ck_functions.cpp
   src/global_kernel_functions/global_sk_functions.cpp
