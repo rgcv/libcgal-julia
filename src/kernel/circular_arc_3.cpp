@@ -9,6 +9,8 @@
 #include "kernel_conversion.hpp"
 #include "macros.hpp"
 
+typedef Circular_kernel CK;
+
 void wrap_circular_arc_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Circular_arc_3>& circular_arc_3) {
   const std::string name = jlcxx::julia_type_name(circular_arc_3.dt());
@@ -18,12 +20,12 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c));
     })
     .method(name, [](const Circle_3& c, const Point_3& pt) {
-      To_spherical<Circular_arc_point_3> p2s;
+      To_spherical<SK::Circular_arc_point_3> p2s;
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c),
                                            p2s(pt));
     })
     .method(name, [](const Circle_3& c, const Point_3& p, const Point_3& q) {
-      To_spherical<Circular_arc_point_3> p2s;
+      To_spherical<SK::Circular_arc_point_3> p2s;
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c),
                                            p2s(p), p2s(q));
     })
@@ -46,17 +48,17 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
       return To_linear<SK::Sphere_3>()(ca.diametral_sphere());
     })
     .method("source", [](const Circular_arc_3& ca) {
-      return To_linear<Circular_arc_point_3>()(ca.source());
+      return To_linear<SK::Circular_arc_point_3>()(ca.source());
     })
     .method("target", [](const Circular_arc_3& ca) {
-      return To_linear<Circular_arc_point_3>()(ca.target());
+      return To_linear<SK::Circular_arc_point_3>()(ca.target());
     })
     OVERRIDE_BASE(kernel, circular_arc_3)
     .BINARY_OP_SELF(const Circular_arc_3&, ==)
     UNSET_OVERRIDE(kernel, circular_arc_3)
     // Representation
     .method("repr", [](const Circular_arc_3& ca) {
-      To_linear<Circular_arc_point_3> p2l;
+      To_linear<SK::Circular_arc_point_3> p2l;
 
       auto c = To_linear<SK::Circle_3>()(ca.supporting_circle());
       auto s = p2l(ca.source());
