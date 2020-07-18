@@ -77,17 +77,17 @@
   .METHOD(T, is_valid)
 
 namespace jlcxx {
-  template<> struct SuperType<CTr::Edge>   { using type = CTr::Triangulation::Edge; };
-  template<> struct SuperType<CTr::Face>   { using type = CTr::Triangulation::Face; };
-  template<> struct SuperType<CTr::Vertex> { using type = CTr::Triangulation::Vertex; };
+  template<> struct SuperType<CTr::Edge>   { typedef CTr::Triangulation::Edge type; };
+  template<> struct SuperType<CTr::Face>   { typedef CTr::Triangulation::Face type; };
+  template<> struct SuperType<CTr::Vertex> { typedef CTr::Triangulation::Vertex type; };
 
-  template<> struct SuperType<CDTr> { using type = CTr; };
+  template<> struct SuperType<CDTr> { typedef CTr type; };
 
-  template<> struct SuperType<DTr>  { using type = Tr; };
+  template<> struct SuperType<DTr>  { typedef Tr type; };
 
-  template<> struct SuperType<RTr::Edge>   { using type = RTr::Triangulation_base::Edge; };
-  template<> struct SuperType<RTr::Face>   { using type = RTr::Triangulation_base::Face; };
-  template<> struct SuperType<RTr::Vertex> { using type = RTr::Triangulation_base::Vertex; };
+  template<> struct SuperType<RTr::Edge>   { typedef RTr::Triangulation_base::Edge type; };
+  template<> struct SuperType<RTr::Face>   { typedef RTr::Triangulation_base::Face type; };
+  template<> struct SuperType<RTr::Vertex> { typedef RTr::Triangulation_base::Vertex type; };
 }
 
 void wrap_triangulation_2(jlcxx::Module& cgal) {

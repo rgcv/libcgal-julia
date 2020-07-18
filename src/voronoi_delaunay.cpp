@@ -10,10 +10,10 @@
 #include "triangulation.hpp"
 #include "utils.hpp"
 
-using DG = DTr;
-using AT = CGAL::Delaunay_triangulation_adaptation_traits_2<DG>;
-using AP = CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DG>;
-using VD = CGAL::Voronoi_diagram_2<DG, AT, AP>;
+typedef DTr DG;
+typedef CGAL::Delaunay_triangulation_adaptation_traits_2<DG> AT;
+typedef CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DG> AP;
+typedef CGAL::Voronoi_diagram_2<DG, AT, AP> VD;
 
 void wrap_voronoi_delaunay(jlcxx::Module& cgal) {
   const std::string vd_name = "VoronoiDiagram2";

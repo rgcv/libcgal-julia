@@ -8,8 +8,8 @@
 #include "io.hpp"
 #include "utils.hpp"
 
-using Polygon_2 = CGAL::Polygon_2<Kernel>;
-using Polygon_with_holes_2 = CGAL::Polygon_with_holes_2<Kernel>;
+typedef CGAL::Polygon_2<Kernel> Polygon_2;
+typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
 
 void wrap_polygon_2(jlcxx::Module& cgal) {
   const std::string poly_2_name = "Polygon2";
