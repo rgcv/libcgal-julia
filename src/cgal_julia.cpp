@@ -9,7 +9,7 @@ void wrap_convex_hull_2(jlcxx::Module&);
 void wrap_principal_component_analysis(jlcxx::Module&);
 void wrap_polygon_2(jlcxx::Module&);
 void wrap_triangulation_2(jlcxx::Module&);
-void wrap_voronoi_delaunay(jlcxx::Module&);
+void wrap_voronoi_diagram_2(jlcxx::Module&);
 
 JLCXX_MODULE define_julia_module(jlcxx::Module& cgal) {
   wrap_origin(cgal);
@@ -21,5 +21,5 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& cgal) {
   wrap_principal_component_analysis(cgal);
   wrap_polygon_2(cgal);
   wrap_triangulation_2(cgal);
-  wrap_voronoi_delaunay(cgal);
+  wrap_voronoi_diagram_2(cgal);
 }

@@ -7,7 +7,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ## requirements
 find_package(CGAL REQUIRED COMPONENTS Core)
-add_definitions(-DCGAL_HEADER_ONLY=ON)
 include(${CGAL_USE_FILE})
 
 find_package(JlCxx)
@@ -63,7 +62,7 @@ set(CGAL_JL_SOURCES
   src/principal_component_analysis.cpp
   src/polygon_2.cpp
   src/triangulation_2.cpp
-  src/voronoi_delaunay.cpp
+  src/voronoi_diagram_2.cpp
   src/cgal_julia.cpp
 )
 
