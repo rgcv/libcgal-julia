@@ -57,7 +57,7 @@ void wrap_circular_arc_2(jlcxx::Module& kernel,
     .METHOD(Circular_arc_2, is_x_monotone)
     .METHOD(Circular_arc_2, is_y_monotone)
     // Representation
-    .method("repr", [](const Circular_arc_2& ca) {
+    .method("_tostring", [](const Circular_arc_2& ca) {
       To_linear<CK::Circular_arc_point_2> p2l;
 
       auto c = To_linear<CK::Circle_2>()(ca.supporting_circle());

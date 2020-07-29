@@ -57,7 +57,7 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
     .BINARY_OP_SELF(const Circular_arc_3&, ==)
     UNSET_OVERRIDE(kernel, circular_arc_3)
     // Representation
-    .method("repr", [](const Circular_arc_3& ca) {
+    .method("_tostring", [](const Circular_arc_3& ca) {
       To_linear<SK::Circular_arc_point_3> p2l;
 
       auto c = To_linear<SK::Circle_3>()(ca.supporting_circle());
