@@ -12,6 +12,13 @@
 #include "triangulation.hpp"
 #include "utils.hpp"
 
+namespace jlcxx {
+  template<typename DG, typename AT, typename AP>
+  struct BuildParameterList<CGAL::Voronoi_diagram_2<DG, AT, AP>> {
+    typedef ParameterList<DG> type;
+  };
+};
+
 namespace jlcgal {
 
 template<typename DT2>
@@ -24,13 +31,18 @@ using Voronoi_regular_2 = CGAL::Voronoi_diagram_2<RT2
   , CGAL::Regular_triangulation_adaptation_traits_2<RT2>
   , CGAL::Regular_triangulation_caching_degeneracy_removal_policy_2<RT2>>;
 
+
 void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
+  using jlcxx::Parametric;
+  using jlcxx::TypeVar;
+
   const std::string vd_name = "VoronoiDiagram2";
 
-  auto vdface     = cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name + "Face");
-  auto vdhalfedge = cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name + "Halfedge");
-  auto vdvertex   = cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name + "Vertex");
+  auto vdface     = cgal.add_type<Parametric<TypeVar<1>>>(vd_name + "Face");
+  auto vdhalfedge = cgal.add_type<Parametric<TypeVar<1>>>(vd_name + "Halfedge");
+  auto vdvertex   = cgal.add_type<Parametric<TypeVar<1>>>(vd_name + "Vertex");
 
+  cgal.add_type<Parametric<TypeVar<1>>>(vd_name)
     .apply<Voronoi_delaunay_2<DTr_2>, Voronoi_regular_2<RTr_2>>([&](auto vd) {
       typedef typename decltype(vd)::type  VD;
       typedef typename VD::Delaunay_graph  DG;
@@ -69,7 +81,7 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
           .method("next",     [](const Halfedge& he) { return *he.next();     })
           .method("previous", [](const Halfedge& he) { return *he.previous(); })
           .method("face",     [](const Halfedge& he) { return *he.face();     })
-          .method("ccb", [](const Halfedge he) {
+          .method("ccb", [](const Halfedge& he) {
             return collect(he.ccb());
           })
           .METHOD(Halfedge, dual)
