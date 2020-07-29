@@ -14,11 +14,14 @@
 
 namespace jlcgal {
 
-using Tr_2   = CGAL::Triangulation_2<Kernel>;
-using CTr_2  = CGAL::Constrained_triangulation_2<Kernel>;
-using CDTr_2 = CGAL::Constrained_Delaunay_triangulation_2<Kernel>;
-using DTr_2  = CGAL::Delaunay_triangulation_2<Kernel>;
-using RTr_2  = CGAL::Regular_triangulation_2<Kernel>;
+typedef CGAL::Triangulation_2<Kernel> Tr_2;
+
+typedef CGAL::Constrained_triangulation_2<Kernel>          CTr_2;
+typedef CGAL::Constrained_Delaunay_triangulation_2<Kernel> CDTr_2;
+
+typedef CGAL::Delaunay_triangulation_2<Kernel> DTr_2;
+
+typedef CGAL::Regular_triangulation_2<Kernel> RTr_2;
 
 } // jlcgal
 
