@@ -29,15 +29,15 @@
   }) \
   /* Modifiers */ \
   OVERRIDE_BASE(cgal, JT) \
-  .method("empty!", [](T& t) { \
+  .method("empty!", [](T& t) -> T& { \
     t.clear(); \
     return t; \
   }) \
-  .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) { \
+  .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) -> T& { \
     t.insert(ps.begin(), ps.end()); \
     return t; \
   }) \
-  .method("push!", [](T& t, const T::Point& p) { \
+  .method("push!", [](T& t, const T::Point& p) -> T& { \
     t.push_back(p); \
     return t; \
   }) \
@@ -163,11 +163,11 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
     .CTOR(const CDTr_2&)
     // Insertion and Removal
     OVERRIDE_BASE(cgal, cdtr)
-    .method("insert!", [](CDTr_2& cdtr, jlcxx::ArrayRef<CDTr_2::Point> ps) {
+    .method("insert!", [](CDTr_2& cdtr, jlcxx::ArrayRef<CDTr_2::Point> ps) -> CDTr_2& {
       cdtr.insert(ps.begin(), ps.end());
       return cdtr;
     })
-    .method("push!", [](CDTr_2& cdtr, const CDTr_2::Point& p) {
+    .method("push!", [](CDTr_2& cdtr, const CDTr_2::Point& p) -> CDTr_2& {
       cdtr.push_back(p);
       return cdtr;
     })
@@ -184,11 +184,11 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
     })
     // Insertion and Removal
     OVERRIDE_BASE(cgal, dtr)
-    .method("insert!", [](DTr_2& dt, jlcxx::ArrayRef<DTr_2::Point> ps) {
+    .method("insert!", [](DTr_2& dt, jlcxx::ArrayRef<DTr_2::Point> ps) -> DTr_2& {
       dt.insert(ps.begin(), ps.end());
       return dt;
     })
-    .method("push!", [](DTr_2& dt, const DTr_2::Point& p) {
+    .method("push!", [](DTr_2& dt, const DTr_2::Point& p) -> DTr_2& {
       dt.push_back(p);
       return dt;
     })

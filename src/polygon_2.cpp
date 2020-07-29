@@ -33,11 +33,11 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     .REPR(Polygon_2)
     // Modifiers
     OVERRIDE_BASE(cgal, poly_2)
-    .method("empty!", [](Polygon_2& poly) {
+    .method("empty!", [](Polygon_2& poly) -> Polygon_2& {
       poly.clear();
       return poly;
     })
-    .method("push!", [](Polygon_2& poly, const Point_2& p) {
+    .method("push!", [](Polygon_2& poly, const Point_2& p) -> Polygon_2& {
       poly.push_back(p);
       return poly;
     })
@@ -46,7 +46,7 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
       p.reverse_orientation();
       return p;
     })
-    .method("reverse!", [](Polygon_2& poly) {
+    .method("reverse!", [](Polygon_2& poly) -> Polygon_2& {
       poly.reverse_orientation();
       return poly;
     })
@@ -91,7 +91,7 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     OVERRIDE_BASE(cgal, poly_2)
     .method("isempty", &Polygon_2::is_empty)
     .method("length", &Polygon_2::size)
-    .method("resize!", [](Polygon_2& poly, const jlcxx::cxxint_t i) {
+    .method("resize!", [](Polygon_2& poly, const jlcxx::cxxint_t i) -> Polygon_2& {
       poly.resize(i);
       return poly;
     })

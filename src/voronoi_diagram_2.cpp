@@ -81,10 +81,8 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
           .method("next",     [](const Halfedge& he) { return *he.next();     })
           .method("previous", [](const Halfedge& he) { return *he.previous(); })
           .method("face",     [](const Halfedge& he) { return *he.face();     })
-          .method("ccb", [](const Halfedge& he) {
-            return collect(he.ccb());
-          })
           .METHOD(Halfedge, dual)
+          .method("ccb",   [](const Halfedge& he) { return collect(he.ccb()); })
           .method("up",    [](const Halfedge& he) { return *he.up();    })
           .method("down",  [](const Halfedge& he) { return *he.down();  })
           .method("left",  [](const Halfedge& he) { return *he.left();  })
@@ -223,15 +221,15 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         })
         // Insertion
         OVERRIDE_BASE(cgal, vd)
-        .method("push!", [](VD& vd, const Site_2& p) {
+        .method("push!", [](VD& vd, const Site_2& p) -> VD& {
           vd.insert(p);
           return vd;
         })
-        .method("insert!", [](VD& vd, jlcxx::ArrayRef<Site_2> ps) {
+        .method("insert!", [](VD& vd, jlcxx::ArrayRef<Site_2> ps) -> VD& {
           vd.insert(ps.begin(), ps.end());
           return vd;
         })
-        .method("empty!", [](VD& vd) {
+        .method("empty!", [](VD& vd) -> VD& {
           vd.clear();
           return vd;
         }) // Misc
