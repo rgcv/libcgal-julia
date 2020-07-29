@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_bbox_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Bbox_2>& bbox_2) {
   bbox_2
     // Creation
@@ -25,3 +27,5 @@ void wrap_bbox_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Bbox_2>& bbox_2) {
     .REPR(Bbox_2)
     ;
 }
+
+} // jlcgal

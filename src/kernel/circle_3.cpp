@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_circle_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Circle_3>& circle_3) {
   circle_3
@@ -35,3 +37,4 @@ void wrap_circle_3(jlcxx::Module& kernel,
     ;
 }
 
+} // jlcgal

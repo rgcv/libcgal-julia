@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_triangle_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Triangle_2>& triangle_2) {
   triangle_2
@@ -33,3 +35,5 @@ void wrap_triangle_2(jlcxx::Module& kernel,
     .REPR(Triangle_2)
     ;
 }
+
+} // jlcgal

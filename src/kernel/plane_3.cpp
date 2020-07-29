@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_plane_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Plane_3>& plane_3) {
   plane_3
     // Creation
@@ -48,3 +50,5 @@ void wrap_plane_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Plane_3>& plane_3) {
     .REPR(Plane_3)
     ;
 }
+
+} // jlcgal

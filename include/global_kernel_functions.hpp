@@ -11,8 +11,7 @@
 #include "kernel.hpp"
 #include "kernel_conversion.hpp"
 
-typedef Circular_kernel  CK;
-typedef Spherical_kernel SK;
+namespace jlcgal {
 
 struct Intersection_visitor {
   typedef jl_value_t* result_type;
@@ -94,5 +93,7 @@ struct Intersection_visitor {
   #undef SPHERICAL_VISITOR
   #undef SSPHERICAL_VISITOR
 };
+
+} // jlcgal
 
 #endif // CGAL_JL_GLOBAL_KERNEL_FUNCTIONS_HPP

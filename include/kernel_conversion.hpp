@@ -3,8 +3,7 @@
 
 #include "kernel.hpp"
 
-typedef Circular_kernel CK;
-typedef Spherical_kernel SK;
+namespace jlcgal {
 
 // Given a circular/spherical kernel object of type T, it converts it to its
 // linear kernel object counterpart or one identical to it. Think CK::Point_2 ->
@@ -247,5 +246,7 @@ struct To_spherical<SK::Line_arc_3> {
     return sa;
   }
 };
+
+} // jlcgal
 
 #endif // CGAL_JL_KERNEL_CONVERSION_HPP

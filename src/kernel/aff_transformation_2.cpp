@@ -6,6 +6,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_aff_transformation_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Aff_transformation_2>& aff_transformation_2) {
   kernel.map_type<CGAL::Identity_transformation>("IdentityTransformation");
@@ -55,3 +57,5 @@ void wrap_aff_transformation_2(jlcxx::Module& kernel,
     .REPR(Aff_transformation_2)
     ;
 }
+
+} // jlcgal

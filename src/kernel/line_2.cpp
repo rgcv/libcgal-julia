@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_line_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_2>& line_2) {
   line_2
     // Creation
@@ -43,3 +45,5 @@ void wrap_line_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_2>& line_2) {
     .REPR(Line_2)
     ;
 }
+
+} // jlcgal

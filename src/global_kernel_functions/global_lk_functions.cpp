@@ -8,39 +8,110 @@
 #include "global_kernel_functions.hpp"
 #include "macros.hpp"
 
-#define DO_INTERSECT(T1, T2) \
-  cgal.SPFUNC(, do_intersect, T1, T2); \
-  cgal.SPFUNC(, do_intersect, T2, T1)
-#define DO_INTERSECT_SELF(T) \
-  cgal.SPFUNC(, do_intersect, T, T)
+#define DO_INTERSECT_2(T) \
+  cgal.method("do_intersect", &do_intersect<T, Point_2>); \
+  cgal.method("do_intersect", &do_intersect<T, Line_2>); \
+  cgal.method("do_intersect", &do_intersect<T, Segment_2>); \
+  cgal.method("do_intersect", &do_intersect<T, Ray_2>); \
+  cgal.method("do_intersect", &do_intersect<T, Triangle_2>); \
+  cgal.method("do_intersect", &do_intersect<T, Iso_rectangle_2>)
+#define DO_INTERSECT_2_SYM \
+  DO_INTERSECT_2(Point_2); \
+  DO_INTERSECT_2(Line_2); \
+  DO_INTERSECT_2(Segment_2); \
+  DO_INTERSECT_2(Ray_2); \
+  DO_INTERSECT_2(Triangle_2); \
+  DO_INTERSECT_2(Iso_rectangle_2)
 
-#define INTERSECTION(T1, T2) \
-  cgal.SPFUNC(, intersection, T1, T2); \
-  cgal.SPFUNC(, intersection, T2, T1)
-#define INTERSECTION_SELF(T) cgal.SPFUNC(, intersection, T, T)
+#define INTERSECTION_2(T) \
+  cgal.method("intersection", &intersection<T, Point_2>); \
+  cgal.method("intersection", &intersection<T, Line_2>); \
+  cgal.method("intersection", &intersection<T, Segment_2>); \
+  cgal.method("intersection", &intersection<T, Ray_2>); \
+  cgal.method("intersection", &intersection<T, Triangle_2>); \
+  cgal.method("intersection", &intersection<T, Iso_rectangle_2>)
+#define INTERSECTION_2_SYM \
+  INTERSECTION_2(Point_2); \
+  INTERSECTION_2(Line_2); \
+  INTERSECTION_2(Segment_2); \
+  INTERSECTION_2(Ray_2); \
+  INTERSECTION_2(Triangle_2); \
+  INTERSECTION_2(Iso_rectangle_2)
+
+#define DO_INTERSECT_3(T) \
+  cgal.method("do_intersect", &do_intersect<T, Point_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Tetrahedron_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Segment_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Line_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Plane_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Triangle_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Ray_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Iso_cuboid_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Sphere_3>); \
+  cgal.method("do_intersect", &do_intersect<T, Bbox_3>)
+#define DO_INTERSECT_3_ALL \
+  DO_INTERSECT_3(Point_3); \
+  DO_INTERSECT_3(Tetrahedron_3); \
+  DO_INTERSECT_3(Segment_3); \
+  DO_INTERSECT_3(Line_3); \
+  DO_INTERSECT_3(Plane_3); \
+  DO_INTERSECT_3(Triangle_3); \
+  DO_INTERSECT_3(Ray_3); \
+  DO_INTERSECT_3(Iso_cuboid_3); \
+  DO_INTERSECT_3(Sphere_3); \
+  DO_INTERSECT_3(Bbox_3)
+
+#define INTERSECTION_3(T) \
+  cgal.method("intersection", &intersection<T, Point_3>); \
+  cgal.method("intersection", &intersection<T, Segment_3>); \
+  cgal.method("intersection", &intersection<T, Line_3>); \
+  cgal.method("intersection", &intersection<T, Plane_3>); \
+  cgal.method("intersection", &intersection<T, Triangle_3>); \
+  cgal.method("intersection", &intersection<T, Ray_3>)
+#define INTERSECTION_3_SYM \
+  INTERSECTION_3(Point_3); \
+  INTERSECTION_3(Segment_3); \
+  INTERSECTION_3(Line_3); \
+  INTERSECTION_3(Plane_3); \
+  INTERSECTION_3(Triangle_3); \
+  INTERSECTION_3(Ray_3)
 
 #define SQUARED_DISTANCE_2(T) \
-  cgal.SPFUNC(, squared_distance, T, Point_2); \
-  cgal.SPFUNC(, squared_distance, T, Line_2); \
-  cgal.SPFUNC(, squared_distance, T, Ray_2); \
-  cgal.SPFUNC(, squared_distance, T, Segment_2); \
-  cgal.SPFUNC(, squared_distance, T, Triangle_2)
+  cgal.method("squared_distance", &squared_distance<T, Point_2>); \
+  cgal.method("squared_distance", &squared_distance<T, Line_2>); \
+  cgal.method("squared_distance", &squared_distance<T, Ray_2>); \
+  cgal.method("squared_distance", &squared_distance<T, Segment_2>); \
+  cgal.method("squared_distance", &squared_distance<T, Triangle_2>)
+#define SQUARED_DISTANCE_2_ALL \
+  SQUARED_DISTANCE_2(Point_2); \
+  SQUARED_DISTANCE_2(Line_2); \
+  SQUARED_DISTANCE_2(Ray_2); \
+  SQUARED_DISTANCE_2(Segment_2); \
+  SQUARED_DISTANCE_2(Triangle_2)
 
 #define SQUARED_DISTANCE_3(T) \
-  cgal.SPFUNC(, squared_distance, T, Point_3); \
-  cgal.SPFUNC(, squared_distance, T, Line_3); \
-  cgal.SPFUNC(, squared_distance, T, Ray_3); \
-  cgal.SPFUNC(, squared_distance, T, Segment_3); \
-  cgal.SPFUNC(, squared_distance, T, Plane_3)
+  cgal.method("squared_distance", &squared_distance<T, Point_3>); \
+  cgal.method("squared_distance", &squared_distance<T, Segment_3>); \
+  cgal.method("squared_distance", &squared_distance<T, Line_3>); \
+  cgal.method("squared_distance", &squared_distance<T, Plane_3>); \
+  cgal.method("squared_distance", &squared_distance<T, Ray_3>)
+#define SQUARED_DISTANCE_3_SYM \
+  SQUARED_DISTANCE_3(Point_3); \
+  SQUARED_DISTANCE_3(Segment_3); \
+  SQUARED_DISTANCE_3(Line_3); \
+  SQUARED_DISTANCE_3(Plane_3); \
+  SQUARED_DISTANCE_3(Ray_3)
 
-template<typename T1, typename T2>
+namespace jlcgal {
+
+template<typename T1, typename T2 = T1>
 inline
 bool
 do_intersect(const T1& t1, const T2& t2) {
   return CGAL::do_intersect(t1, t2);
 }
 
-template<typename T1, typename T2>
+template<typename T1, typename T2 = T1>
 inline
 jl_value_t*
 intersection(const T1& t1, const T2& t2) {
@@ -50,7 +121,7 @@ intersection(const T1& t1, const T2& t2) {
     jl_nothing;
 }
 
-template<typename T1, typename T2>
+template<typename T1, typename T2 = T1>
 inline
 FT
 squared_distance(const T1& t1, const T2& t2) {
@@ -198,91 +269,24 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_2&, const Vector_2&);
   CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_3&, const Vector_3&, const Vector_3&);
 
-  DO_INTERSECT(Bbox_2, Circle_2);
-  DO_INTERSECT(Bbox_2, Line_2);
-  DO_INTERSECT(Bbox_2, Point_2);
-  DO_INTERSECT(Bbox_2, Ray_2);
-  DO_INTERSECT_SELF(Circle_2);
-  DO_INTERSECT(Circle_2, Iso_rectangle_2);
-  DO_INTERSECT(Circle_2, Line_2);
-  DO_INTERSECT(Circle_2, Point_2);
-  DO_INTERSECT_SELF(Iso_rectangle_2);
-  DO_INTERSECT(Iso_rectangle_2, Line_2);
-  DO_INTERSECT(Iso_rectangle_2, Point_2);
-  DO_INTERSECT(Iso_rectangle_2, Ray_2);
-  DO_INTERSECT(Iso_rectangle_2, Segment_2);
-  DO_INTERSECT(Iso_rectangle_2, Triangle_2);
-  DO_INTERSECT_SELF(Line_2);
-  DO_INTERSECT(Line_2, Point_2);
-  DO_INTERSECT(Line_2, Ray_2);
-  DO_INTERSECT(Line_2, Segment_2);
-  DO_INTERSECT(Line_2, Triangle_2);
-  DO_INTERSECT_SELF(Point_2);
-  DO_INTERSECT(Point_2, Ray_2);
-  DO_INTERSECT(Point_2, Segment_2);
-  DO_INTERSECT(Point_2, Triangle_2);
-  DO_INTERSECT_SELF(Ray_2);
-  DO_INTERSECT(Ray_2, Segment_2);
-  DO_INTERSECT(Ray_2, Triangle_2);
-  DO_INTERSECT_SELF(Segment_2);
-  DO_INTERSECT(Segment_2, Triangle_2);
-  DO_INTERSECT_SELF(Triangle_2);
+  DO_INTERSECT_2_SYM;
+  cgal.method("do_intersect", &do_intersect<Circle_2>);
+  cgal.method("do_intersect", &do_intersect<Circle_2, Point_2>);
+  cgal.method("do_intersect", &do_intersect<Circle_2, Line_2>);
+  cgal.method("do_intersect", &do_intersect<Circle_2, Iso_rectangle_2>);
+  cgal.method("do_intersect", &do_intersect<Circle_2, Bbox_2>);
+  cgal.method("do_intersect", &do_intersect<Bbox_2, Point_2>);
+  cgal.method("do_intersect", &do_intersect<Bbox_2, Line_2>);
+  cgal.method("do_intersect", &do_intersect<Bbox_2, Ray_2>);
+  cgal.method("do_intersect", &do_intersect<Bbox_2, Circle_2>);
+  cgal.method("do_intersect", &do_intersect<Point_2, Circle_2>);
+  cgal.method("do_intersect", &do_intersect<Point_2, Bbox_2>);
+  cgal.method("do_intersect", &do_intersect<Line_2, Circle_2>);
+  cgal.method("do_intersect", &do_intersect<Line_2, Bbox_2>);
+  cgal.method("do_intersect", &do_intersect<Ray_2, Bbox_2>);
+  cgal.method("do_intersect", &do_intersect<Iso_rectangle_2, Circle_2>);
 
-  DO_INTERSECT_SELF(Bbox_3);
-  DO_INTERSECT(Bbox_3, Iso_cuboid_3);
-  DO_INTERSECT(Bbox_3, Line_3);
-  DO_INTERSECT(Bbox_3, Plane_3);
-  DO_INTERSECT(Bbox_3, Point_3);
-  DO_INTERSECT(Bbox_3, Ray_3);
-  DO_INTERSECT(Bbox_3, Segment_3);
-  DO_INTERSECT(Bbox_3, Sphere_3);
-  DO_INTERSECT(Bbox_3, Tetrahedron_3);
-  DO_INTERSECT(Bbox_3, Triangle_3);
-  DO_INTERSECT_SELF(Iso_cuboid_3);
-  DO_INTERSECT(Iso_cuboid_3, Line_3);
-  DO_INTERSECT(Iso_cuboid_3, Plane_3);
-  DO_INTERSECT(Iso_cuboid_3, Point_3);
-  DO_INTERSECT(Iso_cuboid_3, Ray_3);
-  DO_INTERSECT(Iso_cuboid_3, Segment_3);
-  DO_INTERSECT(Iso_cuboid_3, Sphere_3);
-  DO_INTERSECT(Iso_cuboid_3, Tetrahedron_3);
-  DO_INTERSECT(Iso_cuboid_3, Triangle_3);
-  DO_INTERSECT_SELF(Line_3);
-  DO_INTERSECT(Line_3, Plane_3);
-  DO_INTERSECT(Line_3, Point_3);
-  DO_INTERSECT(Line_3, Ray_3);
-  DO_INTERSECT(Line_3, Segment_3);
-  DO_INTERSECT(Line_3, Sphere_3);
-  DO_INTERSECT(Line_3, Tetrahedron_3);
-  DO_INTERSECT(Line_3, Triangle_3);
-  DO_INTERSECT_SELF(Plane_3);
-  DO_INTERSECT(Plane_3, Point_3);
-  DO_INTERSECT(Plane_3, Ray_3);
-  DO_INTERSECT(Plane_3, Segment_3);
-  DO_INTERSECT(Plane_3, Sphere_3);
-  DO_INTERSECT(Plane_3, Tetrahedron_3);
-  DO_INTERSECT(Plane_3, Triangle_3);
-  DO_INTERSECT_SELF(Point_3);
-  DO_INTERSECT(Point_3, Ray_3);
-  DO_INTERSECT(Point_3, Segment_3);
-  DO_INTERSECT(Point_3, Sphere_3);
-  DO_INTERSECT(Point_3, Tetrahedron_3);
-  DO_INTERSECT(Point_3, Triangle_3);
-  DO_INTERSECT_SELF(Ray_3);
-  DO_INTERSECT(Ray_3, Segment_3);
-  DO_INTERSECT(Ray_3, Sphere_3);
-  DO_INTERSECT(Ray_3, Tetrahedron_3);
-  DO_INTERSECT(Ray_3, Triangle_3);
-  DO_INTERSECT_SELF(Segment_3);
-  DO_INTERSECT(Segment_3, Sphere_3);
-  DO_INTERSECT(Segment_3, Tetrahedron_3);
-  DO_INTERSECT(Segment_3, Triangle_3);
-  DO_INTERSECT_SELF(Sphere_3);
-  DO_INTERSECT(Sphere_3, Tetrahedron_3);
-  DO_INTERSECT(Sphere_3, Triangle_3);
-  DO_INTERSECT_SELF(Tetrahedron_3);
-  DO_INTERSECT(Tetrahedron_3, Triangle_3);
-  DO_INTERSECT_SELF(Triangle_3);
+  DO_INTERSECT_3_ALL;
 
   CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
@@ -302,45 +306,39 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
   CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
 
-  INTERSECTION_SELF(Iso_rectangle_2);
-  INTERSECTION(Iso_rectangle_2, Line_2);
-  INTERSECTION(Iso_rectangle_2, Ray_2);
-  INTERSECTION(Iso_rectangle_2, Segment_2);
-  INTERSECTION(Iso_rectangle_2, Triangle_2);
-  INTERSECTION_SELF(Line_2);
-  INTERSECTION(Line_2, Ray_2);
-  INTERSECTION(Line_2, Segment_2);
-  INTERSECTION(Line_2, Triangle_2);
-  INTERSECTION_SELF(Ray_2);
-  INTERSECTION(Ray_2, Segment_2);
-  INTERSECTION(Ray_2, Triangle_2);
-  INTERSECTION_SELF(Segment_2);
-  INTERSECTION(Segment_2, Triangle_2);
-  INTERSECTION_SELF(Triangle_2);
+  INTERSECTION_2_SYM;
+  cgal.method("intersection", &intersection<Point_2, Circle_2>);
+  cgal.method("intersection", &intersection<Circle_2, Point_2>);
+  cgal.method("intersection", &intersection<Point_2, Bbox_2>);
+  cgal.method("intersection", &intersection<Bbox_2, Point_2>);
 
-  INTERSECTION_SELF(Point_3);
-  INTERSECTION(Point_3, Line_3);
-  INTERSECTION(Point_3, Plane_3);
-  INTERSECTION(Point_3, Ray_3);
-  INTERSECTION(Point_3, Segment_3);
-  INTERSECTION(Point_3, Sphere_3);
-  INTERSECTION(Point_3, Triangle_3);
-  INTERSECTION_SELF(Line_3);
-  INTERSECTION(Line_3, Plane_3);
-  INTERSECTION(Line_3, Ray_3);
-  INTERSECTION(Line_3, Segment_3);
-  INTERSECTION(Line_3, Triangle_3);
-  INTERSECTION_SELF(Plane_3);
-  INTERSECTION(Plane_3, Ray_3);
-  INTERSECTION(Plane_3, Segment_3);
-  INTERSECTION(Plane_3, Sphere_3);
-  INTERSECTION(Plane_3, Triangle_3);
-  INTERSECTION_SELF(Ray_3);
-  INTERSECTION(Ray_3, Triangle_3);
-  INTERSECTION_SELF(Segment_3);
-  INTERSECTION(Segment_3, Triangle_3);
-  INTERSECTION_SELF(Sphere_3);
-  INTERSECTION_SELF(Triangle_3);
+  INTERSECTION_3_SYM;
+  cgal.method("intersection", &intersection<Point_3, Tetrahedron_3>);
+  cgal.method("intersection", &intersection<Point_3, Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Point_3, Sphere_3>);
+  cgal.method("intersection", &intersection<Point_3, Bbox_3>);
+  cgal.method("intersection", &intersection<Tetrahedron_3, Point_3>);
+  cgal.method("intersection", &intersection<Segment_3, Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Segment_3, Bbox_3>);
+  cgal.method("intersection", &intersection<Line_3, Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Line_3, Bbox_3>);
+  cgal.method("intersection", &intersection<Plane_3, Sphere_3>);
+  cgal.method("intersection", &intersection<Triangle_3, Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Ray_3, Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Ray_3, Bbox_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3, Point_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3, Segment_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3, Line_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3, Triangle_3>);
+  cgal.method("intersection", &intersection<Iso_cuboid_3, Ray_3>);
+  cgal.method("intersection", &intersection<Sphere_3>);
+  cgal.method("intersection", &intersection<Sphere_3, Point_3>);
+  cgal.method("intersection", &intersection<Sphere_3, Plane_3>);
+  cgal.method("intersection", &intersection<Bbox_3, Point_3>);
+  cgal.method("intersection", &intersection<Bbox_3, Segment_3>);
+  cgal.method("intersection", &intersection<Bbox_3, Line_3>);
+  cgal.method("intersection", &intersection<Bbox_3, Ray_3>);
 
   CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_3&, const Point_3&);
@@ -409,19 +407,11 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
 
   CGAL_GLOBAL_FUNCTION(FT, squared_area, const Point_3&, const Point_3&, const Point_3&);
 
-  SQUARED_DISTANCE_2(Point_2);
-  SQUARED_DISTANCE_2(Line_2);
-  SQUARED_DISTANCE_2(Ray_2);
-  SQUARED_DISTANCE_2(Segment_2);
-  SQUARED_DISTANCE_2(Triangle_2);
+  SQUARED_DISTANCE_2_ALL;
 
-  SQUARED_DISTANCE_3(Point_3);
-  SQUARED_DISTANCE_3(Line_3);
-  SQUARED_DISTANCE_3(Ray_3);
-  SQUARED_DISTANCE_3(Segment_3);
-  SQUARED_DISTANCE_3(Plane_3);
-  cgal.SPFUNC(, squared_distance, const Point_3&, const Triangle_3&);
-  cgal.SPFUNC(, squared_distance, const Triangle_3&, const Point_3&);
+  SQUARED_DISTANCE_3_SYM;
+  cgal.method("squared_distance", &squared_distance<Point_3, Triangle_3>);
+  cgal.method("squared_distance", &squared_distance<Triangle_3, Point_3>);
 
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&, const Point_2&);
   CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&);
@@ -445,11 +435,22 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
   CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_3&, const Bbox_3&);
 }
 
-#undef DO_INTERSECT
-#undef DO_INTERSECT_SELF
+} // jlcgal
 
-#undef INTERSECTION
-#undef INTERSECTION_SELF
+#undef DO_INTERSECT_2
+#undef DO_INTERSECT_2_SYM
+
+#undef INTERSECTION_2
+#undef INTERSECTION_2_SYM
+
+#undef DO_INTERSECT_3
+#undef DO_INTERSECT_3_ALL
+
+#undef INTERSECTION_3
+#undef INTERSECTION_3_SYM
 
 #undef SQUARED_DISTANCE_2
+#undef SQUARED_DISTANCE_2_ALL
+
 #undef SQUARED_DISTANCE_3
+#undef SQUARED_DISTANCE_3_SYM

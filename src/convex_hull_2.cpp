@@ -21,38 +21,26 @@
 #include "macros.hpp"
 #include "utils.hpp"
 
-typedef typename jlcxx::ArrayRef<Point_2>::iterator InIter;
-typedef typename std::back_insert_iterator<std::vector<Point_2>> OutIter;
+namespace jlcgal {
 
-template<OutIter (*F)(InIter, InIter, OutIter)>
-jlcxx::Array<Point_2>
-ch2(jlcxx::ArrayRef<Point_2> ps) {
-  std::vector<Point_2> res;
-  F(ps.begin(), ps.end(), std::back_inserter(res));
-  return collect(res.begin(), res.end());
-}
-
-template<void (*F)(InIter, InIter, InIter&)>
-inline
-Point_2
-ch2_ex1(jlcxx::ArrayRef<Point_2> ps) {
-  jlcxx::ArrayRef<Point_2>::iterator e;
-  F(ps.begin(), ps.end(), e);
-  return *e;
-}
-
-template<void (*F)(InIter, InIter, InIter&, InIter&)>
-inline
-std::tuple<Point_2, Point_2>
-ch2_ex2(jlcxx::ArrayRef<Point_2> ps) {
-  jlcxx::ArrayRef<Point_2>::iterator e1, e2;
-  F(ps.begin(), ps.end(), e1, e2);
-  return std::make_tuple(*e1, *e2);
-}
-
-#define CH2(F) cgal.PFUNC(, F, ch2, CGAL::F)
-#define CH2_EX1(D) cgal.PFUNC(, ch_##D##_point, ch2_ex1, CGAL::ch_##D##_point)
-#define CH2_EX2(D) cgal.PFUNC(, ch_##D##_point, ch2_ex2, CGAL::ch_##D##_point)
+#define CH2(F) \
+  cgal.method(#F, [](jlcxx::ArrayRef<Point_2> ps) { \
+    std::vector<Point_2> res; \
+    CGAL::F(ps.begin(), ps.end(), std::back_inserter(res)); \
+    return collect(ps.begin(), ps.end()); \
+  })
+#define CH2_EX1(D) \
+  cgal.method("ch_" #D "_point", [](jlcxx::ArrayRef<Point_2> ps) { \
+    jlcxx::ArrayRef<Point_2>::iterator e; \
+    CGAL::ch_##D##_point(ps.begin(), ps.end(), e); \
+    return *e; \
+  })
+#define CH2_EX2(D) \
+  cgal.method("ch_" #D "_point", [](jlcxx::ArrayRef<Point_2> ps) { \
+    jlcxx::ArrayRef<Point_2>::iterator e1, e2; \
+    CGAL::ch_##D##_point(ps.begin(), ps.end(), e1, e2); \
+    return std::make_tuple(*e1, *e2); \
+  })
 
 void wrap_convex_hull_2(jlcxx::Module& cgal) {
   // Convex Hull Functions
@@ -104,3 +92,5 @@ void wrap_convex_hull_2(jlcxx::Module& cgal) {
 #undef CH2
 #undef CH2_EX
 #undef CH2_EX2
+
+} // jlcgal

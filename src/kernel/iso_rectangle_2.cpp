@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_iso_rectangle_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Iso_rectangle_2>& iso_rectangle_2) {
   iso_rectangle_2
@@ -41,3 +43,5 @@ void wrap_iso_rectangle_2(jlcxx::Module& kernel,
     .REPR(Iso_rectangle_2)
     ;
 }
+
+} // jlcgal

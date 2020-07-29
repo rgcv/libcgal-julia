@@ -9,18 +9,20 @@
 #include "macros.hpp"
 
 #define CK_DO_INTERSECT_CONVERT(T1, T2, C1, C2) \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T1, T2, C1, C2); \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T2, T1, C2, C1)
+  cgal.method("do_intersect", &ck_do_intersect<T1, T2, C1, C2>); \
+  cgal.method("do_intersect", &ck_do_intersect<T2, T1, C2, C1>)
 #define CK_DO_INTERSECT(T1, T2) CK_DO_INTERSECT_CONVERT(T1, T2, CK::T1, CK::T2)
 #define CK_DO_INTERSECT_SELF(T) \
-  cgal.PFUNC(, do_intersect, ck_do_intersect, T, T, CK::T, CK::T)
+  cgal.method("do_intersect", &ck_do_intersect<T, T, CK::T, CK::T>)
 
 #define CK_INTERSECTION_CONVERT(T1, T2, C1, C2) \
-  cgal.PFUNC(, intersection, ck_intersection, T1, T2, C1, C2); \
-  cgal.PFUNC(, intersection, ck_intersection, T2, T1, C2, C1)
+  cgal.method("intersection", &ck_intersection<T1, T2, C1, C2>); \
+  cgal.method("intersection", &ck_intersection<T2, T1, C2, C1>)
 #define CK_INTERSECTION(T1, T2) CK_INTERSECTION_CONVERT(T1, T2, CK::T1, CK::T2)
 #define CK_INTERSECTION_SELF(T) \
-  cgal.PFUNC(, intersection, ck_intersection, T, T, CK::T, CK::T)
+  cgal.method("intersection", &ck_intersection<T, T, CK::T, CK::T>)
+
+namespace jlcgal {
 
 template<typename T1, typename T2, typename C1, typename C2>
 inline
@@ -60,3 +62,5 @@ void wrap_global_ck_functions(jlcxx::Module& cgal) {
   CK_INTERSECTION(Circular_arc_2, Line_2);
   CK_INTERSECTION_CONVERT(Circular_arc_2, Segment_2, CK::Circular_arc_2, CK::Line_arc_2);
 }
+
+} // jlcgal

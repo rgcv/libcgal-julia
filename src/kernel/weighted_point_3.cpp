@@ -6,6 +6,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_weighted_point_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Weighted_point_3>& weighted_point_3) {
   weighted_point_3
@@ -46,3 +48,4 @@ void wrap_weighted_point_3(jlcxx::Module& kernel,
     ;
 }
 
+} // jlcgal

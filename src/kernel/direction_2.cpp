@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_direction_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Direction_2>& direction_2) {
   direction_2
@@ -33,3 +35,5 @@ void wrap_direction_2(jlcxx::Module& kernel,
     .REPR(Direction_2)
     ;
 }
+
+} // jlcgal

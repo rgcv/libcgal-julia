@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_aff_transformation_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Aff_transformation_3>& aff_transformation_3) {
   aff_transformation_3
@@ -51,3 +53,5 @@ void wrap_aff_transformation_3(jlcxx::Module& kernel,
     /* .REPR(Aff_transformation_3) */
     ;
 }
+
+} // jlcgal

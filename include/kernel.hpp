@@ -3,17 +3,23 @@
 
 #include <exception>
 
+#ifdef JLCGAL_EXACT_CONSTRUCTIONS
+#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
+#else
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#endif
+
 #include <CGAL/Algebraic_kernel_for_circles_2_2.h>
 #include <CGAL/Algebraic_kernel_for_spheres_2_3.h>
 #include <CGAL/Circular_kernel_2.h>
 #include <CGAL/Spherical_kernel_3.h>
 
+namespace jlcgal {
+
 /// Kernel
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
-#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt Linear_kernel;
 #else
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Linear_kernel;
 #endif
 
@@ -22,7 +28,9 @@ typedef CGAL::Algebraic_kernel_for_spheres_2_3<Linear_kernel::RT> Algebraic_kern
 typedef CGAL::Circular_kernel_2<Linear_kernel, Algebraic_kernel_2> Circular_kernel;
 typedef CGAL::Spherical_kernel_3<Linear_kernel, Algebraic_kernel_3> Spherical_kernel;
 
-typedef Linear_kernel Kernel;
+typedef Linear_kernel    Kernel;
+typedef Circular_kernel  CK;
+typedef Spherical_kernel SK;
 
 typedef Kernel::FT FT;
 typedef Kernel::RT RT;
@@ -42,7 +50,7 @@ typedef Kernel::Triangle_2           Triangle_2;
 typedef Kernel::Vector_2             Vector_2;
 typedef Kernel::Weighted_point_2     Weighted_point_2;
 // Circular
-typedef Circular_kernel::Circular_arc_2       Circular_arc_2;
+typedef Circular_kernel::Circular_arc_2 Circular_arc_2;
 
 /// 3D Kernel Objects
 // Linear
@@ -64,10 +72,13 @@ typedef Kernel::Weighted_point_3     Weighted_point_3;
 // Spherical
 typedef Spherical_kernel::Circular_arc_3 Circular_arc_3;
 
-template <typename T1, typename T2>
-auto safe_division(const T1& t1, const T2& t2) -> decltype(t1/t2) {
-  if (t2 == 0) throw std::overflow_error("division by zero");
-  return t1 / t2;
+template <typename T, typename U>
+auto
+safe_division(const T& t, const U& u) -> decltype(t / u) {
+  if (u == 0) throw std::overflow_error("division by zero");
+  return t / u;
 }
+
+} // jlcgal
 
 #endif // CGAL_JL_KERNEL_HPP

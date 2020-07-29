@@ -3,6 +3,8 @@
 
 #include <jlcxx/type_conversion.hpp>
 
+namespace jlcgal {
+
 template <typename InputIterator>
 decltype(auto)
 collect(InputIterator begin, InputIterator end) {
@@ -32,5 +34,7 @@ struct Handle_visitor {
     return jlcxx::box<typename Handle::value_type>(*h);
   }
 };
+
+} // jlcgal
 
 #endif // CGAL_JL_UTILS_HPP

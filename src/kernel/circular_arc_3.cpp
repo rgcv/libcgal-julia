@@ -9,7 +9,7 @@
 #include "kernel_conversion.hpp"
 #include "macros.hpp"
 
-typedef Circular_kernel CK;
+namespace jlcgal{
 
 void wrap_circular_arc_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Circular_arc_3>& circular_arc_3) {
@@ -72,3 +72,5 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
     })
     ;
 }
+
+} // jlcgal

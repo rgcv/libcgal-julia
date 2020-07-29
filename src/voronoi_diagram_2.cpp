@@ -12,14 +12,15 @@
 #include "triangulation.hpp"
 #include "utils.hpp"
 
-template <typename DG, typename AT, typename AP>
-using VD2 = CGAL::Voronoi_diagram_2<DG, AT, AP>;
-template <typename DT2>
-using VoronoiDelaunay2 = VD2<DT2
+namespace jlcgal {
+
+template<typename DT2>
+using Voronoi_delaunay_2 = CGAL::Voronoi_diagram_2<DT2
   , CGAL::Delaunay_triangulation_adaptation_traits_2<DT2>
   , CGAL::Delaunay_triangulation_caching_degeneracy_removal_policy_2<DT2>>;
-template <typename RT2>
-using VoronoiRegular2 = VD2<RT2
+
+template<typename RT2>
+using Voronoi_regular_2 = CGAL::Voronoi_diagram_2<RT2
   , CGAL::Regular_triangulation_adaptation_traits_2<RT2>
   , CGAL::Regular_triangulation_caching_degeneracy_removal_policy_2<RT2>>;
 
@@ -30,8 +31,7 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
   auto vdhalfedge = cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name + "Halfedge");
   auto vdvertex   = cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name + "Vertex");
 
-  cgal.add_type<jlcxx::Parametric<jlcxx::TypeVar<1>>>(vd_name)
-    .apply<VoronoiDelaunay2<DTr>, VoronoiRegular2<RTr>>([&](auto vd) {
+    .apply<Voronoi_delaunay_2<DTr_2>, Voronoi_regular_2<RTr_2>>([&](auto vd) {
       typedef typename decltype(vd)::type  VD;
       typedef typename VD::Delaunay_graph  DG;
       typedef typename VD::Face            Face;
@@ -44,7 +44,6 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
       typedef typename VD::Vertex_handle   Vertex_handle;
 
       vdface.template apply<Face>([](auto face) {
-        typedef typename decltype(face)::type  Face;
         face
           .template CTOR(const Face&)
           OVERRIDE_BASE(face.module(), face)
@@ -58,7 +57,6 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
       });
 
       vdhalfedge.template apply<Halfedge>([](auto halfedge) {
-        typedef typename decltype(halfedge)::type Halfedge;
         halfedge
           .template CTOR(const Halfedge&)
           OVERRIDE_BASE(halfedge.module(), halfedge)
@@ -75,10 +73,10 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
             return collect(he.ccb());
           })
           .METHOD(Halfedge, dual)
-          .method("up",    [](const Halfedge he) { return *he.up();    })
-          .method("down",  [](const Halfedge he) { return *he.down();  })
-          .method("left",  [](const Halfedge he) { return *he.left();  })
-          .method("right", [](const Halfedge he) { return *he.right(); })
+          .method("up",    [](const Halfedge& he) { return *he.up();    })
+          .method("down",  [](const Halfedge& he) { return *he.down();  })
+          .method("left",  [](const Halfedge& he) { return *he.left();  })
+          .method("right", [](const Halfedge& he) { return *he.right(); })
           // Predicate Methods
           .METHOD(Halfedge, has_source)
           .METHOD(Halfedge, has_target)
@@ -102,7 +100,6 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         ;
 
        vdvertex.template apply<Vertex>([](auto vertex) {
-        typedef typename decltype(vertex)::type  Vertex;
         typedef typename Vertex::Face            Face;
         typedef typename Vertex::Face_handle     Face_handle;
         typedef typename Vertex::Halfedge        Halfedge;
@@ -239,3 +236,5 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
     });
 
 }
+
+} // jlcgal

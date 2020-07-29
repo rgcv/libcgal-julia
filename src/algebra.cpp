@@ -5,9 +5,10 @@
 #include "macros.hpp"
 #include "kernel.hpp"
 
-typedef Kernel::FT NT;
+namespace jlcgal {
 
 void wrap_algebra(jlcxx::Module& cgal) {
+typedef Kernel::FT NT;
   // missing functions that involve EuclideanRing concept:
   // div, div_mod, mod
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
@@ -35,3 +36,5 @@ void wrap_algebra(jlcxx::Module& cgal) {
   });
   CGAL_GLOBAL_FUNCTION(NT, unit_part, const NT&);
 }
+
+} // jlcgal

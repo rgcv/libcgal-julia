@@ -6,6 +6,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_point_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_2>& point_2) {
   point_2
     OVERRIDE_BASE(kernel, point_2)
@@ -45,3 +47,5 @@ void wrap_point_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_2>& point_2) {
     .REPR(Point_2)
     ;
 }
+
+} // jlcgal

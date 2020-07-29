@@ -25,6 +25,8 @@
   .UNARY_OP(+, T) \
   .UNARY_OP(-, T)
 
+namespace jlcgal {
+
 void wrap_aff_transformation_2(jlcxx::Module&, jlcxx::TypeWrapper<Aff_transformation_2>&);
 void wrap_bbox_2(jlcxx::Module&, jlcxx::TypeWrapper<Bbox_2>&);
 void wrap_circle_2(jlcxx::Module&, jlcxx::TypeWrapper<Circle_2>&);
@@ -58,7 +60,7 @@ void wrap_weighted_point_3(jlcxx::Module&, jlcxx::TypeWrapper<Weighted_point_3>&
 
 void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
-  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real", jl_base_module))
+  auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"))
     // Creation
     .CTOR(double)
     OVERRIDE_BASE(cgal, field_type)
@@ -136,3 +138,5 @@ void wrap_kernel(jlcxx::Module& cgal) {
   wrap_vector_3(cgal, vector_3);
   wrap_weighted_point_3(cgal, weighted_point_3);
 }
+
+} // jlcgal

@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_iso_cuboid_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Iso_cuboid_3>& iso_cuboid_3) {
   iso_cuboid_3
@@ -44,3 +46,4 @@ void wrap_iso_cuboid_3(jlcxx::Module& kernel,
     ;
 }
 
+} // jlcgal

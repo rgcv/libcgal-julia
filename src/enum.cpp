@@ -2,19 +2,14 @@
 
 #include <jlcxx/module.hpp>
 
-#include "macros.hpp"
-
 #define CGAL_CONST(N)   cgal.set_const(#N, CGAL::N)
 #define CGAL_ENUM(E, N) cgal.add_bits<CGAL::E>(#N, jlcxx::julia_type("CppEnum"))
 #define CGAL_SENUM(E)   CGAL_ENUM(E, E)
 
+namespace jlcgal {
+
 void wrap_enum(jlcxx::Module& cgal) {
   CGAL_SENUM(Sign);
-  OVERRIDE_BASE(cgal,);
-  /* cgal.UNARY_OP(-, CGAL::Sign); */
-  /* cgal.BINARY_OP(CGAL::Sign, *, CGAL::Sign); */
-  UNSET_OVERRIDE(cgal,);
-  /* cgal.SPFUNC(CGAL, opposite, CGAL::Sign); */
   // Sign
   CGAL_CONST(NEGATIVE ); CGAL_CONST(ZERO    ); CGAL_CONST(POSITIVE  );
   CGAL_CONST(COLLINEAR); CGAL_CONST(COPLANAR); CGAL_CONST(DEGENERATE);
@@ -43,3 +38,5 @@ void wrap_enum(jlcxx::Module& cgal) {
 #undef CGAL_CONST
 #undef CGAL_ENUM
 #undef CGAL_SENUM
+
+} // jlcgal

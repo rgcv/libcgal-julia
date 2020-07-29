@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_sphere_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Sphere_3>& sphere_3) {
   sphere_3
@@ -44,3 +46,5 @@ void wrap_sphere_3(jlcxx::Module& kernel,
     .REPR(Sphere_3)
     ;
 }
+
+} // jlcgal

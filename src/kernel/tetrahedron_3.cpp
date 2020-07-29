@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_tetrahedron_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Tetrahedron_3>& tetrahedron_3) {
   tetrahedron_3
@@ -34,3 +36,4 @@ void wrap_tetrahedron_3(jlcxx::Module& kernel,
     ;
 }
 
+} // jlcgal

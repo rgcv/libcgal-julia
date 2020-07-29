@@ -5,9 +5,9 @@
 
 #include <CGAL/IO/io.h>
 
-#include "macros.hpp"
+#define REPR(T) method("repr", &repr<T>)
 
-#define REPR(T) SPFUNC(, repr, T)
+namespace jlcgal {
 
 template<typename T>
 inline
@@ -17,5 +17,7 @@ const std::string repr(const T &t) {
   oss << t;
   return oss.str();
 }
+
+} // jlcgal
 
 #endif // CGAL_JL_IO_HPP

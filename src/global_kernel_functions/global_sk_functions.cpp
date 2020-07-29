@@ -9,26 +9,28 @@
 #include "macros.hpp"
 
 #define SK_DO_INTERSECT_CONVERT(T1, T2, S1, S2) \
-  cgal.PFUNC(, do_intersect, sk_do_intersect, T1, T2, S1, S2); \
-  cgal.PFUNC(, do_intersect, sk_do_intersect, T2, T1, S2, S1)
+  cgal.method("do_intersect", &sk_do_intersect<T1, T2, S1, S2>); \
+  cgal.method("do_intersect", &sk_do_intersect<T2, T1, S2, S1>)
 #define SK_DO_INTERSECT(T1, T2) SK_DO_INTERSECT_CONVERT(T1, T2, SK::T1, SK::T2)
 #define SK_DO_INTERSECT_3(T1, T2, T3) \
-  cgal.PFUNC(, do_intersect, sk_do_intersect, T1, T2, T3, SK::T1, SK::T2, SK::T3)
+  cgal.method("do_intersect", &sk_do_intersect<T1, T2, T3, SK::T1, SK::T2, SK::T3>)
 #define SK_DO_INTERSECT_SELF(T) \
-  cgal.PFUNC(, do_intersect, sk_do_intersect, T, T, SK::T, SK::T)
+  cgal.method("do_intersect", &sk_do_intersect<T, T, SK::T, SK::T>)
 #define SK_DO_INTERSECT_SELF_3(T) \
-  cgal.PFUNC(, do_intersect, sk_do_intersect, T, T, T, SK::T, SK::T, SK::T)
+  cgal.method("do_intersect", &sk_do_intersect<T, T, T, SK::T, SK::T, SK::T>)
 
 #define SK_INTERSECTION_CONVERT(T1, T2, S1, S2) \
-  cgal.PFUNC(, intersection, sk_intersection, T1, T2, S1, S2); \
-  cgal.PFUNC(, intersection, sk_intersection, T2, T1, S2, S1)
+  cgal.method("intersection", &sk_intersection<T1, T2, S1, S2>); \
+  cgal.method("intersection", &sk_intersection<T2, T1, S2, S1>)
 #define SK_INTERSECTION(T1, T2) SK_INTERSECTION_CONVERT(T1, T2, SK::T1, SK::T2)
 #define SK_INTERSECTION_3(T1, T2, T3) \
-  cgal.PFUNC(, intersection, sk_intersection, T1, T2, T3, SK::T1, SK::T2, SK::T3)
+  cgal.method("intersection", &sk_intersection<T1, T2, T3, SK::T1, SK::T2, SK::T3>)
 #define SK_INTERSECTION_SELF(T) \
-  cgal.PFUNC(, intersection, sk_intersection, T, T, SK::T, SK::T)
+  cgal.method("intersection", &sk_intersection<T, T, SK::T, SK::T>)
 #define SK_INTERSECTION_SELF_3(T) \
-  cgal.PFUNC(, intersection, sk_intersection, T, T, T, SK::T, SK::T, SK::T)
+  cgal.method("intersection", &sk_intersection<T, T, T, SK::T, SK::T, SK::T>)
+
+namespace jlcgal {
 
 template<typename T1, typename T2, typename S1, typename S2>
 inline
@@ -115,6 +117,8 @@ void wrap_global_sk_functions(jlcxx::Module& cgal) {
   SK_INTERSECTION_3(Plane_3, Plane_3, Sphere_3);
   SK_INTERSECTION_3(Sphere_3, Plane_3, Plane_3);
 }
+
+} // jlcgal
 
 #undef SK_DO_INTERSECT_CONVERT
 #undef SK_DO_INTERSECT

@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_segment_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Segment_2>& segment_2) {
   segment_2
@@ -37,3 +39,5 @@ void wrap_segment_2(jlcxx::Module& kernel,
     .REPR(Segment_2)
     ;
 }
+
+} // jlcgal

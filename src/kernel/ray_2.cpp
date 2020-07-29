@@ -4,6 +4,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_ray_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Ray_2>& ray_2) {
   ray_2
     // Creation
@@ -33,3 +35,5 @@ void wrap_ray_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Ray_2>& ray_2) {
     .REPR(Ray_2)
     ;
 }
+
+} // jlcgal

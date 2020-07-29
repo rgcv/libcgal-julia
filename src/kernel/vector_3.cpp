@@ -6,6 +6,8 @@
 #include "macros.hpp"
 #include "io.hpp"
 
+namespace jlcgal {
+
 void wrap_vector_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Vector_3>& vector_3) {
   vector_3
@@ -54,3 +56,4 @@ void wrap_vector_3(jlcxx::Module& kernel,
     ;
 }
 
+} // jlcgal

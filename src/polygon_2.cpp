@@ -8,10 +8,12 @@
 #include "io.hpp"
 #include "utils.hpp"
 
-typedef CGAL::Polygon_2<Kernel> Polygon_2;
-typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
+namespace jlcgal {
 
 void wrap_polygon_2(jlcxx::Module& cgal) {
+  typedef CGAL::Polygon_2<Kernel> Polygon_2;
+  typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
+
   const std::string poly_2_name = "Polygon2";
   auto poly_2 = cgal.add_type<Polygon_2>(poly_2_name)
     // Creation
@@ -116,3 +118,5 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
     .REPR(Polygon_with_holes_2)
     ;
 }
+
+} // jlcgal

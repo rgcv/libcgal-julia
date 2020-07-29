@@ -13,7 +13,8 @@
 #include <jlcxx/tuple.hpp>
 
 #include "kernel.hpp"
-#include "macros.hpp"
+
+namespace jlcgal {
 
 template<typename Point>
 Point
@@ -36,7 +37,7 @@ barycenter(jlcxx::ArrayRef<WeightedPoint> wps) {
   std::vector<std::pair<typename WeightedPoint::Point, FT>> v(wps.size());
   std::transform(wps.begin(), wps.end(), v.begin(),
                  [](const WeightedPoint& wp) {
-   return std::make_pair(wp.point(), wp.weight());
+    return std::make_pair(wp.point(), wp.weight());
   });
   return CGAL::barycenter(v.begin(), v.end());
 }
@@ -60,25 +61,27 @@ centroid(jlcxx::ArrayRef<T> ts) {
 
 void wrap_principal_component_analysis(jlcxx::Module& cgal) {
   // barycenter
-  cgal.SPFUNC(, barycenter, Point_2);
-  cgal.SPFUNC(, barycenter, Point_3);
-  cgal.SPFUNC(, barycenter, Weighted_point_2, 0);
-  cgal.SPFUNC(, barycenter, Weighted_point_3, 0);
+  cgal.method("barycenter", &barycenter<Point_2>);
+  cgal.method("barycenter", &barycenter<Point_3>);
+  cgal.method("barycenter", &barycenter<Weighted_point_2, 0>);
+  cgal.method("barycenter", &barycenter<Weighted_point_3, 0>);
   // bounding_box
-  cgal.SPFUNC(, bounding_box, Point_2);
-  cgal.SPFUNC(, bounding_box, Point_3);
+  cgal.method("bounding_box", &bounding_box<Point_2>);
+  cgal.method("bounding_box", &bounding_box<Point_3>);
   // centroid
-  cgal.SPFUNC(, centroid, Point_2);
-  cgal.SPFUNC(, centroid, Point_3);
+  cgal.method("centroid", &centroid<Point_2>);
+  cgal.method("centroid", &centroid<Point_3>);
 #ifndef JLCGAL_EXACT_CONSTRUCTIONS
-  cgal.SPFUNC(, centroid, Segment_2);
-  cgal.SPFUNC(, centroid, Segment_3);
-  cgal.SPFUNC(, centroid, Triangle_2);
-  cgal.SPFUNC(, centroid, Triangle_3);
-  cgal.SPFUNC(, centroid, Iso_rectangle_2);
-  cgal.SPFUNC(, centroid, Iso_cuboid_3);
-  cgal.SPFUNC(, centroid, Tetrahedron_3);
-  cgal.SPFUNC(, centroid, Circle_2);
-  cgal.SPFUNC(, centroid, Sphere_3);
+  cgal.method("centroid", &centroid<Segment_2>);
+  cgal.method("centroid", &centroid<Segment_3>);
+  cgal.method("centroid", &centroid<Triangle_2>);
+  cgal.method("centroid", &centroid<Triangle_3>);
+  cgal.method("centroid", &centroid<Iso_rectangle_2>);
+  cgal.method("centroid", &centroid<Iso_cuboid_3>);
+  cgal.method("centroid", &centroid<Tetrahedron_3>);
+  cgal.method("centroid", &centroid<Circle_2>);
+  cgal.method("centroid", &centroid<Sphere_3>);
 #endif
 }
+
+} // jlcgal
