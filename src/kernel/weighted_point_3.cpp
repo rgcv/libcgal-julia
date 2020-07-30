@@ -2,9 +2,8 @@
 
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
@@ -12,40 +11,53 @@ void wrap_weighted_point_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Weighted_point_3>& weighted_point_3) {
   weighted_point_3
     // Creation
-    .CTOR(const CGAL::Origin&)
-    .CTOR(const Point_3&)
-    .CTOR(const Point_3&, const FT&)
-    .CTOR(const FT&, const FT&, const FT&)
+    .constructor<const CGAL::Origin&>()
+    .constructor<const Point_3&>()
+    .constructor<const Point_3&, const FT&>()
+    .constructor<const FT&, const FT&, const FT&>()
     // Bare point and weight accessor
-    .METHOD(Weighted_point_3, point )
-    .METHOD(Weighted_point_3, weight)
+    .method("point",  &Weighted_point_3::point)
+    .method("weight", &Weighted_point_3::weight)
+    ;
+  kernel.set_override_module(jl_base_module);
+  weighted_point_3
     // Operations (delegated to underlying Point_3)
-    OVERRIDE_BASE(kernel, weighted_point_3)
-    .method("==", [](const Weighted_point_3& wp, const CGAL::Origin& o) {
-      return wp.point() == o;
-    })
-    .BINARY_OP_SELF(const Weighted_point_3&, ==)
-    .BINARY_OP_SELF(const Weighted_point_3&,  <)
-    UNSET_OVERRIDE(kernel, weighted_point_3)
+    .method("==", [](const Weighted_point_3& wp, const CGAL::Origin& o) { return o == wp; })
+    .method("==", [](const Weighted_point_3& wp, const Point_3& p) { return wp == p; })
+    .method("==", [](const Weighted_point_3& p, const Weighted_point_3& q) { return p == q; })
+    .method("<",  [](const Weighted_point_3& p, const Weighted_point_3& q) { return p <  q; })
+    ;
+  kernel.unset_override_module();
+  weighted_point_3
     // Coordinate Access
-    .METHOD(Weighted_point_3, hx)
-    .METHOD(Weighted_point_3, hy)
-    .METHOD(Weighted_point_3, hz)
-    .METHOD(Weighted_point_3, hw)
-    .METHOD(Weighted_point_3, x )
-    .METHOD(Weighted_point_3, y )
-    .METHOD(Weighted_point_3, z )
+    .method("hx", &Weighted_point_3::hx)
+    .method("hy", &Weighted_point_3::hy)
+    .method("hz", &Weighted_point_3::hz)
+    .method("hw", &Weighted_point_3::hw)
+    .method("x",  &Weighted_point_3::x)
+    .method("y",  &Weighted_point_3::y)
+    .method("z",  &Weighted_point_3::z)
     // Convenience Operations
-    .METHOD(Weighted_point_3, homogeneous)
-    .METHOD(Weighted_point_3, cartesian  )
-    .METHOD(Weighted_point_3, dimension  )
-    .METHOD(Weighted_point_3, bbox       )
+    .method("homogeneous", &Weighted_point_3::homogeneous)
+    .method("cartesian",   &Weighted_point_3::cartesian)
+    .method("dimension",   &Weighted_point_3::dimension)
+    .method("bbox",        &Weighted_point_3::bbox)
     .method("transform", [](const Weighted_point_3 &wp, const Aff_transformation_3 &t) {
-        return Weighted_point_3(t.transform(wp.point()), wp.weight());
+      return Weighted_point_3(t.transform(wp.point()), wp.weight());
     })
     // Representation
     .TO_STRING(Weighted_point_3)
     ;
+
+  kernel.set_override_module(jl_base_module);
+  kernel.method(">",  [](const Weighted_point_3& p, const Weighted_point_3& q) { return q <  p; });
+  kernel.method("<=", [](const Weighted_point_3& p, const Weighted_point_3& q) { return p <  q || p == q; });
+  kernel.method(">=", [](const Weighted_point_3& p, const Weighted_point_3& q) { return q <  p || p == q; });
+  kernel.method("-",  [](const Weighted_point_3& p, const CGAL::Origin& o) { return p.point() - o; });
+  kernel.method("-",  [](const CGAL::Origin& o, const Weighted_point_3& p) { return o - p.point(); });
+  kernel.method("==", [](const CGAL::Origin& o, const Weighted_point_3& p) { return o == p; });
+  kernel.method("==", [](const Point_3& p, const Weighted_point_3& q) { return q == p; });
+  kernel.unset_override_module();
 }
 
 } // jlcgal
