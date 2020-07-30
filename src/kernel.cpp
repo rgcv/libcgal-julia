@@ -1,8 +1,11 @@
+#include <CGAL/Origin.h>
+#include <CGAL/enum.h>
+
 #include <jlcxx/module.hpp>
 
+#include "io.hpp"
 #include "kernel.hpp"
 #include "macros.hpp"
-#include "io.hpp"
 
 #define OPERATION(T, op) \
    BINARY_OP(     T, op, double) \
@@ -24,6 +27,10 @@
   .OPERATION(T, *) \
   .UNARY_OP(+, T) \
   .UNARY_OP(-, T)
+
+#define CGAL_CONST(N)   cgal.set_const(#N, CGAL::N)
+#define CGAL_ENUM(E, N) cgal.add_bits<CGAL::E>(#N, jlcxx::julia_type("CppEnum"))
+#define CGAL_SENUM(E)   CGAL_ENUM(E, E)
 
 namespace jlcgal {
 
@@ -73,6 +80,36 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .TO_STRING(FT)
     ;
 #endif
+
+  /// Origin / Null_vector
+  cgal.map_type<CGAL::Origin>("Origin");
+  cgal.map_type<CGAL::Null_vector>("NullVector");
+
+  /// Enums
+  CGAL_SENUM(Sign);
+  // Sign
+  CGAL_CONST(NEGATIVE ); CGAL_CONST(ZERO    ); CGAL_CONST(POSITIVE  );
+  CGAL_CONST(COLLINEAR); CGAL_CONST(COPLANAR); CGAL_CONST(DEGENERATE);
+  // Orientation
+  CGAL_CONST(RIGHT_TURN); CGAL_CONST(LEFT_TURN);
+  CGAL_CONST(CLOCKWISE ); CGAL_CONST(COUNTERCLOCKWISE);
+  // Oriented_side
+  CGAL_CONST(ON_NEGATIVE_SIDE); CGAL_CONST(ON_ORIENTED_BOUNDARY); CGAL_CONST(ON_POSITIVE_SIDE);
+  // Comparison_result
+  CGAL_CONST(SMALLER); CGAL_CONST(EQUAL); CGAL_CONST(LARGER);
+
+  CGAL_ENUM(Bounded_side, BoundedSide);
+  /* CGAL_UNAMBIG_FUNC(CGAL::Bounded_side, opposite, CGAL::Bounded_side); */
+  CGAL_CONST(ON_UNBOUNDED_SIDE); CGAL_CONST(ON_BOUNDARY); CGAL_CONST(ON_BOUNDED_SIDE);
+
+  CGAL_SENUM(Angle);
+  /* CGAL_UNAMBIG_FUNC(CGAL::Angle, opposite, CGAL::Angle); */
+  CGAL_CONST(OBTUSE); CGAL_CONST(RIGHT); CGAL_CONST(ACUTE);
+
+  CGAL_ENUM(Box_parameter_space_2, BoxParameterSpace2);
+  CGAL_CONST(LEFT_BOUNDARY  ); CGAL_CONST(RIGHT_BOUNDARY);
+  CGAL_CONST(BOTTOM_BOUNDARY); CGAL_CONST(TOP_BOUNDARY  );
+  CGAL_CONST(INTERIOR       ); CGAL_CONST(EXTERIOR      );
 
   /// 2D
   auto aff_transformation_2 = cgal.add_type<Aff_transformation_2>("AffTransformation2");
@@ -144,3 +181,6 @@ void wrap_kernel(jlcxx::Module& cgal) {
 #undef OPERATION
 #undef OPERATORS
 
+#undef CGAL_CONST
+#undef CGAL_ENUM
+#undef CGAL_SENUM
