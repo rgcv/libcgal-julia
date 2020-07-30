@@ -58,12 +58,12 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         face.
           template constructor<const Face&>()
           ;
-        face.module().set_module_override(jl_base_module);
+        face.module().set_override_module(jl_base_module);
         face
           .method("==", &Face::operator==)
           .method("<",  &Face::operator<)
           ;
-        face.module().unset_module_override();
+        face.module().unset_override_module();
         face
           // Predicate Methods
           .method("is_unbounded", &Face::is_unbounded)
@@ -75,12 +75,12 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         halfedge
           .template constructor<const Halfedge&>()
           ;
-        halfedge.module().set_module_override(jl_base_module);
+        halfedge.module().set_override_module(jl_base_module);
         halfedge
           .method("==", &Halfedge::operator==)
           .method("<",  &Halfedge::operator<)
           ;
-        halfedge.module().unset_module_override();
+        halfedge.module().unset_override_module();
         halfedge
           // Access Methods
           .method("twin",     [](const Halfedge& he) { return *he.twin();     })
