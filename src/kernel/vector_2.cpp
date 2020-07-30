@@ -53,7 +53,7 @@ void wrap_vector_2(jlcxx::Module& kernel,
     .method("/", &safe_division<Vector_2, RT>)
     UNSET_OVERRIDE(kernel, vector_2)
     // Representation
-    .REPR(Vector_2)
+    .TO_STRING(Vector_2)
     ;
 }
 

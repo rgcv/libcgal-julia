@@ -42,7 +42,7 @@ void wrap_line_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_2>& line_2) {
     .METHOD(Line_2, perpendicular)
     .METHOD(Line_2, transform    )
     // Representation
-    .REPR(Line_2)
+    .TO_STRING(Line_2)
     ;
 }
 

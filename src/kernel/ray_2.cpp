@@ -32,7 +32,7 @@ void wrap_ray_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Ray_2>& ray_2) {
     // Miscellaneous
     .METHOD(Ray_2, transform)
     // Representation
-    .REPR(Ray_2)
+    .TO_STRING(Ray_2)
     ;
 }
 

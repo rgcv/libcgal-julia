@@ -42,7 +42,7 @@ void wrap_weighted_point_2(jlcxx::Module& kernel,
         return Weighted_point_2(t.transform(wp.point()), wp.weight());
     })
     // Representation
-    .REPR(Weighted_point_2)
+    .TO_STRING(Weighted_point_2)
     ;
 }
 

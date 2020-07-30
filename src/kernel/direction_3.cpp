@@ -27,7 +27,7 @@ void wrap_direction_3(jlcxx::Module& kernel,
     .METHOD(Direction_3, vector   )
     .METHOD(Direction_3, transform)
     // Representation
-    .REPR(Direction_3)
+    .TO_STRING(Direction_3)
     ;
 }
 

@@ -54,7 +54,7 @@ void wrap_aff_transformation_2(jlcxx::Module& kernel,
     .METHOD(Aff_transformation_2, homogeneous)
     .METHOD(Aff_transformation_2, hm         )
     // Representation
-    .REPR(Aff_transformation_2)
+    .TO_STRING(Aff_transformation_2)
     ;
 }
 

@@ -33,7 +33,7 @@ void wrap_circle_3(jlcxx::Module& kernel,
     // Miscellaneous
     .METHOD(Circle_3, bbox)
     // Representation
-    .REPR(Circle_3)
+    .TO_STRING(Circle_3)
     ;
 }
 

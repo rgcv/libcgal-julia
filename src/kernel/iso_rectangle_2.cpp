@@ -40,7 +40,7 @@ void wrap_iso_rectangle_2(jlcxx::Module& kernel,
     .METHOD(Iso_rectangle_2, bbox     )
     .METHOD(Iso_rectangle_2, transform)
     // Representation
-    .REPR(Iso_rectangle_2)
+    .TO_STRING(Iso_rectangle_2)
     ;
 }
 

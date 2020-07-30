@@ -24,7 +24,7 @@ void wrap_bbox_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Bbox_2>& bbox_2) {
     UNSET_OVERRIDE(kernel, bbox_2)
     .METHOD(Bbox_2, dilate   )
     // Representation
-    .REPR(Bbox_2)
+    .TO_STRING(Bbox_2)
     ;
 }
 

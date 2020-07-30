@@ -25,7 +25,7 @@ void wrap_triangle_3(jlcxx::Module& kernel,
     .METHOD(Triangle_3, bbox        )
     .METHOD(Triangle_3, transform   )
     // Representation
-    .REPR(Triangle_3)
+    .TO_STRING(Triangle_3)
     ;
 }
 

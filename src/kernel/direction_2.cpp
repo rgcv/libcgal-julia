@@ -32,7 +32,7 @@ void wrap_direction_2(jlcxx::Module& kernel,
     .METHOD(Direction_2, vector   )
     .METHOD(Direction_2, transform)
     // Representation
-    .REPR(Direction_2)
+    .TO_STRING(Direction_2)
     ;
 }
 

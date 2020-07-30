@@ -38,7 +38,7 @@ void wrap_circle_2(jlcxx::Module& kernel,
     .METHOD(Circle_2, orthogonal_transform)
     .METHOD(Circle_2, bbox                )
     // Representation
-    .REPR(Circle_2)
+    .TO_STRING(Circle_2)
     ;
 }
 

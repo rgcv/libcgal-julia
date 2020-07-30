@@ -44,7 +44,7 @@ void wrap_weighted_point_3(jlcxx::Module& kernel,
         return Weighted_point_3(t.transform(wp.point()), wp.weight());
     })
     // Representation
-    .REPR(Weighted_point_3)
+    .TO_STRING(Weighted_point_3)
     ;
 }
 

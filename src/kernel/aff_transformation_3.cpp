@@ -50,7 +50,7 @@ void wrap_aff_transformation_3(jlcxx::Module& kernel,
     .METHOD(Aff_transformation_3, hm         )
     // Representation
     // See https://github.com/CGAL/cgal/issues/4698
-    /* .REPR(Aff_transformation_3) */
+    /* .TO_STRING(Aff_transformation_3) */
     ;
 }
 

@@ -42,7 +42,7 @@ void wrap_iso_cuboid_3(jlcxx::Module& kernel,
     .METHOD(Iso_cuboid_3, bbox     )
     .METHOD(Iso_cuboid_3, transform)
     // Representation
-    .REPR(Iso_cuboid_3)
+    .TO_STRING(Iso_cuboid_3)
     ;
 }
 

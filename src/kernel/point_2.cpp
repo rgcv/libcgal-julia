@@ -44,7 +44,7 @@ void wrap_point_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_2>& point_2) {
     .METHOD(Point_2, bbox     )
     .METHOD(Point_2, transform)
     // Representation
-    .REPR(Point_2)
+    .TO_STRING(Point_2)
     ;
 }
 

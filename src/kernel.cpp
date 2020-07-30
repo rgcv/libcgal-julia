@@ -70,7 +70,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
     .method("/", &safe_division<double, FT>)
     UNSET_OVERRIDE(cgal, field_type)
     // Representation
-    .REPR(FT)
+    .TO_STRING(FT)
     ;
 #endif
 
@@ -140,3 +140,7 @@ void wrap_kernel(jlcxx::Module& cgal) {
 }
 
 } // jlcgal
+
+#undef OPERATION
+#undef OPERATORS
+

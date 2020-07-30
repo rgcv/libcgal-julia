@@ -32,7 +32,7 @@ void wrap_tetrahedron_3(jlcxx::Module& kernel,
     .METHOD(Tetrahedron_3, bbox     )
     .METHOD(Tetrahedron_3, transform)
     // Representation
-    .REPR(Tetrahedron_3)
+    .TO_STRING(Tetrahedron_3)
     ;
 }
 

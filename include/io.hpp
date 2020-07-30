@@ -5,13 +5,13 @@
 
 #include <CGAL/IO/io.h>
 
-#define REPR(T) method("_tostring", &tostring<T>)
+#define TO_STRING(T) method("_tostring", &jlcgal::to_string<T>)
 
 namespace jlcgal {
 
 template<typename T>
 inline
-std::string tostring(const T &t) {
+std::string to_string(const T &t) {
   std::ostringstream oss("");
   CGAL::set_pretty_mode(oss);
   oss << t;

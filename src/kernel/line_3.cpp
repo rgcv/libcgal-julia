@@ -30,7 +30,7 @@ void wrap_line_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_3>& line_3) {
     .METHOD(Line_3, direction          )
     .METHOD(Line_3, transform          )
     // Representation
-    .REPR(Line_3)
+    .TO_STRING(Line_3)
     ;
 }
 

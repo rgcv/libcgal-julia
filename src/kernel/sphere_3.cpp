@@ -43,7 +43,7 @@ void wrap_sphere_3(jlcxx::Module& kernel,
     .METHOD(Sphere_3, orthogonal_transform)
     .METHOD(Sphere_3, bbox                )
     // Representation
-    .REPR(Sphere_3)
+    .TO_STRING(Sphere_3)
     ;
 }
 

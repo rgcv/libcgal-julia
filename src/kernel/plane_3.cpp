@@ -47,7 +47,7 @@ void wrap_plane_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Plane_3>& plane_3) {
     // Miscellaneous
     .METHOD(Plane_3, transform)
     // Representation
-    .REPR(Plane_3)
+    .TO_STRING(Plane_3)
     ;
 }
 

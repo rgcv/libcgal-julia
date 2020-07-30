@@ -30,7 +30,7 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
       return CGAL::transform(t, poly);
     })
     // I/O
-    .REPR(Polygon_2)
+    .TO_STRING(Polygon_2);
     // Modifiers
     OVERRIDE_BASE(cgal, poly_2)
     .method("empty!", [](Polygon_2& poly) -> Polygon_2& {
@@ -115,7 +115,7 @@ void wrap_polygon_2(jlcxx::Module& cgal) {
       return collect(poly.holes_begin(), poly.holes_end());
     })
     // Related Functions
-    .REPR(Polygon_with_holes_2)
+    .TO_STRING(Polygon_with_holes_2)
     ;
 }
 

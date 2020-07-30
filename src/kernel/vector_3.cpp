@@ -52,7 +52,7 @@ void wrap_vector_3(jlcxx::Module& kernel,
     .BINARY_OP_SELF(const Vector_3&,  *)
     UNSET_OVERRIDE(kernel, vector_3)
     // Representation
-    .REPR(Vector_3)
+    .TO_STRING(Vector_3)
     ;
 }
 

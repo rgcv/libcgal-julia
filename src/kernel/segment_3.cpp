@@ -31,7 +31,7 @@ void wrap_segment_3(jlcxx::Module& kernel,
     .METHOD(Segment_3, bbox)
     .METHOD(Segment_3, transform)
     // Representation
-    .REPR(Segment_3)
+    .TO_STRING(Segment_3)
     ;
 }
 
