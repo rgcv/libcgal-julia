@@ -21,7 +21,7 @@ void wrap_plane_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Plane_3>& plane_3) {
     ;
   kernel.set_override_module(jl_base_module);
   plane_3
-    .method("==", &Plane_3::operator==)
+    .method("==", [](const Plane_3& h1, const Plane_3& h2) { return h1 == h2; })
     ;
   kernel.unset_override_module();
   plane_3

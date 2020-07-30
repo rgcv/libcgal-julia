@@ -16,7 +16,7 @@ void wrap_segment_3(jlcxx::Module& kernel,
   kernel.set_override_module(jl_base_module);
   segment_3
     // Operations
-    .method("==",  &Segment_3::operator==)
+    .method("==",  [](const Segment_3& s1, const Segment_3& s2) { return s1 == s2; })
     .method("min", &Segment_3::min)
     .method("max", &Segment_3::max)
     ;

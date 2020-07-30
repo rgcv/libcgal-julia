@@ -40,8 +40,8 @@ void wrap_aff_transformation_3(jlcxx::Module& kernel,
     // Miscellaneous
   kernel.set_override_module(jl_base_module);
   aff_transformation_3
-    .method("*",  &Aff_transformation_3::operator* )
-    .method("==", &Aff_transformation_3::operator==)
+    .method("*",  [](const Aff_transformation_3& t, const Aff_transformation_3& s) { return t *  s; })
+    .method("==", [](const Aff_transformation_3& t, const Aff_transformation_3& s) { return t == s; })
     ;
   kernel.unset_override_module();
   aff_transformation_3

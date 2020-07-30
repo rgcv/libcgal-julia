@@ -21,7 +21,7 @@ void wrap_iso_cuboid_3(jlcxx::Module& kernel,
   kernel.set_override_module(jl_base_module);
   iso_cuboid_3
     // Operations
-    .method("==",  &Iso_cuboid_3::operator==)
+    .method("==", [](const Iso_cuboid_3& c1, const Iso_cuboid_3& c2) { return c1 == c2; })
     .method("min", &Iso_cuboid_3::min)
     .method("max", &Iso_cuboid_3::max)
     ;

@@ -16,7 +16,7 @@ void wrap_tetrahedron_3(jlcxx::Module& kernel,
   kernel.set_override_module(jl_base_module);
   tetrahedron_3
     // Operations
-    .method("==", &Tetrahedron_3::operator==)
+    .method("==", [](const Tetrahedron_3& t1, const Tetrahedron_3& t2) { return t1 == t2; })
     ;
   kernel.unset_override_module();
   tetrahedron_3

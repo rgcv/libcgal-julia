@@ -16,7 +16,7 @@ void wrap_triangle_3(jlcxx::Module& kernel,
   kernel.set_override_module(jl_base_module);
   triangle_3
     // Operations
-    .method("==", &Triangle_3::operator==)
+    .method("==", [](const Triangle_3& t1, const Triangle_3& t2) { return t1 == t2; })
     ;
   kernel.unset_override_module();
   triangle_3

@@ -18,7 +18,7 @@ void wrap_ray_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Ray_3>& ray_3) {
   kernel.set_override_module(jl_base_module);
   ray_3
     // Operations
-    .method("==", &Ray_3::operator==)
+    .method("==", [](const Ray_3& r1, const Ray_3& r2) { return r1 == r2; })
     ;
   kernel.unset_override_module();
   ray_3

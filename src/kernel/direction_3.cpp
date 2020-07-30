@@ -23,8 +23,8 @@ void wrap_direction_3(jlcxx::Module& kernel,
     ;
   kernel.set_override_module(jl_base_module);
   direction_3
-    .method("==", &Direction_3::operator==)
-    .method("-",  &Direction_3::operator-)
+    .method("==", [](const Direction_3& d1, const Direction_3& d2) { return d1 == d2; })
+    .method("-", &Direction_3::operator-)
     ;
   kernel.unset_override_module();
   direction_3

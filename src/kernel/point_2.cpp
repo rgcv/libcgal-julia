@@ -13,7 +13,7 @@ void wrap_point_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_2>& point_2) {
   kernel.set_override_module(jl_base_module);
   point_2
     // Operations
-    .method("==", &Point_2::operator==)
+    .method("==", [](const Point_2& p, const Point_2& q) { return p == q; })
     .method("==", [](const Point_2& p, const CGAL::Origin& o) { return p == o; })
     ;
   kernel.unset_override_module();

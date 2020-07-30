@@ -28,7 +28,7 @@ void wrap_sphere_3(jlcxx::Module& kernel,
     ;
   kernel.set_override_module(jl_base_module);
   sphere_3
-    .method("==", &Sphere_3::operator==)
+    .method("==", [](const Sphere_3& s1, const Sphere_3& s2) { return s1 == s2; })
     ;
   kernel.unset_override_module();
   sphere_3

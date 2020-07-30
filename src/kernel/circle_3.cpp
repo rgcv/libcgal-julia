@@ -29,7 +29,7 @@ void wrap_circle_3(jlcxx::Module& kernel,
     ;
   kernel.set_override_module(jl_base_module);
   circle_3
-    .method("==", &Circle_3::operator==)
+    .method("==", [](const Circle_3& p, const Circle_3& q) { return p == q; })
     ;
   kernel.unset_override_module();
   circle_3

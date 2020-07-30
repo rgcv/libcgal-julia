@@ -19,7 +19,7 @@ void wrap_line_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_3>& line_3) {
   kernel.set_override_module(jl_base_module);
   line_3
     // Operations
-    .method("==", &Line_3::operator==)
+    .method("==", [](const Line_3& l1, const Line_3& l2) { return l1 == l2; })
     ;
   kernel.unset_override_module();
   line_3
