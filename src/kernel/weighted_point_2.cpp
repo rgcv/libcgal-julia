@@ -22,10 +22,10 @@ void wrap_weighted_point_2(jlcxx::Module& kernel,
   kernel.set_override_module(jl_base_module);
   weighted_point_2
     // Operations (delegated to underlying Point_2)
-    .method("==", [](const Weighted_point_2& wp, const CGAL::Origin& o) { return o == wp; })
+    .method("==", [](const Weighted_point_2& p,  const CGAL::Origin& o) { return p.point() == o; })
     .method("==", [](const Weighted_point_2& wp, const Point_2& p) { return wp == p; })
-    .method("==", [](const Weighted_point_2& p, const Weighted_point_2& q) { return p == q; })
-    .method("<",  [](const Weighted_point_2& p, const Weighted_point_2& q) { return p <  q; })
+    .method("==", [](const Weighted_point_2& p,  const Weighted_point_2& q) { return p == q; })
+    .method("<",  [](const Weighted_point_2& p,  const Weighted_point_2& q) { return p <  q; })
     ;
   kernel.unset_override_module();
   weighted_point_2
@@ -53,7 +53,7 @@ void wrap_weighted_point_2(jlcxx::Module& kernel,
   kernel.method(">=", [](const Weighted_point_2& p, const Weighted_point_2& q) { return q <  p || p == q; });
   kernel.method("-",  [](const Weighted_point_2& p, const CGAL::Origin& o) { return p.point() - o; });
   kernel.method("-",  [](const CGAL::Origin& o, const Weighted_point_2& p) { return o - p.point(); });
-  kernel.method("==", [](const CGAL::Origin& o, const Weighted_point_2& p) { return o == p; });
+  kernel.method("==", [](const CGAL::Origin& o, const Weighted_point_2& p) { return p.point() == o; });
   kernel.method("==", [](const Point_2& p, const Weighted_point_2& q) { return q == p; });
   kernel.unset_override_module();
 }
