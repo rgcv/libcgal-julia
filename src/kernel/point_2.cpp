@@ -47,7 +47,7 @@ void wrap_point_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Point_2>& point_2) {
   kernel.method("-",  [](const Point_2& p, const Point_2& q) { return p -  q; });
   kernel.method("-",  [](const Point_2& p, const CGAL::Origin& o) { return p - o; });
   kernel.method("-",  [](const CGAL::Origin& o, const Point_2& p) { return o - p; });
-  kernel.method("==", [](const CGAL::Origin& o, const Point_2& p) { return p == o; })
+  kernel.method("==", [](const CGAL::Origin& o, const Point_2& p) { return p == o; });
   kernel.unset_override_module();
 }
 
