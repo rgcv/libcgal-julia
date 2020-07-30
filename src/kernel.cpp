@@ -8,9 +8,9 @@
 #include "macros.hpp"
 
 #define OPERATION(T, op) \
-   BINARY_OP(     T, op, double) \
-  .BINARY_OP(double, op,      T) \
-  .BINARY_OP_SELF(T, op)
+   method(#op, [](const T& t,  double    d) { op( t,  d); }) \
+  .method(#op, [](double   d,  const T&  t) { op( d,  t); }) \
+  .method(#op, [](const T& t1, const T& t2) { op(t1, t2); })
 
 #define OPERATORS(T) \
   /* RealEmbeddable Operations */ \
@@ -28,8 +28,8 @@
   .OPERATION(T, +) \
   .OPERATION(T, -) \
   .OPERATION(T, *) \
-  .UNARY_OP(+, T) \
-  .UNARY_OP(-, T)
+  .method("+", &T::operator+) \
+  .method("-", &T::operator-)
 
 #define CGAL_CONST(N)   cgal.set_const(#N, CGAL::N)
 #define CGAL_ENUM(E, N) cgal.add_bits<CGAL::E>(#N, jlcxx::julia_type("CppEnum"))

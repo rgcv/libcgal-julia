@@ -4,9 +4,10 @@
 
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
+#include <julia.h>
+
 #include "global_kernel_functions.hpp"
-#include "macros.hpp"
+#include "kernel.hpp"
 
 #define DO_INTERSECT_2(T) \
   cgal.method("do_intersect", &do_intersect<T, Point_2>); \
@@ -129,145 +130,145 @@ squared_distance(const T1& t1, const T2& t2) {
 }
 
 void wrap_global_lk_functions(jlcxx::Module& cgal) {
-  OVERRIDE_BASE(cgal,);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_2&, const Vector_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_2&,  const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Vector_3&, const Vector_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Angle, angle, const Point_3&,  const Point_3&, const Point_3&, const Vector_3&);
-  UNSET_OVERRIDE(cgal,);
+  cgal.set_override_module(jl_base_module);
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Vector_2&, const Vector_2&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Point_2&,  const Point_2&, const Point_2&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Point_2&,  const Point_2&, const Point_2&, const Point_2&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Vector_3&, const Vector_3&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Point_3&,  const Point_3&, const Point_3&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Point_3&,  const Point_3&, const Point_3&, const Point_3&)>(&CGAL::angle));
+  cgal.method("angle", static_cast<CGAL::Angle(*)(const Point_3&,  const Point_3&, const Point_3&, const Vector_3&)>(&CGAL::angle));
+  cgal.unset_override_module();
 
-  CGAL_GLOBAL_FUNCTION(FT, approximate_angle, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(FT, approximate_angle, const Vector_3&, const Vector_3&);
+  cgal.method("approximate_angle", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::approximate_angle));
+  cgal.method("approximate_angle", static_cast<FT(*)(const Vector_3&, const Vector_3&)>(&CGAL::approximate_angle));
 
-  CGAL_GLOBAL_FUNCTION(FT, approximate_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("approximate_dihedral_angle", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::approximate_dihedral_angle));
 
-  CGAL_GLOBAL_FUNCTION(FT, area, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("area", static_cast<FT(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::area));
 
-  CGAL_GLOBAL_FUNCTION(bool, are_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, are_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("are_ordered_along_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::are_ordered_along_line));
+  cgal.method("are_ordered_along_line", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::are_ordered_along_line));
 
-  CGAL_GLOBAL_FUNCTION(bool, are_strictly_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, are_strictly_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("are_strictly_ordered_along_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::are_strictly_ordered_along_line));
+  cgal.method("are_strictly_ordered_along_line", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::are_strictly_ordered_along_line));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&);
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&);
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, barycenter, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, barycenter, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&);
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&, const FT&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_2(*)(const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&, const Point_2&, const FT&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&, const FT&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&)>(&CGAL::barycenter));
+  cgal.method("barycenter", static_cast<Point_3(*)(const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&, const Point_3&, const FT&)>(&CGAL::barycenter));
 
-  CGAL_GLOBAL_FUNCTION(Line_2, bisector, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Line_2, bisector, const Line_2&,  const Line_2&);
-  CGAL_GLOBAL_FUNCTION(Plane_3, bisector, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Plane_3, bisector, const Plane_3&,  const Plane_3&);
+  cgal.method("bisector", static_cast<Line_2(*)(const Point_2&, const Point_2&)>(&CGAL::bisector));
+  cgal.method("bisector", static_cast<Line_2(*)(const Line_2&,  const Line_2&)>(&CGAL::bisector));
+  cgal.method("bisector", static_cast<Plane_3(*)(const Point_3&, const Point_3&)>(&CGAL::bisector));
+  cgal.method("bisector", static_cast<Plane_3(*)(const Plane_3&,  const Plane_3&)>(&CGAL::bisector));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, centroid, const Triangle_2&);
-  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Triangle_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, centroid, const Tetrahedron_3&);
+  cgal.method("centroid", static_cast<Point_2(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_2(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_2(*)(const Triangle_2&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_3(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_3(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_3(*)(const Triangle_3&)>(&CGAL::centroid));
+  cgal.method("centroid", static_cast<Point_3(*)(const Tetrahedron_3&)>(&CGAL::centroid));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_2, circumcenter, const Triangle_2&);
-  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Triangle_3&);
-  CGAL_GLOBAL_FUNCTION(Point_3, circumcenter, const Tetrahedron_3&);
+  cgal.method("circumcenter", static_cast<Point_2(*)(const Point_2&, const Point_2&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_2(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_2(*)(const Triangle_2&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_3(*)(const Point_3&, const Point_3&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_3(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_3(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_3(*)(const Triangle_3&)>(&CGAL::circumcenter));
+  cgal.method("circumcenter", static_cast<Point_3(*)(const Tetrahedron_3&)>(&CGAL::circumcenter));
 
-  CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, collinear_are_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("collinear_are_ordered_along_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::collinear_are_ordered_along_line));
+  cgal.method("collinear_are_ordered_along_line", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::collinear_are_ordered_along_line));
 
-  CGAL_GLOBAL_FUNCTION(bool, collinear_are_strictly_ordered_along_line, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, collinear_are_strictly_ordered_along_line, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("collinear_are_strictly_ordered_along_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::collinear_are_strictly_ordered_along_line));
+  cgal.method("collinear_are_strictly_ordered_along_line", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::collinear_are_strictly_ordered_along_line));
 
-  CGAL_GLOBAL_FUNCTION(bool, collinear, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, collinear, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("collinear", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::collinear));
+  cgal.method("collinear", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::collinear));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Vector_3&, const Vector_3&, const Vector_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_dihedral_angle, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&);
+  cgal.method("compare_dihedral_angle", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&)>(&CGAL::compare_dihedral_angle));
+  cgal.method("compare_dihedral_angle", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::compare_dihedral_angle));
+  cgal.method("compare_dihedral_angle", static_cast<CGAL::Comparison_result(*)(const Vector_3&, const Vector_3&, const Vector_3&, const FT&)>(&CGAL::compare_dihedral_angle));
+  cgal.method("compare_dihedral_angle", static_cast<CGAL::Comparison_result(*)(const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&, const Vector_3&)>(&CGAL::compare_dihedral_angle));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("compare_distance_to_point", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::compare_distance_to_point));
+  cgal.method("compare_distance_to_point", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::compare_distance_to_point));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_lexicographically, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_lexicographically, const Point_3&, const Point_3&);
+  cgal.method("compare_lexicographically", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&)>(&CGAL::compare_lexicographically));
+  cgal.method("compare_lexicographically", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&)>(&CGAL::compare_lexicographically));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("compare_signed_distance_to_line", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Point_2&, const Point_2&)>(&CGAL::compare_signed_distance_to_line));
+  cgal.method("compare_signed_distance_to_line", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::compare_signed_distance_to_line));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("compare_signed_distance_to_plane", static_cast<CGAL::Comparison_result(*)(const Plane_3&,  const Point_3&, const Point_3&)>(&CGAL::compare_signed_distance_to_plane));
+  cgal.method("compare_signed_distance_to_plane", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::compare_signed_distance_to_plane));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Line_2&,    const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Segment_2&, const Segment_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_slope, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("compare_slope", static_cast<CGAL::Comparison_result(*)(const Line_2&,    const Line_2&)>(&CGAL::compare_slope));
+  cgal.method("compare_slope", static_cast<CGAL::Comparison_result(*)(const Segment_2&, const Segment_2&)>(&CGAL::compare_slope));
+  cgal.method("compare_slope", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::compare_slope));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_distance, const Point_2&, const Point_2&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_distance, const Point_3&, const Point_3&, const FT&);
+  cgal.method("compare_squared_distance", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&, const FT&)>(&CGAL::compare_squared_distance));
+  cgal.method("compare_squared_distance", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const FT&)>(&CGAL::compare_squared_distance));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const Point_3&, const FT&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_squared_radius, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&);
+  cgal.method("compare_squared_radius", static_cast<CGAL::Comparison_result(*)(const Point_3&, const FT&)>(&CGAL::compare_squared_radius));
+  cgal.method("compare_squared_radius", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const FT&)>(&CGAL::compare_squared_radius));
+  cgal.method("compare_squared_radius", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const FT&)>(&CGAL::compare_squared_radius));
+  cgal.method("compare_squared_radius", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const FT&)>(&CGAL::compare_squared_radius));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Point_2&, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Line_2&,  const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
+  cgal.method("compare_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&)>(&CGAL::compare_x));
+  cgal.method("compare_x", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&)>(&CGAL::compare_x));
+  cgal.method("compare_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&, const Line_2&)>(&CGAL::compare_x));
+  cgal.method("compare_x", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&)>(&CGAL::compare_x));
+  cgal.method("compare_x", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&, const Line_2&)>(&CGAL::compare_x));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_xy, const Point_2&, const Point_2&);
+  cgal.method("compare_xy", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&)>(&CGAL::compare_xy));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x_at_y, const Point_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x_at_y, const Point_2&, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x_at_y, const Line_2&,  const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_x_at_y, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
+  cgal.method("compare_x_at_y", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&)>(&CGAL::compare_x_at_y));
+  cgal.method("compare_x_at_y", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&, const Line_2&)>(&CGAL::compare_x_at_y));
+  cgal.method("compare_x_at_y", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&)>(&CGAL::compare_x_at_y));
+  cgal.method("compare_x_at_y", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&, const Line_2&)>(&CGAL::compare_x_at_y));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Point_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Point_2&, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Line_2&,  const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Point_2&, const Segment_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y_at_x, const Point_2&, const Segment_2&, const Segment_2&);
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&)>(&CGAL::compare_y_at_x));
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&, const Line_2&)>(&CGAL::compare_y_at_x));
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&)>(&CGAL::compare_y_at_x));
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&, const Line_2&)>(&CGAL::compare_y_at_x));
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Segment_2&)>(&CGAL::compare_y_at_x));
+  cgal.method("compare_y_at_x", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Segment_2&, const Segment_2&)>(&CGAL::compare_y_at_x));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Point_2&, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Line_2&,  const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_y, const Line_2&,  const Line_2&, const Line_2&, const Line_2&);
+  cgal.method("compare_y", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&)>(&CGAL::compare_y));
+  cgal.method("compare_y", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&)>(&CGAL::compare_y));
+  cgal.method("compare_y", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Line_2&, const Line_2&)>(&CGAL::compare_y));
+  cgal.method("compare_y", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&)>(&CGAL::compare_y));
+  cgal.method("compare_y", static_cast<CGAL::Comparison_result(*)(const Line_2&,  const Line_2&, const Line_2&, const Line_2&)>(&CGAL::compare_y));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_xyz, const Point_3&, const Point_3&);
+  cgal.method("compare_xyz", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&)>(&CGAL::compare_xyz));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_z, const Point_3&, const Point_3&);
+  cgal.method("compare_z", static_cast<CGAL::Comparison_result(*)(const Point_3&, const Point_3&)>(&CGAL::compare_z));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Comparison_result, compare_yx, const Point_2&, const Point_2&);
+  cgal.method("compare_yx", static_cast<CGAL::Comparison_result(*)(const Point_2&, const Point_2&)>(&CGAL::compare_yx));
 
-  CGAL_GLOBAL_FUNCTION(bool, coplanar, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("coplanar", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::coplanar));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, coplanar_orientation, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, coplanar_orientation, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("coplanar_orientation", static_cast<CGAL::Orientation(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::coplanar_orientation));
+  cgal.method("coplanar_orientation", static_cast<CGAL::Orientation(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::coplanar_orientation));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, coplanar_side_of_bounded_circle, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("coplanar_side_of_bounded_circle", static_cast<CGAL::Bounded_side(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::coplanar_side_of_bounded_circle));
 
-  CGAL_GLOBAL_FUNCTION(Vector_3, cross_product, const Vector_3&, const Vector_3&);
+  cgal.method("cross_product", static_cast<Vector_3(*)(const Vector_3&, const Vector_3&)>(&CGAL::cross_product));
 
-  CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_2&, const Vector_2&);
-  CGAL_GLOBAL_FUNCTION(FT, determinant, const Vector_3&, const Vector_3&, const Vector_3&);
+  cgal.method("determinant", static_cast<FT(*)(const Vector_2&, const Vector_2&)>(&CGAL::determinant));
+  cgal.method("determinant", static_cast<FT(*)(const Vector_3&, const Vector_3&, const Vector_3&)>(&CGAL::determinant));
 
   DO_INTERSECT_2_SYM;
   cgal.method("do_intersect", &do_intersect<Circle_2>);
@@ -288,23 +289,23 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
 
   DO_INTERSECT_3_ALL;
 
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("has_larger_distance_to_point", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::has_larger_distance_to_point));
+  cgal.method("has_larger_distance_to_point", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::has_larger_distance_to_point));
 
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("has_larger_signed_distance_to_line", static_cast<bool(*)(const Line_2&,  const Point_2&, const Point_2&)>(&CGAL::has_larger_signed_distance_to_line));
+  cgal.method("has_larger_signed_distance_to_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::has_larger_signed_distance_to_line));
 
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(bool, has_larger_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("has_larger_signed_distance_to_plane", static_cast<bool(*)(const Plane_3&,  const Point_3&, const Point_3&)>(&CGAL::has_larger_signed_distance_to_plane));
+  cgal.method("has_larger_signed_distance_to_plane", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::has_larger_signed_distance_to_plane));
 
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_distance_to_point, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_distance_to_point, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("has_smaller_distance_to_point", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::has_smaller_distance_to_point));
+  cgal.method("has_smaller_distance_to_point", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::has_smaller_distance_to_point));
 
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Line_2&,  const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_line, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("has_smaller_signed_distance_to_line", static_cast<bool(*)(const Line_2&,  const Point_2&, const Point_2&)>(&CGAL::has_smaller_signed_distance_to_line));
+  cgal.method("has_smaller_signed_distance_to_line", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::has_smaller_signed_distance_to_line));
 
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Plane_3&,  const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(bool, has_smaller_signed_distance_to_plane, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("has_smaller_signed_distance_to_plane", static_cast<bool(*)(const Plane_3&,  const Point_3&, const Point_3&)>(&CGAL::has_smaller_signed_distance_to_plane));
+  cgal.method("has_smaller_signed_distance_to_plane", static_cast<bool(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::has_smaller_signed_distance_to_plane));
 
   INTERSECTION_2_SYM;
   cgal.method("intersection", &intersection<Point_2, Circle_2>);
@@ -340,72 +341,72 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
   cgal.method("intersection", &intersection<Bbox_3, Line_3>);
   cgal.method("intersection", &intersection<Bbox_3, Ray_3>);
 
-  CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(FT, l_infinity_distance, const Point_3&, const Point_3&);
+  cgal.method("l_infinity_distance", static_cast<FT(*)(const Point_2&, const Point_2&)>(&CGAL::l_infinity_distance));
+  cgal.method("l_infinity_distance", static_cast<FT(*)(const Point_3&, const Point_3&)>(&CGAL::l_infinity_distance));
 
-  CGAL_GLOBAL_FUNCTION(bool, left_turn, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("left_turn", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::left_turn));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xy_larger, const Point_2&, const Point_2&);
+  cgal.method("lexicographically_xy_larger", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::lexicographically_xy_larger));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xy_larger_or_equal, const Point_2&, const Point_2&);
+  cgal.method("lexicographically_xy_larger_or_equal", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::lexicographically_xy_larger_or_equal));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xy_smaller, const Point_2&, const Point_2&);
+  cgal.method("lexicographically_xy_smaller", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::lexicographically_xy_smaller));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xy_smaller_or_equal, const Point_2&, const Point_2&);
+  cgal.method("lexicographically_xy_smaller_or_equal", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::lexicographically_xy_smaller_or_equal));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xyz_smaller, const Point_3&, const Point_3&);
+  cgal.method("lexicographically_xyz_smaller", static_cast<bool(*)(const Point_3&, const Point_3&)>(&CGAL::lexicographically_xyz_smaller));
 
-  CGAL_GLOBAL_FUNCTION(bool, lexicographically_xyz_smaller_or_equal, const Point_3&, const Point_3&);
+  cgal.method("lexicographically_xyz_smaller_or_equal", static_cast<bool(*)(const Point_3&, const Point_3&)>(&CGAL::lexicographically_xyz_smaller_or_equal));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, max_vertex, const Iso_rectangle_2&);
-  CGAL_GLOBAL_FUNCTION(Point_3, max_vertex, const Iso_cuboid_3&);
+  cgal.method("max_vertex", static_cast<Point_2(*)(const Iso_rectangle_2&)>(&CGAL::max_vertex));
+  cgal.method("max_vertex", static_cast<Point_3(*)(const Iso_cuboid_3&)>(&CGAL::max_vertex));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, midpoint, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(Point_3, midpoint, const Point_3&, const Point_3&);
+  cgal.method("midpoint", static_cast<Point_2(*)(const Point_2&, const Point_2&)>(&CGAL::midpoint));
+  cgal.method("midpoint", static_cast<Point_3(*)(const Point_3&, const Point_3&)>(&CGAL::midpoint));
 
-  CGAL_GLOBAL_FUNCTION(Point_2, min_vertex, const Iso_rectangle_2&);
-  CGAL_GLOBAL_FUNCTION(Point_3, min_vertex, const Iso_cuboid_3&);
+  cgal.method("min_vertex", static_cast<Point_2(*)(const Iso_rectangle_2&)>(&CGAL::min_vertex));
+  cgal.method("min_vertex", static_cast<Point_3(*)(const Iso_cuboid_3&)>(&CGAL::min_vertex));
 
-  CGAL_GLOBAL_FUNCTION(Vector_3, normal, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("normal", static_cast<Vector_3(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::normal));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Point_2&,  const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Vector_2&, const Vector_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Point_3&,  const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Orientation, orientation, const Vector_3&, const Vector_3&, const Vector_3&);
+  cgal.method("orientation", static_cast<CGAL::Orientation(*)(const Point_2&,  const Point_2&, const Point_2&)>(&CGAL::orientation));
+  cgal.method("orientation", static_cast<CGAL::Orientation(*)(const Vector_2&, const Vector_2&)>(&CGAL::orientation));
+  cgal.method("orientation", static_cast<CGAL::Orientation(*)(const Point_3&,  const Point_3&, const Point_3&, const Point_3&)>(&CGAL::orientation));
+  cgal.method("orientation", static_cast<CGAL::Orientation(*)(const Vector_3&, const Vector_3&, const Vector_3&)>(&CGAL::orientation));
 
-  CGAL_GLOBAL_FUNCTION(Vector_3, orthogonal_vector, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("orthogonal_vector", static_cast<Vector_3(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::orthogonal_vector));
 
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Line_2&, const Line_2&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Ray_2&, const Ray_2&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_2&, const Segment_2&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Line_3&, const Line_3&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Plane_3&, const Plane_3&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Ray_3&, const Ray_3&);
-  CGAL_GLOBAL_FUNCTION(bool, parallel, const Segment_3&, const Segment_3&);
+  cgal.method("parallel", static_cast<bool(*)(const Line_2&, const Line_2&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Ray_2&, const Ray_2&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Segment_2&, const Segment_2&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Line_3&, const Line_3&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Plane_3&, const Plane_3&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Ray_3&, const Ray_3&)>(&CGAL::parallel));
+  cgal.method("parallel", static_cast<bool(*)(const Segment_3&, const Segment_3&)>(&CGAL::parallel));
 
-  CGAL_GLOBAL_FUNCTION(Plane_3, radical_plane, const Sphere_3&, const Sphere_3&);
+  cgal.method("radical_plane", static_cast<Plane_3(*)(const Sphere_3&, const Sphere_3&)>(&CGAL::radical_plane));
 
-  CGAL_GLOBAL_FUNCTION(Line_2, radical_line, const Circle_2&, const Circle_2&);
+  cgal.method("radical_line", static_cast<Line_2(*)(const Circle_2&, const Circle_2&)>(&CGAL::radical_line));
 
-  CGAL_GLOBAL_FUNCTION(void, rational_rotation_approximation, const RT&, const RT&, RT&, RT&, RT&, const RT&, const RT&);
+  cgal.method("rational_rotation_approximation", static_cast<void(*)(const RT&, const RT&, RT&, RT&, RT&, const RT&, const RT&)>(&CGAL::rational_rotation_approximation));
 
-  CGAL_GLOBAL_FUNCTION(bool, right_turn, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("right_turn", static_cast<bool(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::right_turn));
 
-  CGAL_GLOBAL_FUNCTION(FT, scalar_product, const Vector_2&, const Vector_2&);
-  CGAL_GLOBAL_FUNCTION(FT, scalar_product, const Vector_3&, const Vector_3&);
+  cgal.method("scalar_product", static_cast<FT(*)(const Vector_2&, const Vector_2&)>(&CGAL::scalar_product));
+  cgal.method("scalar_product", static_cast<FT(*)(const Vector_3&, const Vector_3&)>(&CGAL::scalar_product));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_circle, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_circle, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("side_of_bounded_circle", static_cast<CGAL::Bounded_side(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::side_of_bounded_circle));
+  cgal.method("side_of_bounded_circle", static_cast<CGAL::Bounded_side(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::side_of_bounded_circle));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(CGAL::Bounded_side, side_of_bounded_sphere, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("side_of_bounded_sphere", static_cast<CGAL::Bounded_side(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::side_of_bounded_sphere));
+  cgal.method("side_of_bounded_sphere", static_cast<CGAL::Bounded_side(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::side_of_bounded_sphere));
+  cgal.method("side_of_bounded_sphere", static_cast<CGAL::Bounded_side(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::side_of_bounded_sphere));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Oriented_side, side_of_oriented_circle, const Point_2&, const Point_2&, const Point_2&, const Point_2&);
+  cgal.method("side_of_oriented_circle", static_cast<CGAL::Oriented_side(*)(const Point_2&, const Point_2&, const Point_2&, const Point_2&)>(&CGAL::side_of_oriented_circle));
 
-  CGAL_GLOBAL_FUNCTION(CGAL::Oriented_side, side_of_oriented_sphere, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("side_of_oriented_sphere", static_cast<CGAL::Oriented_side(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::side_of_oriented_sphere));
 
-  CGAL_GLOBAL_FUNCTION(FT, squared_area, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("squared_area", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::squared_area));
 
   SQUARED_DISTANCE_2_ALL;
 
@@ -413,26 +414,26 @@ void wrap_global_lk_functions(jlcxx::Module& cgal) {
   cgal.method("squared_distance", &squared_distance<Point_3, Triangle_3>);
   cgal.method("squared_distance", &squared_distance<Triangle_3, Point_3>);
 
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(FT, squared_radius, const Point_3&);
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_2&, const Point_2&, const Point_2&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_2&, const Point_2&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_2&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_3&, const Point_3&)>(&CGAL::squared_radius));
+  cgal.method("squared_radius", static_cast<FT(*)(const Point_3&)>(&CGAL::squared_radius));
 
-  CGAL_GLOBAL_FUNCTION(Vector_3, unit_normal, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("unit_normal", static_cast<Vector_3(*)(const Point_3&, const Point_3&, const Point_3&)>(&CGAL::unit_normal));
 
-  CGAL_GLOBAL_FUNCTION(FT, volume, const Point_3&, const Point_3&, const Point_3&, const Point_3&);
+  cgal.method("volume", static_cast<FT(*)(const Point_3&, const Point_3&, const Point_3&, const Point_3&)>(&CGAL::volume));
 
-  CGAL_GLOBAL_FUNCTION(bool, x_equal, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, x_equal, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(bool, y_equal, const Point_2&, const Point_2&);
-  CGAL_GLOBAL_FUNCTION(bool, y_equal, const Point_3&, const Point_3&);
-  CGAL_GLOBAL_FUNCTION(bool, z_equal, const Point_3&, const Point_3&);
+  cgal.method("x_equal", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::x_equal));
+  cgal.method("x_equal", static_cast<bool(*)(const Point_3&, const Point_3&)>(&CGAL::x_equal));
+  cgal.method("y_equal", static_cast<bool(*)(const Point_2&, const Point_2&)>(&CGAL::y_equal));
+  cgal.method("y_equal", static_cast<bool(*)(const Point_3&, const Point_3&)>(&CGAL::y_equal));
+  cgal.method("z_equal", static_cast<bool(*)(const Point_3&, const Point_3&)>(&CGAL::z_equal));
 
-  CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_2&, const Bbox_2&);
-  CGAL_GLOBAL_FUNCTION(bool, do_overlap, const Bbox_3&, const Bbox_3&);
+  cgal.method("do_overlap", static_cast<bool(*)(const Bbox_2&, const Bbox_2&)>(&CGAL::do_overlap));
+  cgal.method("do_overlap", static_cast<bool(*)(const Bbox_3&, const Bbox_3&)>(&CGAL::do_overlap));
 }
 
 } // jlcgal

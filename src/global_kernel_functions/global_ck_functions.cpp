@@ -3,10 +3,11 @@
 #include <jlcxx/module.hpp>
 #include <jlcxx/type_conversion.hpp>
 
+#include <julia.h>
+
+#include "global_kernel_functions.hpp"
 #include "kernel.hpp"
 #include "kernel_conversion.hpp"
-#include "global_kernel_functions.hpp"
-#include "macros.hpp"
 
 #define CK_DO_INTERSECT_CONVERT(T1, T2, C1, C2) \
   cgal.method("do_intersect", &ck_do_intersect<T1, T2, C1, C2>); \
