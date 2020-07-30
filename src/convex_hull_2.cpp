@@ -18,7 +18,6 @@
 #include <jlcxx/tuple.hpp>
 
 #include "kernel.hpp"
-#include "macros.hpp"
 #include "utils.hpp"
 
 namespace jlcgal {

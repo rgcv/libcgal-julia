@@ -2,79 +2,82 @@
 
 #include <julia.h>
 
-#include "macros.hpp"
-#include "triangulation.hpp"
 #include "utils.hpp"
+#include "triangulation.hpp"
 
 #define WRAP_TRIANGULATION(T, JT) \
-  /* Creation */ \
-  CTOR(const T&) \
-  .METHOD(T, swap) \
-  /* Access Functions */ \
-  .METHOD(T, dimension) \
-  .METHOD(T, number_of_faces) \
-  .METHOD(T, number_of_vertices) \
-  /* Queries */ \
-  .method("locate", [](const T& t, const T::Point& query) { \
-    T::Face_handle fh = t.locate(query); \
-    return fh != nullptr ? \
-      (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
-      jl_nothing; \
-  }) \
-  .method("inexact_locate", [](const T& t, const T::Point& query) { \
-    T::Face_handle fh = t.inexact_locate(query); \
-    return fh != nullptr ? \
-      (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
-      jl_nothing; \
-  }) \
-  /* Modifiers */ \
-  OVERRIDE_BASE(cgal, JT) \
-  .method("empty!", [](T& t) -> T& { \
-    t.clear(); \
-    return t; \
-  }) \
-  .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) -> T& { \
-    t.insert(ps.begin(), ps.end()); \
-    return t; \
-  }) \
-  .method("push!", [](T& t, const T::Point& p) -> T& { \
-    t.push_back(p); \
-    return t; \
-  }) \
-  UNSET_OVERRIDE(cgal, JT) \
-  /* Finite Face, Edge and Vertex Iterators */ \
-  .method("vertices", [](const T& t) { \
-    return collect(t.vertices_begin(), t.vertices_end()); \
-  }) \
-  .method("edges", [](const T& t) { \
-    return collect(t.edges_begin(), t.edges_end()); \
-  }) \
-  .method("faces", [](const T& t) { \
-    return collect(t.faces_begin(), t.faces_end()); \
-  }) \
-  .method("points", [](const T& t) { \
-    return collect(t.points_begin(), t.points_end()); \
-  }) \
-  /* All Face, Edge and Vertex Iterators */ \
-  .method("all_vertices", [](const T& t) { \
-    return collect(t.all_vertices_begin(), t.all_vertices_end()); \
-  }) \
-  .method("all_edges", [](const T& t) { \
-    return collect(t.all_edges_begin(), t.all_edges_end()); \
-  }) \
-  .method("all_faces", [](const T& t) { \
-    return collect(t.all_faces_begin(), t.all_faces_end()); \
-  }) \
-  /* Line Face Circulator */ \
-  .method("line_walk", [](const T& t, const T::Point& p, const T::Point& q) { \
-    return collect(t.line_walk(p, q)); \
-  }) \
-  /* Traversal Between Adjacent Faces */ \
-  .METHOD(T, mirror_edge) \
-  /* Miscellaneous */ \
-  .UNAMBIG_METHOD(T::Segment, T, segment, const T::Edge&) \
-  /* Checking */ \
-  .METHOD(T, is_valid)
+    /* Creation */ \
+     constructor<const T&>() \
+    .method("swap", &T::swap) \
+    /* Access Functions */ \
+    .method("dimension", &T::dimension) \
+    .method("number_of_faces", &T::number_of_faces) \
+    .method("number_of_vertices", &T::number_of_vertices) \
+    /* Queries */ \
+    .method("locate", [](const T& t, const T::Point& query) { \
+      T::Face_handle fh = t.locate(query); \
+      return fh != nullptr ? \
+        (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
+        jl_nothing; \
+    }) \
+    .method("inexact_locate", [](const T& t, const T::Point& query) { \
+      T::Face_handle fh = t.inexact_locate(query); \
+      return fh != nullptr ? \
+        (jl_value_t*)jlcxx::box<T::Face>(*fh) : \
+        jl_nothing; \
+    }) \
+    ; \
+  cgal.set_override_module(jl_base_module); \
+  JT \
+    /* Modifiers */ \
+    .method("empty!", [](T& t) -> T& { \
+      t.clear(); \
+      return t; \
+    }) \
+    .method("insert!", [](T& t, jlcxx::ArrayRef<T::Point> ps) -> T& { \
+      t.insert(ps.begin(), ps.end()); \
+      return t; \
+    }) \
+    .method("push!", [](T& t, const T::Point& p) -> T& { \
+      t.push_back(p); \
+      return t; \
+    }) \
+    ; \
+  cgal.unset_override_module(); \
+  JT \
+    /* Finite Face, Edge and Vertex Iterators */ \
+    .method("vertices", [](const T& t) { \
+      return collect(t.vertices_begin(), t.vertices_end()); \
+    }) \
+    .method("edges", [](const T& t) { \
+      return collect(t.edges_begin(), t.edges_end()); \
+    }) \
+    .method("faces", [](const T& t) { \
+      return collect(t.faces_begin(), t.faces_end()); \
+    }) \
+    .method("points", [](const T& t) { \
+      return collect(t.points_begin(), t.points_end()); \
+    }) \
+    /* All Face, Edge and Vertex Iterators */ \
+    .method("all_vertices", [](const T& t) { \
+      return collect(t.all_vertices_begin(), t.all_vertices_end()); \
+    }) \
+    .method("all_edges", [](const T& t) { \
+      return collect(t.all_edges_begin(), t.all_edges_end()); \
+    }) \
+    .method("all_faces", [](const T& t) { \
+      return collect(t.all_faces_begin(), t.all_faces_end()); \
+    }) \
+    /* Line Face Circulator */ \
+    .method("line_walk", [](const T& t, const T::Point& p, const T::Point& q) { \
+      return collect(t.line_walk(p, q)); \
+    }) \
+    /* Traversal Between Adjacent Faces */ \
+    .method("mirror_edge", &T::mirror_edge) \
+    /* Miscellaneous */ \
+    .method("segment", [](const T& t, const T::Edge& e) { return t.segment(e); }) \
+    /* Checking */ \
+    .method("is_valid", &T::is_valid)
 
 namespace jlcxx {
   using namespace jlcgal;
@@ -121,13 +124,15 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
   auto rtvertex = cgal.add_type<RTr_2::Vertex>(rtr_name + "Vertex", tvertex.dt());
 
   tvertex
-    .METHOD(Tr_2::Vertex, degree)
-    .UNAMBIG_METHOD(const Tr_2::Point&, Tr_2::Vertex, point)
+    .method("degree", &Tr_2::Vertex::degree)
+    .method("point", [](const Tr_2::Vertex& v) -> const Tr_2::Point& {
+      return v.point();
+    })
     ;
 
   tface
-    .METHOD(Tr_2::Face, dimension)
-    .METHOD(Tr_2::Face, is_valid)
+    .method("dimension", &Tr_2::Face::dimension)
+    .method("is_valid", &Tr_2::Face::is_valid)
     .method("neighbor", [](const Tr_2::Face& f, const jlcxx::cxxint_t i) {
       return *f.neighbor(i - 1);
     })
@@ -146,13 +151,14 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
   ctr
     .WRAP_TRIANGULATION(CTr_2, ctr)
     // Queries
-    .METHOD(CTr_2, is_constrained)
+    .method("is_constrained", &CTr_2::is_constrained)
     .method("constrained_edges", [](const CTr_2& ct) {
       return collect(ct.constrained_edges_begin(), ct.constrained_edges_end());
     })
-    .method("insert_constraint", CAST_METHOD(void, CTr_2, insert_constraint,,
-                                                        const CTr_2::Point&,
-                                                        const CTr_2::Point&))
+    .method("insert_constraint", [](CTr_2& ctr, const CTr_2::Point& p,
+                                                const CTr_2::Point& q) {
+      ctr.insert_constraint(p, q);
+    })
     .method("insert_constraint", [](CTr_2& ct, jlcxx::ArrayRef<CTr_2::Point> ps) {
       ct.insert_constraint(ps.begin(), ps.end());
     })
@@ -160,9 +166,11 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
 
   cdtr
     // Creation
-    .CTOR(const CDTr_2&)
+    .constructor<const CDTr_2&>()
+    ;
+  cgal.set_override_module(jl_base_module);
+  cdtr
     // Insertion and Removal
-    OVERRIDE_BASE(cgal, cdtr)
     .method("insert!", [](CDTr_2& cdtr, jlcxx::ArrayRef<CDTr_2::Point> ps) -> CDTr_2& {
       cdtr.insert(ps.begin(), ps.end());
       return cdtr;
@@ -171,19 +179,23 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
       cdtr.push_back(p);
       return cdtr;
     })
-    UNSET_OVERRIDE(cgal, cdtr)
+    ;
+  cgal.unset_override_module();
+  cdtr
     // Miscellaneous
-    .METHOD(CDTr_2, is_valid)
+    .method("is_valid", &CDTr_2::is_valid)
     ;
 
   dtr
     // Creation
-    .CTOR(const DTr_2&)
+    .constructor<const DTr_2&>()
     .method(dtr_name, [](jlcxx::ArrayRef<DTr_2::Point> ps) {
       return jlcxx::create<DTr_2>(ps.begin(), ps.end());
     })
+    ;
+  cgal.set_override_module(jl_base_module);
+  dtr
     // Insertion and Removal
-    OVERRIDE_BASE(cgal, dtr)
     .method("insert!", [](DTr_2& dt, jlcxx::ArrayRef<DTr_2::Point> ps) -> DTr_2& {
       dt.insert(ps.begin(), ps.end());
       return dt;
@@ -192,7 +204,9 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
       dt.push_back(p);
       return dt;
     })
-    UNSET_OVERRIDE(cgal, dtr)
+    ;
+  cgal.unset_override_module();
+  dtr
     // Queries
     .method("nearest_vertex", [](const DTr_2& dt, const DTr_2::Point& p) {
       return *dt.nearest_vertex(p);
@@ -212,13 +226,15 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
       return jl_nothing; // unreachable
     })
     // Miscellaneous
-    .METHOD(DTr_2, is_valid)
+    .method("is_valid", &DTr_2::is_valid)
     ;
 
   rtvertex
-    .UNAMBIG_METHOD(const RTr_2::Point&, RTr_2::Vertex, point)
-    .METHOD(RTr_2::Vertex, is_hidden)
-    .METHOD(RTr_2::Vertex, set_hidden)
+    .method("point", [](const RTr_2::Vertex& v) -> const RTr_2::Point& {
+      return v.point();
+    })
+    .method("is_hidden",  &RTr_2::Vertex::is_hidden)
+    .method("set_hidden", &RTr_2::Vertex::set_hidden)
     ;
 
   rtr
@@ -231,7 +247,7 @@ void wrap_triangulation_2(jlcxx::Module& cgal) {
       return *rt.nearest_power_vertex(p);
     })
     // Access Functions
-    .METHOD(RTr_2, number_of_hidden_vertices)
+    .method("number_of_hidden_vertices", &RTr_2::number_of_hidden_vertices)
     .method("hidden_vertices", [](const RTr_2& rt) {
       return collect(rt.hidden_vertices_begin(), rt.hidden_vertices_end());
     })

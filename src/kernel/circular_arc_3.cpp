@@ -1,5 +1,5 @@
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <CGAL/IO/io.h>
 
@@ -7,29 +7,36 @@
 
 #include "kernel.hpp"
 #include "kernel_conversion.hpp"
-#include "macros.hpp"
 
 namespace jlcgal{
 
 void wrap_circular_arc_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Circular_arc_3>& circular_arc_3) {
-  const std::string name = jlcxx::julia_type_name(circular_arc_3.dt());
+  const std::string ca_name = jlcxx::julia_type_name(circular_arc_3.dt());
+  kernel.set_override_module(jl_base_module);
+  circular_arc_3
+    // Related Functions
+    .method("==", [](const Circular_arc_3& ca1, const Circular_arc_3& ca2) {
+      return ca1 == ca2;
+    })
+    ;
+  kernel.unset_override_module();
   circular_arc_3
     // Creation
-    .method(name, [](const Circle_3& c) {
+    .method(ca_name, [](const Circle_3& c) {
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c));
     })
-    .method(name, [](const Circle_3& c, const Point_3& pt) {
+    .method(ca_name, [](const Circle_3& c, const Point_3& pt) {
       To_spherical<SK::Circular_arc_point_3> p2s;
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c),
                                            p2s(pt));
     })
-    .method(name, [](const Circle_3& c, const Point_3& p, const Point_3& q) {
+    .method(ca_name, [](const Circle_3& c, const Point_3& p, const Point_3& q) {
       To_spherical<SK::Circular_arc_point_3> p2s;
       return jlcxx::create<Circular_arc_3>(To_spherical<SK::Circle_3>()(c),
                                            p2s(p), p2s(q));
     })
-    .method(name, [](const Point_3& p, const Point_3& q, const Point_3& r) {
+    .method(ca_name, [](const Point_3& p, const Point_3& q, const Point_3& r) {
       To_spherical<SK::Point_3> p2s;
       return jlcxx::create<Circular_arc_3>(p2s(p), p2s(q), p2s(r));
     })
@@ -40,7 +47,7 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
     .method("center", [](const Circular_arc_3& ca) {
       return To_linear<SK::Point_3>()(ca.center());
     })
-    .METHOD(Circular_arc_3, squared_radius)
+    .method("squared_radius", &Circular_arc_3::squared_radius)
     .method("supporting_plane", [](const Circular_arc_3& ca) {
       return To_linear<SK::Plane_3>()(ca.supporting_plane());
     })
@@ -53,9 +60,6 @@ void wrap_circular_arc_3(jlcxx::Module& kernel,
     .method("target", [](const Circular_arc_3& ca) {
       return To_linear<SK::Circular_arc_point_3>()(ca.target());
     })
-    OVERRIDE_BASE(kernel, circular_arc_3)
-    .BINARY_OP_SELF(const Circular_arc_3&, ==)
-    UNSET_OVERRIDE(kernel, circular_arc_3)
     // Representation
     .method("_tostring", [](const Circular_arc_3& ca) {
       To_linear<SK::Circular_arc_point_3> p2l;

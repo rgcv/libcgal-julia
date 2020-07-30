@@ -1,53 +1,62 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
+
+template<typename T>
+T
+transform(const Aff_transformation_3& at, const T& t) {
+  return at.transform(t);
+}
 
 void wrap_aff_transformation_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Aff_transformation_3>& aff_transformation_3) {
   aff_transformation_3
     // Creation
-    .CTOR(const CGAL::Identity_transformation&)
-    .CTOR(const CGAL::Translation&, const Vector_3&)
-    .CTOR(const CGAL::Scaling&, const RT&)
-    .CTOR(const CGAL::Scaling&, const RT&, const RT&)
-    .CTOR(const RT&, const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&, const RT&)
-    .CTOR(const RT&, const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&, const RT&, const RT&)
-    .CTOR(const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&)
-    .CTOR(const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&,
-          const RT&, const RT&, const RT&, const RT&)
+    .constructor<const CGAL::Identity_transformation&>()
+    .constructor<const CGAL::Translation&, const Vector_3&>()
+    .constructor<const CGAL::Scaling&, const RT&>()
+    .constructor<const CGAL::Scaling&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&,
+                 const RT&, const RT&, const RT&, const RT&>()
     // Operations
-    .UNAMBIG_METHOD(Point_3,     Aff_transformation_3, transform,  const Point_3&    )
-    .UNAMBIG_METHOD(Vector_3,    Aff_transformation_3, transform,  const Vector_3&   )
-    .UNAMBIG_METHOD(Direction_3, Aff_transformation_3, transform,  const Direction_3&)
-    .UNAMBIG_METHOD(Plane_3,     Aff_transformation_3, transform,  const Plane_3&     )
-    .INVOKE_METHOD(Point_3,      Aff_transformation_3, const Point_3&    )
-    .INVOKE_METHOD(Vector_3,     Aff_transformation_3, const Vector_3&   )
-    .INVOKE_METHOD(Direction_3,  Aff_transformation_3, const Direction_3&)
-    .INVOKE_METHOD(Plane_3,      Aff_transformation_3, const Plane_3&     )
+    .method("transform", &transform<Point_3>)
+    .method("transform", &transform<Vector_3>)
+    .method("transform", &transform<Direction_3>)
+    .method("transform", &transform<Plane_3>)
+    .method(&transform<Point_3>)
+    .method(&transform<Vector_3>)
+    .method(&transform<Direction_3>)
+    .method(&transform<Plane_3>)
+    ;
     // Miscellaneous
-    OVERRIDE_BASE(kernel, aff_transformation_3)
-    .BINARY_OP_SELF(const Aff_transformation_3&,  *)
-    .BINARY_OP_SELF(const Aff_transformation_3&, ==)
-    UNSET_OVERRIDE(kernel, aff_transformation_3)
-    .METHOD(Aff_transformation_3, inverse)
-    .METHOD(Aff_transformation_3, is_even)
-    .METHOD(Aff_transformation_3, is_odd )
+  kernel.set_override_module(jl_base_module);
+  aff_transformation_3
+    .method("*",  &Aff_transformation_3::operator* )
+    .method("==", &Aff_transformation_3::operator==)
+    ;
+  kernel.unset_override_module();
+  aff_transformation_3
+    .method("inverse", &Aff_transformation_3::inverse)
+    .method("is_even", &Aff_transformation_3::is_even)
+    .method("is_odd",  &Aff_transformation_3::is_odd )
     // Matrix Entry Access
-    .METHOD(Aff_transformation_3, cartesian  )
-    .METHOD(Aff_transformation_3, m          )
-    .METHOD(Aff_transformation_3, homogeneous)
-    .METHOD(Aff_transformation_3, hm         )
+    .method("cartesian",   &Aff_transformation_3::cartesian  )
+    .method("m",           &Aff_transformation_3::m          )
+    .method("homogeneous", &Aff_transformation_3::homogeneous)
+    .method("hm",          &Aff_transformation_3::hm         )
     // Representation
     // See https://github.com/CGAL/cgal/issues/4698
     /* .TO_STRING(Aff_transformation_3) */

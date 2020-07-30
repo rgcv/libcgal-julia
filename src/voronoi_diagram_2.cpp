@@ -1,14 +1,13 @@
 #include <CGAL/Delaunay_triangulation_adaptation_policies_2.h>
 #include <CGAL/Delaunay_triangulation_adaptation_traits_2.h>
-#include <CGAL/Regular_triangulation_adaptation_traits_2.h>
 #include <CGAL/Regular_triangulation_adaptation_policies_2.h>
+#include <CGAL/Regular_triangulation_adaptation_traits_2.h>
 #include <CGAL/Voronoi_diagram_2.h>
 
 #include <jlcxx/module.hpp>
 
 #include <julia.h>
 
-#include "macros.hpp"
 #include "triangulation.hpp"
 #include "utils.hpp"
 
@@ -56,45 +55,53 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
       typedef typename VD::Vertex_handle   Vertex_handle;
 
       vdface.template apply<Face>([](auto face) {
+        face.
+          template constructor<const Face&>()
+          ;
+        face.module().set_module_override(jl_base_module);
         face
-          .template CTOR(const Face&)
-          OVERRIDE_BASE(face.module(), face)
-          .BINARY_OP_SELF(Face, ==)
-          .BINARY_OP_SELF(Face,  <)
-          UNSET_OVERRIDE(face.module(), face)
+          .method("==", &Face::operator==)
+          .method("<",  &Face::operator<)
+          ;
+        face.module().unset_module_override();
+        face
           // Predicate Methods
-          .METHOD(Face, is_unbounded)
-          .METHOD(Face, is_valid)
+          .method("is_unbounded", &Face::is_unbounded)
+          .method("is_valid",     &Face::is_valid)
           ;
       });
 
       vdhalfedge.template apply<Halfedge>([](auto halfedge) {
         halfedge
-          .template CTOR(const Halfedge&)
-          OVERRIDE_BASE(halfedge.module(), halfedge)
-          .BINARY_OP_SELF(Halfedge, ==)
-          .BINARY_OP_SELF(Halfedge,  <)
-          UNSET_OVERRIDE(halfedge.module(), halfedge)
+          .template constructor<const Halfedge&>()
+          ;
+        halfedge.module().set_module_override(jl_base_module);
+        halfedge
+          .method("==", &Halfedge::operator==)
+          .method("<",  &Halfedge::operator<)
+          ;
+        halfedge.module().unset_module_override();
+        halfedge
           // Access Methods
           .method("twin",     [](const Halfedge& he) { return *he.twin();     })
           .method("opposite", [](const Halfedge& he) { return *he.opposite(); })
           .method("next",     [](const Halfedge& he) { return *he.next();     })
           .method("previous", [](const Halfedge& he) { return *he.previous(); })
           .method("face",     [](const Halfedge& he) { return *he.face();     })
-          .METHOD(Halfedge, dual)
-          .method("ccb",   [](const Halfedge& he) { return collect(he.ccb()); })
-          .method("up",    [](const Halfedge& he) { return *he.up();    })
-          .method("down",  [](const Halfedge& he) { return *he.down();  })
-          .method("left",  [](const Halfedge& he) { return *he.left();  })
-          .method("right", [](const Halfedge& he) { return *he.right(); })
+          .method("ccb",      [](const Halfedge& he) { return collect(he.ccb()); })
+          .method("dual", &Halfedge::dual)
+          .method("up",       [](const Halfedge& he) { return *he.up();    })
+          .method("down",     [](const Halfedge& he) { return *he.down();  })
+          .method("left",     [](const Halfedge& he) { return *he.left();  })
+          .method("right",    [](const Halfedge& he) { return *he.right(); })
           // Predicate Methods
-          .METHOD(Halfedge, has_source)
-          .METHOD(Halfedge, has_target)
-          .METHOD(Halfedge, is_unbounded)
-          .METHOD(Halfedge, is_bisector)
-          .METHOD(Halfedge, is_segment)
-          .METHOD(Halfedge, is_ray)
-          .METHOD(Halfedge, is_valid)
+          .method("has_source",   &Halfedge::has_source)
+          .method("has_target",   &Halfedge::has_target)
+          .method("is_unbounded", &Halfedge::is_unbounded)
+          .method("is_bisector",  &Halfedge::is_bisector)
+          .method("is_segment",   &Halfedge::is_segment)
+          .method("is_ray",       &Halfedge::is_ray)
+          .method("is_valid",     &Halfedge::is_valid)
           ;
       });
 
@@ -114,16 +121,21 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         typedef typename Vertex::Face_handle     Face_handle;
         typedef typename Vertex::Halfedge        Halfedge;
         typedef typename Vertex::Halfedge_handle Halfedge_handle;
+
         vertex
-          .template CTOR(const Vertex&)
-          OVERRIDE_BASE(vertex.module(), vertex)
-          .BINARY_OP_SELF(Vertex, ==)
-          .BINARY_OP_SELF(Vertex,  <)
-          UNSET_OVERRIDE(vertex.module(), vertex)
+          .template constructor<const Vertex&>()
+          ;
+        vertex.module().set_override_module(jl_base_module);
+        vertex
+          .method("==", &Vertex::operator==)
+          .method("<",  &Vertex::operator<)
+          ;
+        vertex.module().unset_override_module();
+        vertex
           // Access Methods
           .method("halfedge", [](const Vertex& v) { return *v.halfedge(); })
-          .METHOD(Vertex, degree)
-          .METHOD(Vertex, point)
+          .method("degree", &Vertex::degree)
+          .method("point", &Vertex::point)
           .method("dual", [](const Vertex& v) { return *v.dual(); })
           .method("site", [](const Vertex& v, const jlcxx::cxxint_t i) {
             return *v.site(i - 1);
@@ -138,7 +150,7 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
           .method("is_incident_face", [](const Vertex& v, const Face& f) {
             return v.is_incident_face(Face_handle(f));
           })
-          .METHOD(Vertex, is_valid)
+          .method("is_valid", &Vertex::is_valid)
           ;
       });
 
@@ -157,19 +169,19 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
         ;
 
       vd
-        .template CTOR(const DG&)
+        .template constructor<const DG&>()
         .method(vd_name, [](jlcxx::ArrayRef<Site_2> ss) {
           return jlcxx::create<VD>(ss.begin(), ss.end());
         })
         // Access Methods
-        .UNAMBIG_METHOD(const DG&, VD, dual)
+        .method("dual", static_cast<const DG& (VD::*)() const>(&VD::dual))
         .method("dual", [](const VD& vd, const typename DG::Edge& e) {
           return *vd.dual(e);
         })
-        .METHOD(VD, number_of_vertices)
-        .METHOD(VD, number_of_faces)
-        .METHOD(VD, number_of_halfedges)
-        .METHOD(VD, number_of_connected_components)
+        .method("number_of_vertices",             &VD::number_of_vertices)
+        .method("number_of_faces",                &VD::number_of_faces)
+        .method("number_of_halfedges",            &VD::number_of_halfedges)
+        .method("number_of_connected_components", &VD::number_of_connected_components)
         // "Iterators"
         .method("faces", [](const VD& vd) {
           return collect(vd.faces_begin(), vd.faces_end());
@@ -219,8 +231,10 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
           return collect(vd.incident_halfedges(Vertex_handle(v),
                                                Halfedge_handle(he)));
         })
+        ;
+      cgal.set_override_module(jl_base_module);
+      vd
         // Insertion
-        OVERRIDE_BASE(cgal, vd)
         .method("push!", [](VD& vd, const Site_2& p) -> VD& {
           vd.insert(p);
           return vd;
@@ -229,19 +243,22 @@ void wrap_voronoi_diagram_2(jlcxx::Module& cgal) {
           vd.insert(ps.begin(), ps.end());
           return vd;
         })
+        // Misc
         .method("empty!", [](VD& vd) -> VD& {
           vd.clear();
           return vd;
-        }) // Misc
-        UNSET_OVERRIDE(cgal, vd)
+        })
+        ;
+      cgal.unset_override_module();
+      vd
         // Queries
         .method("locate", [](const VD& vd, const Point_2& p) {
           return boost::apply_visitor(Handle_visitor(), vd.locate(p));
         })
         // Validity check
-        .METHOD(VD, is_valid)
+        .method("is_valid", &VD::is_valid)
         // Miscellaneous
-        .METHOD(VD, swap)
+        .method("swap", &VD::swap)
         ;
     });
 

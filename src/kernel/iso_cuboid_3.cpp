@@ -1,8 +1,7 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
@@ -10,37 +9,41 @@ void wrap_iso_cuboid_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Iso_cuboid_3>& iso_cuboid_3) {
   iso_cuboid_3
     // Creation
-    .CTOR(const Point_3&, const Point_3&)
-    .CTOR(const Point_3&, const Point_3&, int)
-    .CTOR(const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&)
-    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
-    .CTOR(const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&)
-    .CTOR(const Bbox_3&)
+    .constructor<const Point_3&, const Point_3&>()
+    .constructor<const Point_3&, const Point_3&, int>()
+    .constructor<const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&, const Point_3&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const RT&, const RT&, const RT&, const RT&, const RT&, const RT&, const RT&>()
+    .constructor<const Bbox_3&>()
+    ;
+  kernel.set_override_module(jl_base_module);
+  iso_cuboid_3
     // Operations
-    OVERRIDE_BASE(kernel, iso_cuboid_3)
-    .BINARY_OP_SELF(const Iso_cuboid_3&, ==)
-    .METHOD(Iso_cuboid_3, min      )
-    .METHOD(Iso_cuboid_3, max      )
-    UNSET_OVERRIDE(kernel, iso_cuboid_3)
-    .METHOD(Iso_cuboid_3, vertex   )
-    .METHOD(Iso_cuboid_3, xmin     )
-    .METHOD(Iso_cuboid_3, ymin     )
-    .METHOD(Iso_cuboid_3, zmin     )
-    .METHOD(Iso_cuboid_3, xmax     )
-    .METHOD(Iso_cuboid_3, ymax     )
-    .METHOD(Iso_cuboid_3, zmax     )
-    .METHOD(Iso_cuboid_3, min_coord)
-    .METHOD(Iso_cuboid_3, max_coord)
+    .method("==",  &Iso_cuboid_3::operator==)
+    .method("min", &Iso_cuboid_3::min)
+    .method("max", &Iso_cuboid_3::max)
+    ;
+  kernel.unset_override_module();
+  iso_cuboid_3
+    .method("vertex",    &Iso_cuboid_3::vertex)
+    .method("xmin",      &Iso_cuboid_3::xmin)
+    .method("ymin",      &Iso_cuboid_3::ymin)
+    .method("zmin",      &Iso_cuboid_3::zmin)
+    .method("xmax",      &Iso_cuboid_3::xmax)
+    .method("ymax",      &Iso_cuboid_3::ymax)
+    .method("zmax",      &Iso_cuboid_3::zmax)
+    .method("min_coord", &Iso_cuboid_3::min_coord)
+    .method("max_coord", &Iso_cuboid_3::max_coord)
     // Predicates
-    .METHOD(Iso_cuboid_3, is_degenerate        )
-    .METHOD(Iso_cuboid_3, bounded_side         )
-    .METHOD(Iso_cuboid_3, has_on_boundary      )
-    .METHOD(Iso_cuboid_3, has_on_bounded_side  )
-    .METHOD(Iso_cuboid_3, has_on_unbounded_side)
+    .method("is_degenerate",         &Iso_cuboid_3::is_degenerate)
+    .method("bounded_side",          &Iso_cuboid_3::bounded_side)
+    .method("has_on_boundary",       &Iso_cuboid_3::has_on_boundary)
+    .method("has_on_bounded_side",   &Iso_cuboid_3::has_on_bounded_side)
+    .method("has_on_unbounded_side", &Iso_cuboid_3::has_on_unbounded_side)
     // Miscellaneous
-    .METHOD(Iso_cuboid_3, volume   )
-    .METHOD(Iso_cuboid_3, bbox     )
-    .METHOD(Iso_cuboid_3, transform)
+    .method("volume",    &Iso_cuboid_3::volume)
+    .method("bbox",      &Iso_cuboid_3::bbox)
+    .method("transform", &Iso_cuboid_3::transform)
     // Representation
     .TO_STRING(Iso_cuboid_3)
     ;

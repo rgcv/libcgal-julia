@@ -1,34 +1,37 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
 void wrap_line_3(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_3>& line_3) {
   line_3
     // Creation
-    .CTOR(const Point_3&, const Point_3&)
-    .CTOR(const Point_3&, const Direction_3&)
-    .CTOR(const Point_3&, const Vector_3&)
-    .CTOR(const Segment_3&)
-    .CTOR(const Ray_3&)
+    .constructor<const Point_3&, const Point_3&>()
+    .constructor<const Point_3&, const Direction_3&>()
+    .constructor<const Point_3&, const Vector_3&>()
+    .constructor<const Segment_3&>()
+    .constructor<const Ray_3&>()
+    ;
+  kernel.set_override_module(jl_base_module);
+  line_3
     // Operations
-    OVERRIDE_BASE(kernel, line_3)
-    .BINARY_OP_SELF(const Line_3&, ==)
-    UNSET_OVERRIDE(kernel, line_3)
-    .METHOD(Line_3, projection)
-    .UNAMBIG_METHOD(Point_3, Line_3, point, const FT)
+    .method("==", &Line_3::operator==)
+    ;
+  kernel.unset_override_module();
+  line_3
+    .method("projection", &Line_3::projection)
+    .method("point", [](const Line_3& l, const FT& i) { return l.point(i); })
     // Predicates
-    .METHOD(Line_3, is_degenerate)
-    .METHOD(Line_3, has_on       )
+    .method("is_degenerate", &Line_3::is_degenerate)
+    .method("has_on",        &Line_3::has_on)
     // Miscellaneous
-    .METHOD(Line_3, perpendicular_plane)
-    .METHOD(Line_3, opposite           )
-    .METHOD(Line_3, to_vector          )
-    .METHOD(Line_3, direction          )
-    .METHOD(Line_3, transform          )
+    .method("perpendicular_plane", &Line_3::perpendicular_plane)
+    .method("opposite",            &Line_3::opposite)
+    .method("to_vector",           &Line_3::to_vector)
+    .method("direction",           &Line_3::direction)
+    .method("transform",           &Line_3::transform)
     // Representation
     .TO_STRING(Line_3)
     ;

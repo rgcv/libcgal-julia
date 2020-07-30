@@ -21,6 +21,9 @@
   .OPERATION(T, >=) \
   /* Field Operations */ \
   /* .OPERATION(T, /) */ \
+  .method("/", &safe_division<FT, FT>) \
+  .method("/", &safe_division<FT, double>) \
+  .method("/", &safe_division<double, FT>) \
   /* IntegralDomainWithoutDivision Operations */ \
   .OPERATION(T, +) \
   .OPERATION(T, -) \
@@ -69,16 +72,15 @@ void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"))
     // Creation
-    .CTOR(double)
-    OVERRIDE_BASE(cgal, field_type)
-    .OPERATORS(const FT&)
-    .method("/", &safe_division<FT, FT>)
-    .method("/", &safe_division<FT, double>)
-    .method("/", &safe_division<double, FT>)
-    UNSET_OVERRIDE(cgal, field_type)
+    .constructor<double>();
     // Representation
     .TO_STRING(FT)
     ;
+  cgal.set_override_module(jl_base_module);
+  field_type
+    .OPERATORS(const FT&)
+    ;
+  cgal.unset_override_module();
 #endif
 
   /// Origin / Null_vector

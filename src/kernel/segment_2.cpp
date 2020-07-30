@@ -1,8 +1,7 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
@@ -10,31 +9,35 @@ void wrap_segment_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Segment_2>& segment_2) {
   segment_2
     // Creation
-    .CTOR(const Point_2&, const Point_2&)
+    .constructor<const Point_2&, const Point_2&>()
+    ;
+  kernel.set_override_module(jl_base_module);
+  segment_2
     // Operations
-    OVERRIDE_BASE(kernel, segment_2)
-    .BINARY_OP_SELF(const Segment_2&, ==)
-    .METHOD(Segment_2, min            )
-    .METHOD(Segment_2, max            )
-    UNSET_OVERRIDE(kernel, segment_2)
-    .METHOD(Segment_2, source         )
-    .METHOD(Segment_2, target         )
-    .METHOD(Segment_2, vertex         )
-    .METHOD(Segment_2, point          )
-    .METHOD(Segment_2, squared_length )
-    .METHOD(Segment_2, direction      )
-    .METHOD(Segment_2, to_vector      )
-    .METHOD(Segment_2, opposite       )
-    .METHOD(Segment_2, supporting_line)
+    .method("==", &Segment_2::operator==)
+    .method("min", &Segment_2::min)
+    .method("max", &Segment_2::max)
+    ;
+  kernel.unset_override_module();
+  segment_2
+    .method("source",          &Segment_2::source)
+    .method("target",          &Segment_2::target)
+    .method("vertex",          &Segment_2::vertex)
+    .method("point",           &Segment_2::point)
+    .method("squared_length",  &Segment_2::squared_length)
+    .method("direction",       &Segment_2::direction)
+    .method("to_vector",       &Segment_2::to_vector)
+    .method("opposite",        &Segment_2::opposite)
+    .method("supporting_line", &Segment_2::supporting_line)
     // Predicates
-    .METHOD(Segment_2, is_degenerate   )
-    .METHOD(Segment_2, is_horizontal   )
-    .METHOD(Segment_2, is_vertical     )
-    .METHOD(Segment_2, has_on          )
-    .METHOD(Segment_2, collinear_has_on)
+    .method("is_degenerate",    &Segment_2::is_degenerate)
+    .method("is_horizontal",    &Segment_2::is_horizontal)
+    .method("is_vertical",      &Segment_2::is_vertical)
+    .method("has_on",           &Segment_2::has_on)
+    .method("collinear_has_on", &Segment_2::collinear_has_on)
     // Miscellaneous
-    .METHOD(Segment_2, bbox     )
-    .METHOD(Segment_2, transform)
+    .method("bbox",      &Segment_2::bbox)
+    .method("transform", &Segment_2::transform)
     // Representation
     .TO_STRING(Segment_2)
     ;

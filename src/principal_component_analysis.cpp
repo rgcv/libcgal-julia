@@ -3,17 +3,16 @@
 #include <stdexcept>
 #include <utility>
 
+#include <CGAL/Dimension.h>
+#include <CGAL/Kernel/Dimension_utils.h>
 #include <CGAL/barycenter.h>
 #include <CGAL/bounding_box.h>
 #include <CGAL/centroid.h>
-#include <CGAL/Dimension.h>
-#include <CGAL/Kernel/Dimension_utils.h>
 
 #include <jlcxx/module.hpp>
 #include <jlcxx/tuple.hpp>
 
 #include "kernel.hpp"
-
 namespace jlcgal {
 
 template<typename Point>

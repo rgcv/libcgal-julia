@@ -1,46 +1,49 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
 void wrap_line_2(jlcxx::Module& kernel, jlcxx::TypeWrapper<Line_2>& line_2) {
   line_2
     // Creation
-    .CTOR(const RT&, const RT&, const RT&)
-    .CTOR(const Point_2&, const Point_2&)
-    .CTOR(const Point_2&, const Direction_2&)
-    .CTOR(const Point_2&, const Vector_2&)
-    .CTOR(const Segment_2&)
-    .CTOR(const Ray_2&)
+    .constructor<const RT&, const RT&, const RT&>()
+    .constructor<const Point_2&, const Point_2&>()
+    .constructor<const Point_2&, const Direction_2&>()
+    .constructor<const Point_2&, const Vector_2&>()
+    .constructor<const Segment_2&>()
+    .constructor<const Ray_2&>()
+    ;
+  kernel.set_override_module(jl_base_module);
+  line_2
     // Operators
-    OVERRIDE_BASE(kernel, line_2)
-    .BINARY_OP_SELF(const Line_2&, ==)
-    UNSET_OVERRIDE(kernel, line_2)
-    .METHOD(Line_2, a         )
-    .METHOD(Line_2, b         )
-    .METHOD(Line_2, c         )
-    .UNAMBIG_METHOD(Point_2, Line_2, point, const FT&)
-    .METHOD(Line_2, projection)
-    .METHOD(Line_2, x_at_y    )
-    .METHOD(Line_2, y_at_x    )
+    .method("==", &Line_2::operator==)
+    ;
+  kernel.unset_override_module();
+  line_2
+    .method("a", &Line_2::a)
+    .method("b", &Line_2::b)
+    .method("c", &Line_2::c)
+    .method("point", [](const Line_2& l, const FT& i) { return l.point(i); })
+    .method("projection", &Line_2::projection)
+    .method("x_at_y",     &Line_2::x_at_y)
+    .method("y_at_x",     &Line_2::y_at_x)
     // Predicates
-    .METHOD(Line_2, is_degenerate)
-    .METHOD(Line_2, is_horizontal)
-    .METHOD(Line_2, is_vertical  )
-    .METHOD(Line_2, oriented_side)
+    .method("is_degenerate", &Line_2::is_degenerate)
+    .method("is_horizontal", &Line_2::is_horizontal)
+    .method("is_vertical",   &Line_2::is_vertical)
+    .method("oriented_side", &Line_2::oriented_side)
     // Convenience boolean functions
-    .METHOD(Line_2, has_on              )
-    .METHOD(Line_2, has_on_positive_side)
-    .METHOD(Line_2, has_on_negative_side)
+    .method("has_on",               &Line_2::has_on)
+    .method("has_on_positive_side", &Line_2::has_on_positive_side)
+    .method("has_on_negative_side", &Line_2::has_on_negative_side)
     // Miscellaneous
-    .METHOD(Line_2, to_vector    )
-    .METHOD(Line_2, direction    )
-    .METHOD(Line_2, opposite     )
-    .METHOD(Line_2, perpendicular)
-    .METHOD(Line_2, transform    )
+    .method("to_vector",     &Line_2::to_vector)
+    .method("direction",     &Line_2::direction)
+    .method("opposite",      &Line_2::opposite)
+    .method("perpendicular", &Line_2::perpendicular)
+    .method("transform",     &Line_2::transform)
     // Representation
     .TO_STRING(Line_2)
     ;

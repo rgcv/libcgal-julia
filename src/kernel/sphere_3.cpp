@@ -1,8 +1,7 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
@@ -10,38 +9,42 @@ void wrap_sphere_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Sphere_3>& sphere_3) {
   sphere_3
     // Creation
-    .CTOR(const Point_3&, const FT&)
-    .CTOR(const Point_3&, const FT&, const CGAL::Orientation&)
-    .CTOR(const Point_3&, const Point_3&, const Point_3&, const Point_3&)
-    .CTOR(const Point_3&, const Point_3&, const Point_3&)
-    .CTOR(const Point_3&, const Point_3&, const Point_3&, const CGAL::Orientation&)
-    .CTOR(const Point_3&, const Point_3&)
-    .CTOR(const Point_3&, const Point_3&, const CGAL::Orientation&)
-    .CTOR(const Point_3&)
-    .CTOR(const Point_3&, const CGAL::Orientation&)
-    .CTOR(const Circle_3&)
+    .constructor<const Point_3&, const FT&>()
+    .constructor<const Point_3&, const FT&, const CGAL::Orientation&>()
+    .constructor<const Point_3&, const Point_3&, const Point_3&, const Point_3&>()
+    .constructor<const Point_3&, const Point_3&, const Point_3&>()
+    .constructor<const Point_3&, const Point_3&, const Point_3&, const CGAL::Orientation&>()
+    .constructor<const Point_3&, const Point_3&>()
+    .constructor<const Point_3&, const Point_3&, const CGAL::Orientation&>()
+    .constructor<const Point_3&>()
+    .constructor<const Point_3&, const CGAL::Orientation&>()
+    .constructor<const Circle_3&>()
     // Access Functions
-    .METHOD(Sphere_3, center        )
-    .METHOD(Sphere_3, squared_radius)
-    .METHOD(Sphere_3, orientation   )
-    OVERRIDE_BASE(kernel, sphere_3)
-    .BINARY_OP_SELF(const Sphere_3&, ==)
-    UNSET_OVERRIDE(kernel, sphere_3)
+    .method("center",         &Sphere_3::center)
+    .method("squared_radius", &Sphere_3::squared_radius)
+    .method("orientation",    &Sphere_3::orientation)
+    ;
+  kernel.set_override_module(jl_base_module);
+  sphere_3
+    .method("==", &Sphere_3::operator==)
+    ;
+  kernel.unset_override_module();
+  sphere_3
     // Predicates
-    .METHOD(Sphere_3, is_degenerate        )
-    .METHOD(Sphere_3, oriented_side        )
-    .METHOD(Sphere_3, bounded_side         )
-    .METHOD(Sphere_3, has_on_positive_side )
-    .METHOD(Sphere_3, has_on_negative_side )
-    .METHOD(Sphere_3, has_on_boundary      )
-    .METHOD(Sphere_3, has_on_bounded_side  )
-    .METHOD(Sphere_3, has_on_unbounded_side)
-    .UNAMBIG_METHOD(bool, Sphere_3, has_on, const Point_3&)
-    .UNAMBIG_METHOD(bool, Sphere_3, has_on, const Circle_3&)
+    .method("is_degenerate",         &Sphere_3::is_degenerate)
+    .method("oriented_side",         &Sphere_3::oriented_side)
+    .method("bounded_side",          &Sphere_3::bounded_side)
+    .method("has_on_positive_side",  &Sphere_3::has_on_positive_side)
+    .method("has_on_negative_side",  &Sphere_3::has_on_negative_side)
+    .method("has_on_boundary",       &Sphere_3::has_on_boundary)
+    .method("has_on_bounded_side",   &Sphere_3::has_on_bounded_side)
+    .method("has_on_unbounded_side", &Sphere_3::has_on_unbounded_side)
+    .method("has_on", [](const Sphere_3& s, const Point_3&  p) { return s.has_on(p); })
+    .method("has_on", [](const Sphere_3& s, const Circle_3& c) { return s.has_on(c); })
     // Miscellaneous
-    .METHOD(Sphere_3, opposite            )
-    .METHOD(Sphere_3, orthogonal_transform)
-    .METHOD(Sphere_3, bbox                )
+    .method("opposite",             &Sphere_3::opposite)
+    .method("orthogonal_transform", &Sphere_3::orthogonal_transform)
+    .method("bbox",                 &Sphere_3::bbox)
     // Representation
     .TO_STRING(Sphere_3)
     ;

@@ -1,8 +1,7 @@
 #include <jlcxx/module.hpp>
 
-#include "kernel.hpp"
-#include "macros.hpp"
 #include "io.hpp"
+#include "kernel.hpp"
 
 namespace jlcgal {
 
@@ -10,27 +9,31 @@ void wrap_tetrahedron_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Tetrahedron_3>& tetrahedron_3) {
   tetrahedron_3
     // Creation
-    .CTOR(const Point_3&, const Point_3&, const Point_3&, const Point_3&)
+    .constructor<const Point_3&, const Point_3&, const Point_3&, const Point_3&>()
+    ;
+  kernel.set_override_module(jl_base_module);
+  tetrahedron_3
     // Operations
-    OVERRIDE_BASE(kernel, tetrahedron_3)
-    .BINARY_OP_SELF(const Tetrahedron_3&, ==)
-    UNSET_OVERRIDE(kernel, tetrahedron_3)
-    .METHOD(Tetrahedron_3, vertex)
+    .method("==", &Tetrahedron_3::operator==)
+    ;
+  kernel.unset_override_module();
+  tetrahedron_3
+    .method("vertex", &Tetrahedron_3::vertex)
     // Predicates
-    .METHOD(Tetrahedron_3, is_degenerate        )
-    .METHOD(Tetrahedron_3, orientation          )
-    .METHOD(Tetrahedron_3, oriented_side        )
-    .METHOD(Tetrahedron_3, bounded_side         )
+    .method("is_degenerate",         &Tetrahedron_3::is_degenerate)
+    .method("orientation",           &Tetrahedron_3::orientation)
+    .method("oriented_side",         &Tetrahedron_3::oriented_side)
+    .method("bounded_side",          &Tetrahedron_3::bounded_side)
     // Convenience Boolean Functions
-    .METHOD(Tetrahedron_3, has_on_positive_side )
-    .METHOD(Tetrahedron_3, has_on_negative_side )
-    .METHOD(Tetrahedron_3, has_on_boundary      )
-    .METHOD(Tetrahedron_3, has_on_bounded_side  )
-    .METHOD(Tetrahedron_3, has_on_unbounded_side)
+    .method("has_on_positive_side",  &Tetrahedron_3::has_on_positive_side)
+    .method("has_on_negative_side",  &Tetrahedron_3::has_on_negative_side)
+    .method("has_on_boundary",       &Tetrahedron_3::has_on_boundary)
+    .method("has_on_bounded_side",   &Tetrahedron_3::has_on_bounded_side)
+    .method("has_on_unbounded_side", &Tetrahedron_3::has_on_unbounded_side)
     // Miscellaneous
-    .METHOD(Tetrahedron_3, volume   )
-    .METHOD(Tetrahedron_3, bbox     )
-    .METHOD(Tetrahedron_3, transform)
+    .method("volume",    &Tetrahedron_3::volume)
+    .method("bbox",      &Tetrahedron_3::bbox)
+    .method("transform", &Tetrahedron_3::transform)
     // Representation
     .TO_STRING(Tetrahedron_3)
     ;
