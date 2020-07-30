@@ -5,7 +5,6 @@
 
 #include "io.hpp"
 #include "kernel.hpp"
-#include "macros.hpp"
 
 #define OPERATION(T, op) \
    method(#op, [](const T& t,  double    d) { op( t,  d); }) \
