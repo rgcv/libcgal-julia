@@ -1,4 +1,5 @@
 #include <CGAL/Origin.h>
+#include <CGAL/aff_transformation_tags.h>
 #include <CGAL/enum.h>
 
 #include <jlcxx/module.hpp>
@@ -85,6 +86,13 @@ void wrap_kernel(jlcxx::Module& cgal) {
   /// Origin / Null_vector
   cgal.map_type<CGAL::Origin>("Origin");
   cgal.map_type<CGAL::Null_vector>("NullVector");
+
+  // Transformation tags
+  cgal.map_type<CGAL::Identity_transformation>("IdentityTransformation");
+  cgal.map_type<CGAL::Reflection>("Reflection");
+  cgal.map_type<CGAL::Rotation>("Rotation");
+  cgal.map_type<CGAL::Scaling>("Scaling");
+  cgal.map_type<CGAL::Translation>("Translation");
 
   /// Enums
   CGAL_SENUM(Sign);
