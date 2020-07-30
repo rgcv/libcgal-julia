@@ -1,26 +1,14 @@
-#include <CGAL/aff_transformation_tags.h>
-
 #include <jlcxx/module.hpp>
+
+#include <julia.h>
 
 #include "io.hpp"
 #include "kernel.hpp"
 
 namespace jlcgal {
 
-template<typename T>
-T
-transform(const Aff_transformation_2& at, const T& t) {
-  return at.transform(t);
-}
-
 void wrap_aff_transformation_2(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Aff_transformation_2>& aff_transformation_2) {
-  kernel.map_type<CGAL::Identity_transformation>("IdentityTransformation");
-  kernel.map_type<CGAL::Reflection>("Reflection");
-  kernel.map_type<CGAL::Rotation>("Rotation");
-  kernel.map_type<CGAL::Scaling>("Scaling");
-  kernel.map_type<CGAL::Translation>("Translation");
-
   aff_transformation_2
     // Creation
     .constructor<const CGAL::Identity_transformation&>()
@@ -41,14 +29,14 @@ void wrap_aff_transformation_2(jlcxx::Module& kernel,
     .constructor<const RT&, const RT&,
                  const RT&, const RT&, const RT&>()
     // Operations
-    .method("transform", &transform<Point_2>)
-    .method("transform", &transform<Vector_2>)
-    .method("transform", &transform<Direction_2>)
-    .method("transform", &transform<Line_2>)
-    .method(&transform<Point_2>) // operator() overloads
-    .method(&transform<Vector_2>)
-    .method(&transform<Direction_2>)
-    .method(&transform<Line_2>)
+    .method("transform", static_cast<Point_2 (Aff_transformation_2::*)(const Point_2&) const>(&Aff_transformation_2::transform))
+    .method("transform", static_cast<Vector_2 (Aff_transformation_2::*)(const Vector_2&) const>(&Aff_transformation_2::transform))
+    .method("transform", static_cast<Direction_2 (Aff_transformation_2::*)(const Direction_2&) const>(&Aff_transformation_2::transform))
+    .method("transform", static_cast<Line_2 (Aff_transformation_2::*)(const Line_2&) const>(&Aff_transformation_2::transform))
+    .method(static_cast<Point_2 (Aff_transformation_2::*)(const Point_2&) const>(&Aff_transformation_2::operator()))
+    .method(static_cast<Vector_2 (Aff_transformation_2::*)(const Vector_2&) const>(&Aff_transformation_2::operator()))
+    .method(static_cast<Direction_2 (Aff_transformation_2::*)(const Direction_2&) const>(&Aff_transformation_2::operator()))
+    .method(static_cast<Line_2 (Aff_transformation_2::*)(const Line_2&) const>(&Aff_transformation_2::operator()))
     ;
     // Miscellaneous
   kernel.set_override_module(jl_base_module);

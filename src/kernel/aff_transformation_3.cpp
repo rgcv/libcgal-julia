@@ -1,15 +1,11 @@
 #include <jlcxx/module.hpp>
 
+#include <julia.h>
+
 #include "io.hpp"
 #include "kernel.hpp"
 
 namespace jlcgal {
-
-template<typename T>
-T
-transform(const Aff_transformation_3& at, const T& t) {
-  return at.transform(t);
-}
 
 void wrap_aff_transformation_3(jlcxx::Module& kernel,
     jlcxx::TypeWrapper<Aff_transformation_3>& aff_transformation_3) {
@@ -32,14 +28,14 @@ void wrap_aff_transformation_3(jlcxx::Module& kernel,
                  const RT&, const RT&, const RT&,
                  const RT&, const RT&, const RT&, const RT&>()
     // Operations
-    .method("transform", &transform<Point_3>)
-    .method("transform", &transform<Vector_3>)
-    .method("transform", &transform<Direction_3>)
-    .method("transform", &transform<Plane_3>)
-    .method(&transform<Point_3>)
-    .method(&transform<Vector_3>)
-    .method(&transform<Direction_3>)
-    .method(&transform<Plane_3>)
+    .method("transform", static_cast<Point_3 (Aff_transformation_3::*)(const Point_3&) const>(&Aff_transformation_3::transform))
+    .method("transform", static_cast<Vector_3 (Aff_transformation_3::*)(const Vector_3&) const>(&Aff_transformation_3::transform))
+    .method("transform", static_cast<Direction_3 (Aff_transformation_3::*)(const Direction_3&) const>(&Aff_transformation_3::transform))
+    .method("transform", static_cast<Plane_3 (Aff_transformation_3::*)(const Plane_3&) const>(&Aff_transformation_3::transform))
+    .method(static_cast<Point_3 (Aff_transformation_3::*)(const Point_3&) const>(&Aff_transformation_3::operator()))
+    .method(static_cast<Vector_3 (Aff_transformation_3::*)(const Vector_3&) const>(&Aff_transformation_3::operator()))
+    .method(static_cast<Direction_3 (Aff_transformation_3::*)(const Direction_3&) const>(&Aff_transformation_3::operator()))
+    .method(static_cast<Plane_3 (Aff_transformation_3::*)(const Plane_3&) const>(&Aff_transformation_3::operator()))
     ;
     // Miscellaneous
   kernel.set_override_module(jl_base_module);

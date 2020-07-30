@@ -3,6 +3,8 @@
 
 #include <jlcxx/module.hpp>
 
+#include <julia.h>
+
 #include "io.hpp"
 #include "kernel.hpp"
 #include "utils.hpp"

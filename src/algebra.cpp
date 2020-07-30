@@ -2,6 +2,8 @@
 
 #include <jlcxx/module.hpp>
 
+#include <julia.h>
+
 #include "kernel.hpp"
 
 namespace jlcgal {

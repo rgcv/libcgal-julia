@@ -5,6 +5,8 @@
 
 #include <jlcxx/module.hpp>
 
+#include <julia.h>
+
 #include "kernel.hpp"
 #include "kernel_conversion.hpp"
 
