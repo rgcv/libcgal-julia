@@ -58,7 +58,7 @@ void wrap_straight_skeleton_2(jlcxx::Module& cgal) {
     .method("next",     [](const Halfedge& h) { return *h.next(); })
     .method("prev",     [](const Halfedge& h) { return *h.prev(); })
     .method("vertex",   [](const Halfedge& h) { return *h.vertex(); })
-    .method("face",     [](const Halfedge& h) { return *juliah.face(); })
+    .method("face",     [](const Halfedge& h) { return *h.face(); })
     .method("defining_contour_edge", [](const Halfedge& h) {
       return *h.defining_contour_edge();
     })
