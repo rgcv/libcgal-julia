@@ -8,9 +8,9 @@
 #include "kernel.hpp"
 
 #define OPERATION(T, op) \
-   method(#op, [](const T& t,  double    d) { op( t,  d); }) \
-  .method(#op, [](double   d,  const T&  t) { op( d,  t); }) \
-  .method(#op, [](const T& t1, const T& t2) { op(t1, t2); })
+   method(#op, [](const T& t,  double    d) {  t op  d; }) \
+  .method(#op, [](double   d,  const T&  t) {  d op  t; }) \
+  .method(#op, [](const T& t1, const T& t2) { t1 op t2; })
 
 #define OPERATORS(T) \
   /* RealEmbeddable Operations */ \
@@ -72,14 +72,12 @@ void wrap_kernel(jlcxx::Module& cgal) {
 #ifdef JLCGAL_EXACT_CONSTRUCTIONS
   auto field_type = cgal.add_type<FT>("FieldType", jlcxx::julia_type("Real"))
     // Creation
-    .constructor<double>();
+    .constructor<double>()
     // Representation
     .TO_STRING(FT)
     ;
   cgal.set_override_module(jl_base_module);
-  field_type
-    .OPERATORS(const FT&)
-    ;
+  field_type.OPERATORS(FT);
   cgal.unset_override_module();
 #endif
 
