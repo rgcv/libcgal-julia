@@ -154,7 +154,9 @@ void wrap_straight_skeleton_2(jlcxx::Module& cgal) {
 
   cgal.method("create_offset_polygons_2", [](const FT& offset,
                                              const Skeleton_2& ss) {
-    return to_poly_jlarr(CGAL::create_offset_polygons_2(offset, ss, Kernel()));
+    return to_poly_jlarr(CGAL::create_offset_polygons_2<Polygon_2>(offset,
+                                                                   ss,
+                                                                   Kernel()));
   });
 }
 
