@@ -24,9 +24,9 @@ namespace jlcgal {
 
 #define CH2(F) \
   cgal.method(#F, [](jlcxx::ArrayRef<Point_2> ps) { \
-    std::vector<Point_2> res; \
-    CGAL::F(ps.begin(), ps.end(), std::back_inserter(res)); \
-    return collect(ps.begin(), ps.end()); \
+    std::vector<Point_2> out; \
+    CGAL::F(ps.begin(), ps.end(), std::back_inserter(out)); \
+    return collect(out.begin(), out.end()); \
   })
 #define CH2_EX1(D) \
   cgal.method("ch_" #D "_point", [](jlcxx::ArrayRef<Point_2> ps) { \
