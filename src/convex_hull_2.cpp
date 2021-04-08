@@ -47,7 +47,11 @@ void wrap_convex_hull_2(jlcxx::Module& cgal) {
   CH2(ch_bykat);
   CH2(ch_eddy);
   CH2(ch_graham_andrew);
-  CH2(ch_jarvis);
+  cgal.method("ch_jarvis", [](jlcxx::ArrayRef<Point_2> ps) {
+    std::vector<Point_2> in(ps.begin(), ps.end()), out;
+    CGAL::ch_jarvis(in.begin(), in.end(), std::back_inserter(out));
+    return collect(out.begin(), out.end());
+  });
   CH2(ch_melkman);
   CH2(convex_hull_2);
 
@@ -64,9 +68,9 @@ void wrap_convex_hull_2(jlcxx::Module& cgal) {
 
   cgal.method("ch_jarvis_march", [](jlcxx::ArrayRef<Point_2> ps,
                                     const Point_2& p, const Point_2& q) {
-    std::vector<Point_2> res;
-    CGAL::ch_jarvis_march(ps.begin(), ps.end(), p, q, std::back_inserter(res));
-    return collect(res.begin(), res.end());
+    std::vector<Point_2> in(ps.begin(), ps.end()), out;
+    CGAL::ch_jarvis_march(in.begin(), in.end(), p, q, std::back_inserter(out));
+    return collect(out.begin(), out.end());
   });
 
   CH2(lower_hull_points_2);
