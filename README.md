@@ -12,19 +12,22 @@ reliability and efficiency while still providing robust results.
 
 # Building
 
-The project can be built using the `build_tarballs.jl` [`BinaryBuilder`][2]
-script under `.github/scripts`.  This is also used in CI and for publishing
-artifacts on release.  It can also be built manually, albeit discouraged since
-setting up the required dependencies may be an arduous task.
+The project can be built manually, albeit discouraged since setting up the
+required dependencies may be an arduous task.  Building the project for various
+julia versions and platforms now is highly reliant on
+[Yggdrasil](https://github.com/JuliaPackaging/Yggdrasil).
 
-Currently, two shared libraries are being built: One with inexact
-constructions, i.e., using the
-`Exact_predicates_inexact_constructions_kernel` linear kernel, and another
-with exact constructions, i.e., using the
+Currently, two shared libraries are being built: One with inexact constructions,
+i.e., using the `Exact_predicates_inexact_constructions_kernel` linear kernel,
+and another with exact constructions, i.e., using the
 `Exact_predicates_exact_constructions_kernel_with_sqrt`, each library being
-respectively suffixed with `_inexact` and `_exact`.
+respectively suffixed with `_inexact` and `_exact`.  However, due to
+pre-compilation, the current mechanism to swap between the two is made virtually
+impossible.  Although still present in the source code, alternatives should be
+looked into to support different kernels.  Ideally, support them with proper
+templating instead of opaquely mapping kernel objects.
 
-## Using `build_tarballs.jl` (recommended)
+## Using `build_tarballs.jl` (outdated)
 
 **NOTE**: This method is relatively outdated. It might work, but be warned.
 YMMV. I haven't relied on it since adopting the `jll` artifacts system.
@@ -54,13 +57,13 @@ $ julia .github/scripts/build_tarballs.jl x86_64-w64-mingw32-gcc7-cxx11
 
 Requirements:
 
-- [`CMake ≥ 3.1`](https://cmake.org/download/#latest)
-- [`CGAL ≥ 5.0.3`](https://github.com/CGAL/cgal/releases/tag/releases%2FCGAL-5.0.3)
-  * [`Boost ≥ 1.57`](https://www.boost.org/users/history/version_1_57_0.html)
-  * [`GMP`](https://gmplib.org/#DOWNLOAD)
-  * [`MPFR`](https://www.mpfr.org/mpfr-current/)
+- [`CMake ≥ 3.14`](https://cmake.org/download/#latest)
+- [`CGAL 5.3`](https://github.com/CGAL/cgal/releases/tag/v5.3)
+  * [`Boost ≥ 1.66`](https://www.boost.org/users/history/version_1_66_0.html)
+  * [`GMP ≥ 4.2`](https://gmplib.org/#DOWNLOAD)
+  * [`MPFR ≥ 2.2.1`](https://www.mpfr.org/mpfr-current/)
 - [`Julia ≥ 1.3`](https://julialang.org/downloads/)
-- [`JlCxx ≥ 0.8`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.8.0)
+- [`JlCxx ~0.8`](https://github.com/JuliaInterop/libcxxwrap-julia/releases/tag/v0.8.3)
 
 Depending on your system, it may be easier to aggregate and install the
 listed requirements, with the exception of `JlCxx`, which, to my knowledge,
@@ -69,17 +72,16 @@ former ones are.  On Windows, (most) via neatly packed installers; on Linux &
 co., via the distribution's package manager; on macOS, maybe homebrew,
 although I'm not sure.
 
-Afterwards, it is a mostly typical run-of-the-mill CMake build (remove
-`--target install` if you do not wish to install it in your system):
+Afterwards, it is a mostly typical run-of-the-mill CMake build:
 
 ```
-mkdir build && cd build
-cmake -DJlCxx_DIR=<path/to/libcxxwrap-julia> ..
-cmake --build . --target install
+cmake -B build -DJlCxx_DIR=<path/to/libcxxwrap-julia>
+cmake --build build
 ```
 
 We can see above that `JlCxx_DIR` is specified. However, if it's reachable by
-CMake, you won't need it.
+CMake, you won't need it (i.e., libcxxwrap-julia is installed in your system in
+a standard path).
 
 # TODO
 
