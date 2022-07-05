@@ -9,6 +9,7 @@ namespace jlcgal {
   void wrap_polygon_2(jlcxx::Module&);
   void wrap_straight_skeleton_2(jlcxx::Module&);
   void wrap_triangulation_2(jlcxx::Module&);
+  void wrap_triangulation_3(jlcxx::Module&);
   void wrap_voronoi_diagram_2(jlcxx::Module&);
 } // jlcgal
 
@@ -22,5 +23,6 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& cgal) {
   wrap_polygon_2(cgal);
   wrap_straight_skeleton_2(cgal);
   wrap_triangulation_2(cgal);
+  wrap_triangulation_3(cgal);
   wrap_voronoi_diagram_2(cgal);
 }
