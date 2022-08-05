@@ -82,12 +82,6 @@
 namespace jlcxx {
   using namespace jlcgal;
 
-  template<> struct SuperType<CTr_3::Edge>   { typedef CTr_3::Triangulation::Edge type; };
-  template<> struct SuperType<CTr_3::Face>   { typedef CTr_3::Triangulation::Face type; };
-  template<> struct SuperType<CTr_3::Vertex> { typedef CTr_3::Triangulation::Vertex type; };
-
-  template<> struct SuperType<CDTr_3> { typedef CTr_3 type; };
-
   template<> struct SuperType<DTr_3>  { typedef Tr_3 type; };
 
   template<> struct SuperType<RTr_3::Edge>   { typedef RTr_3::Triangulation_base::Edge type; };
@@ -103,15 +97,6 @@ void wrap_triangulation_3(jlcxx::Module& cgal) {
   auto tedge   = cgal.add_type<Tr_3::Edge>  (tr_name + "Edge");
   auto tface   = cgal.add_type<Tr_3::Face>  (tr_name + "Face");
   auto tvertex = cgal.add_type<Tr_3::Vertex>(tr_name + "Vertex");
-
-  const std::string ctr_name = "Constrained" + tr_name;
-  cgal.add_type<CTr_3::Triangulation>(ctr_name + "Base");
-  auto ctr      = cgal.add_type<CTr_3>        (ctr_name);
-  auto ctedge   = cgal.add_type<CTr_3::Edge>  (ctr_name + "Edge",   tedge.dt());
-  auto ctface   = cgal.add_type<CTr_3::Face>  (ctr_name + "Face",   tface.dt());
-  auto ctvertex = cgal.add_type<CTr_3::Vertex>(ctr_name + "Vertex", tvertex.dt());
-
-  auto cdtr = cgal.add_type<CDTr_3>("ConstrainedDelaunay" + tr_name, ctr.dt());
 
   const std::string dtr_name = "Delaunay" + tr_name;
   auto dtr = cgal.add_type<DTr_3>(dtr_name, tr.dt());
@@ -146,44 +131,6 @@ void wrap_triangulation_3(jlcxx::Module& cgal) {
     .method(tr_name, [](jlcxx::ArrayRef<Tr_3::Point> ps) {
       return jlcxx::create<Tr_3>(ps.begin(), ps.end());
     })
-    ;
-
-  ctr
-    .WRAP_TRIANGULATION(CTr_3, ctr)
-    // Queries
-    .method("is_constrained", &CTr_3::is_constrained)
-    .method("constrained_edges", [](const CTr_3& ct) {
-      return collect(ct.constrained_edges_begin(), ct.constrained_edges_end());
-    })
-    .method("insert_constraint", [](CTr_3& ctr, const CTr_3::Point& p,
-                                                const CTr_3::Point& q) {
-      ctr.insert_constraint(p, q);
-    })
-    .method("insert_constraint", [](CTr_3& ct, jlcxx::ArrayRef<CTr_3::Point> ps) {
-      ct.insert_constraint(ps.begin(), ps.end());
-    })
-    ;
-
-  cdtr
-    // Creation
-    .constructor<const CDTr_3&>()
-    ;
-  cgal.set_override_module(jl_base_module);
-  cdtr
-    // Insertion and Removal
-    .method("insert!", [](CDTr_3& cdtr, jlcxx::ArrayRef<CDTr_3::Point> ps) -> CDTr_3& {
-      cdtr.insert(ps.begin(), ps.end());
-      return cdtr;
-    })
-    .method("push!", [](CDTr_3& cdtr, const CDTr_3::Point& p) -> CDTr_3& {
-      cdtr.push_back(p);
-      return cdtr;
-    })
-    ;
-  cgal.unset_override_module();
-  cdtr
-    // Miscellaneous
-    .method("is_valid", &CDTr_3::is_valid)
     ;
 
   dtr
