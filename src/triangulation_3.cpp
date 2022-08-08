@@ -62,7 +62,7 @@ namespace jlcxx {
   template<> struct SuperType<DTr_3>  { typedef Tr_3 type; };
 
   template<> struct SuperType<RTr_3::Edge>   { typedef RTr_3::Tr_Base::Edge type; };
-  template<> struct SuperType<RTr_3::Facet>   { typedef RTr_3::Tr_Base::Facet type; };
+  template<> struct SuperType<RTr_3::Facet>  { typedef RTr_3::Tr_Base::Facet type; };
   template<> struct SuperType<RTr_3::Vertex> { typedef RTr_3::Tr_Base::Vertex type; };
 }
 
@@ -72,7 +72,7 @@ void wrap_triangulation_3(jlcxx::Module& cgal) {
   const std::string tr_name = "Triangulation3";
   auto tr      = cgal.add_type<Tr_3>        (tr_name);
   auto tedge   = cgal.add_type<Tr_3::Edge>  (tr_name + "Edge");
-  auto tface   = cgal.add_type<Tr_3::Facet>  (tr_name + "Facet");
+  auto tface   = cgal.add_type<Tr_3::Facet> (tr_name + "Facet");
   auto tvertex = cgal.add_type<Tr_3::Vertex>(tr_name + "Vertex");
 
   const std::string dtr_name = "Delaunay" + tr_name;
@@ -82,7 +82,7 @@ void wrap_triangulation_3(jlcxx::Module& cgal) {
   cgal.add_type<RTr_3::Tr_Base>(rtr_name + "Base");
   auto rtr      = cgal.add_type<RTr_3>        (rtr_name);
   auto rtedge   = cgal.add_type<RTr_3::Edge>  (rtr_name + "Edge",   tedge.dt());
-  auto rtface   = cgal.add_type<RTr_3::Facet>  (rtr_name + "Facet",   tface.dt());
+  auto rtface   = cgal.add_type<RTr_3::Facet> (rtr_name + "Facet",   tface.dt());
   auto rtvertex = cgal.add_type<RTr_3::Vertex>(rtr_name + "Vertex", tvertex.dt());
 
   tvertex
