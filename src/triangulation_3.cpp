@@ -59,7 +59,7 @@
 namespace jlcxx {
   using namespace jlcgal;
 
-  template<> struct SuperType<DTr_3>  { typedef Tr_3 type; };
+  template<> struct SuperType<DTr_3>  { typedef CGAL::Triangulation_3<Kernel, typename DTr_3::Triangulation_data_structure> type; };
 
   template<> struct SuperType<RTr_3::Edge>   { typedef RTr_3::Tr_Base::Edge type; };
   template<> struct SuperType<RTr_3::Facet>  { typedef RTr_3::Tr_Base::Facet type; };
