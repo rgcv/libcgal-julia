@@ -11,5 +11,6 @@ set(JLCGAL_SOURCES ${JLCGAL_SOURCES}
   ${CMAKE_CURRENT_LIST_DIR}/principal_component_analysis.cpp
   ${CMAKE_CURRENT_LIST_DIR}/straight_skeleton_2.cpp
   ${CMAKE_CURRENT_LIST_DIR}/triangulation_2.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/triangulation_3.cpp
   ${CMAKE_CURRENT_LIST_DIR}/voronoi_diagram_2.cpp
   PARENT_SCOPE)
