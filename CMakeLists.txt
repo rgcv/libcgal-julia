@@ -6,9 +6,9 @@ project(JlCGAL
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-find_package(CGAL 5.3 CONFIG REQUIRED COMPONENTS Core)
+find_package(CGAL 5.5 CONFIG REQUIRED COMPONENTS Core)
 
-find_package(JlCxx 0.8 REQUIRED)
+find_package(JlCxx 0.9 REQUIRED)
 get_target_property(JlCxx_location JlCxx::cxxwrap_julia LOCATION)
 get_filename_component(JlCxx_location ${JlCxx_location} DIRECTORY)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${JlCxx_location}")
