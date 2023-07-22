@@ -63,7 +63,6 @@ void wrap_straight_skeleton_2(jlcxx::Module& cgal) {
       return *h.defining_contour_edge();
     })
     // Predicates
-    .method("has_null_segment",  &Halfedge::has_null_segment)
     .method("has_infinite_time", &Halfedge::has_infinite_time)
     .method("is_border",         &Halfedge::is_border)
     .method("is_bisector",       &Halfedge::is_bisector)
@@ -74,7 +73,7 @@ void wrap_straight_skeleton_2(jlcxx::Module& cgal) {
   ssv
     // Access Functions
     .method("id",       &Vertex::id)
-    .method("degree",   &Vertex::degree)
+    // .method("degree",   &Vertex::degree)
     .method("halfedge", [](const Vertex& v) { return *v.halfedge(); })
     .method("point",    &Vertex::point)
     ;
@@ -89,7 +88,6 @@ void wrap_straight_skeleton_2(jlcxx::Module& cgal) {
     })
     // Queries
     .method("has_infinite_time", &Vertex::has_infinite_time)
-    .method("has_null_point",    &Vertex::has_null_point)
     .method("is_contour",        &Vertex::is_contour)
     .method("is_skeleton",       &Vertex::is_skeleton)
     .method("is_split",          &Vertex::is_split)
